@@ -267,6 +267,26 @@
   .t-sel{color:#ff6a5c}
   .t-prop{color:#ffcf5c}
   .t-punc{color:#9a9298}
+  /* Terminal simulado */
+  .term{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#07080f;margin:16px 0 6px}
+  .term-h{display:flex;align-items:center;gap:9px;padding:10px 14px;background:linear-gradient(180deg,var(--surface-2),var(--surface));border-bottom:1px solid var(--border)}
+  .term-h .fn{font-family:var(--mono);font-size:12px;color:var(--faint);margin-left:4px}
+  .term-out{padding:14px;font-family:var(--mono);font-size:13px;line-height:1.65;max-height:320px;overflow:auto;min-height:150px}
+  .tl{white-space:pre-wrap;word-break:break-word}
+  .tl-cmd{color:#f6eef0;font-weight:600}
+  .tl-out{color:#b6a9ad}
+  .tl-ok{color:#74efb3}
+  .tl-err{color:#ff8a95}
+  .tl-info{color:var(--faint);font-style:italic}
+  .term-line{display:flex;align-items:center;gap:9px;padding:11px 14px;border-top:1px solid var(--border);background:#0a0c14}
+  .tprompt{color:#ff6a5c;font-family:var(--mono);font-weight:700;flex:none}
+  .term-in{flex:1;min-width:0;background:transparent;border:0;outline:0;color:#f6eef0;font-family:var(--mono);font-size:13.5px;padding:2px 0}
+  .term-in::placeholder{color:#544c52}
+  .cmds{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:12px}
+  .cmds-t{font-size:12.5px;color:var(--muted);font-weight:600;margin-right:2px}
+  .cmdchip{font-family:var(--mono);font-size:12.5px;padding:6px 11px;border-radius:9px;cursor:pointer;
+    border:1px solid var(--border);background:var(--surface-2);color:var(--violet-2);transition:all .16s}
+  .cmdchip:hover{border-color:var(--violet);transform:translateY(-1px)}
   /* Meta semanal, glossário e anotações */
   .meta{border:1px solid var(--border);background:linear-gradient(150deg,var(--surface),var(--bg-2));border-radius:var(--radius);padding:14px 16px;margin:18px 0 4px}
   .meta.ok{border-color:rgba(57,255,136,.4)}
@@ -1362,6 +1382,417 @@ const DOM_PROVA = {
   ]
 };
 
+/* ---------- Terminal simulado: Git de verdade, sem instalar nada ---------- */
+function newTerm(){
+  return {files:{'index.html':'<h1>Meu site</h1>','style.css':'body { background: #111; }'},
+    committed:null,init:false,staged:[],commits:[],branch:'main',branches:['main'],
+    remote:null,pushed:0,hist:[]};
+}
+function tsplit(raw){
+  const out=[]; let cur='', q=null;
+  for(const ch of raw.trim()){
+    if(q){ if(ch===q){q=null;} else cur+=ch; }
+    else if(ch==='"'||ch==="'"){ q=ch; }
+    else if(ch===' '){ if(cur){out.push(cur);cur='';} }
+    else cur+=ch;
+  }
+  if(cur) out.push(cur);
+  return out;
+}
+function modificados(s){
+  if(!s.committed) return Object.keys(s.files);
+  return Object.keys(s.files).filter(f=>s.files[f]!==s.committed[f]);
+}
+function hashCurto(){ return Math.random().toString(16).slice(2,9); }
+function termRun(s,raw){
+  const L=[], out=x=>L.push({t:'out',s:x}), err=x=>L.push({t:'err',s:x}), ok=x=>L.push({t:'ok',s:x});
+  const a=tsplit(raw);
+  if(!a.length) return L;
+  s.hist.push(raw.trim());
+  const c=a[0];
+  if(c==='help'){
+    out('Comandos disponíveis neste terminal:');
+    out('  ls                        lista os arquivos');
+    out('  cat arquivo               mostra o conteúdo do arquivo');
+    out('  echo "texto" > arquivo    escreve no arquivo');
+    out('  git init                  começa a versionar a pasta');
+    out('  git status                mostra o que mudou');
+    out('  git add arquivo           prepara o arquivo para o commit (use . para todos)');
+    out('  git commit -m "mensagem"  salva um ponto na história');
+    out('  git log                   mostra os commits');
+    out('  git remote add origin URL liga a pasta ao GitHub');
+    out('  git push                  envia os commits para o GitHub');
+    out('  git pull                  traz novidades do GitHub');
+    out('  git branch                lista os ramos');
+    out('  git checkout -b nome      cria e entra num ramo novo');
+    out('  clear                     limpa a tela');
+    return L;
+  }
+  if(c==='clear'){ L.push({t:'clear'}); return L; }
+  if(c==='ls'){ const f=Object.keys(s.files); f.length?out(f.join('   ')):out('(pasta vazia)'); return L; }
+  if(c==='cat'){
+    if(!a[1]) return err('Diga qual arquivo: cat index.html'),L;
+    if(!(a[1] in s.files)) return err('cat: '+a[1]+': arquivo não encontrado'),L;
+    s.files[a[1]].split('\n').forEach(out); return L;
+  }
+  if(c==='echo'){
+    const i=a.indexOf('>');
+    if(i<0||!a[i+1]) return err('Para escrever num arquivo use: echo "texto" > arquivo.html'),L;
+    const nome=a[i+1], txt=a.slice(1,i).join(' ');
+    s.files[nome]=txt;
+    return ok('Arquivo '+nome+' salvo.'),L;
+  }
+  if(c!=='git'){ err('Comando não encontrado: '+c); out('Digite help para ver os comandos.'); return L; }
+
+  const g=a[1];
+  if(g!=='init'&&!s.init){ err('fatal: esta pasta ainda não é um repositório Git.'); out('Comece com: git init'); return L; }
+
+  if(g==='init'){
+    if(s.init) return out('Esta pasta já é um repositório Git.'),L;
+    s.init=true; return ok('Repositório Git vazio criado na pasta ~/meu-site'),L;
+  }
+  if(g==='status'){
+    out('No ramo ' + s.branch);
+    if(!s.commits.length) out('Nenhum commit ainda');
+    const mod=modificados(s).filter(f=>s.staged.indexOf(f)<0);
+    if(s.staged.length){ out(''); ok('Mudanças prontas para o commit:'); s.staged.forEach(f=>ok('        ' + f)); }
+    if(mod.length){ out(''); err('Mudanças fora da área de preparo:'); mod.forEach(f=>err('        ' + f)); out('  (use "git add arquivo" para preparar)'); }
+    if(!s.staged.length&&!mod.length) out('nada a fazer, diretório de trabalho limpo');
+    return L;
+  }
+  if(g==='add'){
+    if(!a[2]) return err('Diga o que adicionar: git add index.html   (ou git add . para tudo)'),L;
+    const alvo=a.slice(2);
+    let n=0;
+    (alvo.indexOf('.')>=0?modificados(s):alvo).forEach(f=>{
+      if(!(f in s.files)) return err('git add: '+f+' não existe');
+      if(s.staged.indexOf(f)<0){ s.staged.push(f); n++; }
+    });
+    return n?ok(n+' arquivo(s) preparado(s) para o commit.'):out('Nada de novo para preparar.'),L;
+  }
+  if(g==='commit'){
+    const i=a.indexOf('-m');
+    if(i<0||!a[i+1]) return err('Todo commit precisa de mensagem: git commit -m "o que você fez"'),L;
+    if(!s.staged.length) return err('Nada preparado para o commit.'),out('  (use "git add arquivo" antes)'),L;
+    const msg=a[i+1], h=hashCurto();
+    s.commits.unshift({h,msg,data:new Date(),n:s.staged.length});
+    s.committed=Object.assign({},s.committed||{},Object.fromEntries(s.staged.map(f=>[f,s.files[f]])));
+    ok('['+s.branch+' '+h+'] '+msg);
+    out(' '+s.staged.length+' arquivo(s) alterado(s)');
+    s.staged=[];
+    return L;
+  }
+  if(g==='log'){
+    if(!s.commits.length) return err('Ainda não há commits.'),L;
+    s.commits.forEach(cm=>{
+      ok('commit '+cm.h);
+      out('Data: '+cm.data.toLocaleString('pt-BR'));
+      out('');
+      out('    '+cm.msg);
+      out('');
+    });
+    return L;
+  }
+  if(g==='remote'){
+    if(a[2]==='add'&&a[3]==='origin'&&a[4]){ s.remote=a[4]; return ok('Remoto "origin" apontando para '+a[4]),L; }
+    if(a[2]==='-v'||!a[2]){ return s.remote?out('origin  '+s.remote):out('(nenhum remoto configurado)'),L; }
+    return err('Use: git remote add origin https://github.com/usuario/repo.git'),L;
+  }
+  if(g==='push'){
+    if(!s.remote) return err('Não há remoto configurado.'),out('  Use: git remote add origin URL'),L;
+    const novos=s.commits.length-s.pushed;
+    if(novos<=0) return out('Tudo em dia. Nada para enviar.'),L;
+    s.pushed=s.commits.length;
+    ok('Enviando para '+s.remote);
+    return ok(novos+' commit(s) enviado(s). Ramo '+s.branch+' atualizado no GitHub.'),L;
+  }
+  if(g==='pull'){ return s.remote?out('Já está atualizado.'):(err('Não há remoto configurado.'),L),L; }
+  if(g==='clone'){ return a[2]?ok('Cópia de '+a[2]+' baixada para esta pasta.'):(err('Diga o endereço: git clone URL'),L),L; }
+  if(g==='branch'){
+    if(a[2]){ if(s.branches.indexOf(a[2])<0) s.branches.push(a[2]); return ok('Ramo '+a[2]+' criado.'),L; }
+    s.branches.forEach(b=>b===s.branch?ok('* '+b):out('  '+b));
+    return L;
+  }
+  if(g==='checkout'){
+    const nome=a[2]==='-b'?a[3]:a[2];
+    if(!nome) return err('Diga o ramo: git checkout -b nome-do-ramo'),L;
+    if(a[2]==='-b'){ if(s.branches.indexOf(nome)<0) s.branches.push(nome); s.branch=nome; return ok('Criou e entrou no ramo '+nome),L; }
+    if(s.branches.indexOf(nome)<0) return err('Ramo '+nome+' não existe.'),L;
+    s.branch=nome; return ok('Entrou no ramo '+nome),L;
+  }
+  if(g==='merge'){
+    if(!a[2]) return err('Diga o ramo: git merge nome-do-ramo'),L;
+    if(s.branches.indexOf(a[2])<0) return err('Ramo '+a[2]+' não existe.'),L;
+    return ok('Ramo '+a[2]+' juntado em '+s.branch+'. Sem conflitos.'),L;
+  }
+  err('git: comando "'+g+'" não reconhecido aqui.');
+  out('Digite help para ver o que este terminal entende.');
+  return L;
+}
+function termBox(id,dica){
+  return `<div class="term">
+    <div class="term-h"><span class="dots"><i></i><i></i><i></i></span><span class="fn">terminal — ~/meu-site</span>
+      <span class="live-tag"><i></i>comandos de verdade</span></div>
+    <div class="term-out" id="to-${id}"></div>
+    <div class="term-line"><span class="tprompt">$</span><input class="term-in" id="ti-${id}" spellcheck="false" autocomplete="off" placeholder="${esc(dica||'digite um comando e aperte Enter')}"></div>
+  </div>`;
+}
+function bindTerm(id,state,onRun){
+  const inp=$('#ti-'+id), out=$('#to-'+id);
+  let hpos=-1;
+  const print=(cls,txt)=>{ const d=document.createElement('div'); d.className='tl '+cls; d.textContent=txt; out.appendChild(d); };
+  print('tl-info','Digite help para ver os comandos disponíveis.');
+  function exec(raw){
+    print('tl-cmd','$ '+raw);
+    const linhas=termRun(state,raw);
+    linhas.forEach(l=>{ if(l.t==='clear'){ out.innerHTML=''; } else print('tl-'+l.t,l.s); });
+    out.scrollTop=out.scrollHeight;
+    if(onRun) onRun(state);
+  }
+  inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){ const v=inp.value.trim(); if(!v) return; inp.value=''; hpos=-1; exec(v); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); if(state.hist.length){ hpos=Math.min(hpos+1,state.hist.length-1); inp.value=state.hist[state.hist.length-1-hpos]||''; } }
+    else if(e.key==='ArrowDown'){ e.preventDefault(); hpos=Math.max(hpos-1,-1); inp.value=hpos<0?'':(state.hist[state.hist.length-1-hpos]||''); }
+  });
+  return {exec,print};
+}
+
+/* ---------- Conteúdo: Módulo 5 — Git e GitHub ---------- */
+const GIT_LESSONS = [
+  {
+    title:"Por que versionar",
+    goal:"Entender o problema que o Git resolve.",
+    learn:`<p>Quem nunca teve uma pasta com <code>site-final.zip</code>, <code>site-final-2.zip</code> e <code>site-final-AGORA-VAI.zip</code>? Esse é o problema.</p>
+<p>O <strong>Git</strong> guarda a história do seu projeto: cada vez que você salva um ponto (um <strong>commit</strong>), ele grava o que mudou, quando e por quê. Dá para voltar no tempo e ver quem mexeu no quê.</p>
+<p>O <strong>GitHub</strong> é outra coisa: é o site onde esse histórico fica guardado na internet. Git é a ferramenta, GitHub é o lugar. Dá para usar Git sem GitHub, mas ninguém quer perder o projeto se o computador morrer.</p>
+<p>O terminal abaixo é de verdade no comportamento: ele entende os comandos e responde como o Git responderia. Comece com <code>ls</code> para ver os arquivos da pasta.</p>`,
+    cmds:['help','ls','cat index.html'],
+    tip:"Experimente ls e depois cat index.html. Nada aqui estraga nada: é um terminal de treino.",
+    quiz:[
+      {q:"Qual a diferença entre Git e GitHub?",opts:[
+        {t:"Git é a ferramenta que guarda o histórico; GitHub é o site onde ele fica hospedado",ok:true,fb:"Isso. Um é o programa, o outro é o lugar."},
+        {t:"São a mesma coisa, só muda o nome",ok:false,fb:"São coisas diferentes: ferramenta e serviço."},
+        {t:"Git é pago e GitHub é grátis",ok:false,fb:"Git é livre e gratuito; o GitHub tem plano grátis também."}]},
+      {q:"O que é um commit?",opts:[
+        {t:"Um ponto salvo na história do projeto, com mensagem",ok:true,fb:"Certo. É uma fotografia do projeto naquele momento."},
+        {t:"Um arquivo de imagem",ok:false,fb:"Não. É um registro de mudanças."},
+        {t:"Um erro no código",ok:false,fb:"Nada a ver com erro."}]},
+      {q:"Por que versionar em vez de salvar cópias com nomes diferentes?",opts:[
+        {t:"Porque o Git guarda o histórico inteiro sem bagunçar a pasta",ok:true,fb:"Isso, e ainda diz o que mudou em cada ponto."},
+        {t:"Porque copiar arquivo é proibido",ok:false,fb:"Não é proibido, só é desorganizado."},
+        {t:"Porque o Git deixa o computador mais rápido",ok:false,fb:"Não é questão de velocidade."}]}
+    ]
+  },
+  {
+    title:"Os primeiros comandos",
+    goal:"Começar a versionar uma pasta.",
+    learn:`<p>O terminal é uma conversa: você digita um comando, ele responde. Três comandos bastam para começar:</p>
+<ul>
+<li><code>ls</code> lista os arquivos da pasta</li>
+<li><code>git init</code> avisa o Git para começar a vigiar essa pasta</li>
+<li><code>git status</code> mostra a situação: o que mudou e o que falta fazer</li>
+</ul>
+<p><code>git status</code> vai ser o comando que você mais usa na vida. Na dúvida sobre o que está acontecendo, rode ele.</p>`,
+    cmds:['git init','git status'],
+    tip:"Rode git status ANTES do git init e veja o erro. Depois rode git init e repita: a resposta muda.",
+    quiz:[
+      {q:"O que git init faz?",opts:[
+        {t:"Começa a versionar a pasta atual",ok:true,fb:"Isso. A partir dele o Git passa a acompanhar o projeto."},
+        {t:"Envia os arquivos para o GitHub",ok:false,fb:"Enviar é o git push, e ainda precisa de um remoto."},
+        {t:"Apaga o histórico",ok:false,fb:"Ele cria o histórico, não apaga."}]},
+      {q:"Para que serve git status?",opts:[
+        {t:"Mostrar o que mudou e o que está preparado para o commit",ok:true,fb:"Certo. É a bússola do dia a dia."},
+        {t:"Mostrar a velocidade da internet",ok:false,fb:"Nada a ver."},
+        {t:"Criar um arquivo novo",ok:false,fb:"Ele só informa; não cria nada."}]},
+      {q:"O que acontece se você rodar um comando git antes do git init?",opts:[
+        {t:"O Git avisa que a pasta ainda não é um repositório",ok:true,fb:"Isso, e é justamente o aviso para rodar git init."},
+        {t:"O computador trava",ok:false,fb:"Só aparece uma mensagem de erro."},
+        {t:"Ele cria o repositório sozinho",ok:false,fb:"Não cria: você precisa rodar git init."}]}
+    ]
+  },
+  {
+    title:"O ciclo: mudar, preparar, salvar",
+    goal:"Aprender o caminho de toda alteração.",
+    learn:`<p>Toda mudança no Git passa por três lugares:</p>
+<ol>
+<li><strong>Diretório de trabalho</strong>: você edita o arquivo.</li>
+<li><strong>Área de preparo</strong>: você escolhe o que entra no próximo commit, com <code>git add</code>.</li>
+<li><strong>Repositório</strong>: você salva o ponto, com <code>git commit -m "mensagem"</code>.</li>
+</ol>
+<p>Por que essa etapa do meio existe? Porque nem tudo que você mexeu precisa ir junto. Você pode mexer em cinco arquivos e salvar só dois, separando o trabalho em pontos que fazem sentido.</p>
+<p><code>git add .</code> prepara tudo que mudou de uma vez.</p>`,
+    cmds:['echo "<h1>Oi</h1>" > index.html','git status','git add index.html','git commit -m "Primeira versao do site"'],
+    tip:"Altere o arquivo com echo, rode git status, depois add, status de novo e commit. Veja a mensagem mudar em cada passo.",
+    quiz:[
+      {q:"O que git add faz?",opts:[
+        {t:"Prepara o arquivo para entrar no próximo commit",ok:true,fb:"Isso. Ele coloca na área de preparo."},
+        {t:"Salva o ponto na história",ok:false,fb:"Salvar é o commit."},
+        {t:"Cria o arquivo",ok:false,fb:"O arquivo você cria editando."}]},
+      {q:"Para que serve o -m no commit?",opts:[
+        {t:"Para escrever a mensagem que explica o que foi feito",ok:true,fb:"Certo. Commit sem mensagem não é aceito."},
+        {t:"Para marcar o commit como importante",ok:false,fb:"Não existe essa marcação."},
+        {t:"Para mandar para o GitHub",ok:false,fb:"Mandar é o push."}]},
+      {q:"Por que a área de preparo existe?",opts:[
+        {t:"Para você escolher o que entra em cada commit",ok:true,fb:"Isso: dá para separar o trabalho em pontos que fazem sentido."},
+        {t:"Para deixar o Git mais lento",ok:false,fb:"Ela existe para dar controle, não para atrasar."},
+        {t:"Para guardar senha",ok:false,fb:"Nada a ver com senha."}]}
+    ]
+  },
+  {
+    title:"O histórico",
+    goal:"Ler a história do projeto e escrever boas mensagens.",
+    learn:`<p><code>git log</code> mostra todos os commits, do mais novo para o mais velho, com o código de identificação, a data e a mensagem.</p>
+<p>Esse código estranho de letras e números é o <strong>hash</strong>: o nome único daquele commit.</p>
+<p>Sobre mensagens: elas são para o você do futuro. "ajustes" não diz nada três meses depois. Prefira dizer o que mudou: "corrige o link quebrado do rodapé".</p>`,
+    cmds:['git log','git status'],
+    tip:"Faça dois commits com mensagens diferentes e rode git log. A história aparece de cima para baixo.",
+    quiz:[
+      {q:"O que git log mostra?",opts:[
+        {t:"A lista de commits, do mais novo para o mais antigo",ok:true,fb:"Isso, com hash, data e mensagem."},
+        {t:"Os arquivos da pasta",ok:false,fb:"Isso é o ls."},
+        {t:"Os erros do código",ok:false,fb:"Git não analisa o seu código."}]},
+      {q:"O que é o hash de um commit?",opts:[
+        {t:"O identificador único daquele commit",ok:true,fb:"Certo. É como a impressão digital dele."},
+        {t:"A senha do repositório",ok:false,fb:"Não tem função de senha."},
+        {t:"O nome do autor",ok:false,fb:"O autor aparece separado."}]},
+      {q:"Qual é a melhor mensagem de commit?",opts:[
+        {t:'"corrige o link quebrado do rodapé"',ok:true,fb:"Isso: diz o que mudou e por quê."},
+        {t:'"ajustes"',ok:false,fb:"Daqui a um mês isso não significa nada."},
+        {t:'"asdasd"',ok:false,fb:"Pior ainda. A mensagem é para o você do futuro."}]}
+    ]
+  },
+  {
+    title:"Mandando para o GitHub",
+    goal:"Ligar a pasta ao repositório na internet.",
+    learn:`<p>Até aqui tudo mora só no seu computador. Para o projeto existir na internet, são dois passos:</p>
+<ul>
+<li><code>git remote add origin URL</code> liga a sua pasta ao repositório do GitHub. <strong>origin</strong> é só o apelido do endereço.</li>
+<li><code>git push</code> envia os commits para lá.</li>
+</ul>
+<p>Depois disso, o código está salvo fora do seu computador, e é assim que o site do Encryptando foi publicado.</p>`,
+    cmds:['git remote add origin https://github.com/usuario/meu-site.git','git remote -v','git push'],
+    tip:"Tente dar push antes de configurar o remoto: o Git reclama. Depois configure e tente de novo.",
+    quiz:[
+      {q:"O que origin significa?",opts:[
+        {t:"O apelido do endereço do repositório remoto",ok:true,fb:"Isso. Por convenção o principal se chama origin."},
+        {t:"O primeiro commit",ok:false,fb:"Não tem relação com commits."},
+        {t:"O nome do autor",ok:false,fb:"É o apelido do endereço remoto."}]},
+      {q:"O que git push faz?",opts:[
+        {t:"Envia os commits do seu computador para o GitHub",ok:true,fb:"Certo."},
+        {t:"Baixa novidades do GitHub",ok:false,fb:"Baixar é o git pull."},
+        {t:"Cria um commit",ok:false,fb:"Criar commit é git commit."}]},
+      {q:"O que acontece se você der push sem ter remoto configurado?",opts:[
+        {t:"O Git avisa que não há remoto e não envia nada",ok:true,fb:"Isso: primeiro o remote add, depois o push."},
+        {t:"Ele cria um repositório sozinho no GitHub",ok:false,fb:"Não cria: você precisa criar e apontar."},
+        {t:"Os arquivos são apagados",ok:false,fb:"Nada é apagado."}]}
+    ]
+  },
+  {
+    title:"O dia a dia",
+    goal:"Trabalhar com um projeto que já existe.",
+    learn:`<p>Nem todo projeto começa do zero. Os dois comandos do cotidiano:</p>
+<ul>
+<li><code>git clone URL</code> baixa um projeto que já existe no GitHub para o seu computador.</li>
+<li><code>git pull</code> traz o que mudou lá para a sua cópia.</li>
+</ul>
+<p>Quando duas pessoas mexem na mesma linha do mesmo arquivo, acontece um <strong>conflito</strong>. O Git não adivinha quem está certo: ele marca o trecho e pede que você escolha. Não é erro, é uma pergunta.</p>
+<p>A rotina saudável é: <code>git pull</code> antes de começar, <code>git push</code> quando terminar.</p>`,
+    cmds:['git pull','git clone https://github.com/usuario/projeto.git','git status'],
+    tip:"Pense no pull como 'me atualiza' e no push como 'guarda o que eu fiz'.",
+    quiz:[
+      {q:"O que git clone faz?",opts:[
+        {t:"Baixa um projeto que já existe no GitHub",ok:true,fb:"Isso, com todo o histórico junto."},
+        {t:"Apaga o repositório",ok:false,fb:"Nada é apagado."},
+        {t:"Cria um commit",ok:false,fb:"Clone só copia o projeto."}]},
+      {q:"O que é um conflito?",opts:[
+        {t:"Quando duas pessoas mudam a mesma linha e o Git pede para você escolher",ok:true,fb:"Certo. É uma pergunta, não um defeito."},
+        {t:"Um vírus no repositório",ok:false,fb:"Não tem nada a ver com vírus."},
+        {t:"Um commit sem mensagem",ok:false,fb:"Esse nem é aceito pelo Git."}]},
+      {q:"Qual é a boa rotina de trabalho?",opts:[
+        {t:"Pull antes de começar, push quando terminar",ok:true,fb:"Isso evita a maioria dos conflitos."},
+        {t:"Push a cada letra digitada",ok:false,fb:"Não precisa: agrupe em commits que façam sentido."},
+        {t:"Nunca dar pull",ok:false,fb:"Aí você trabalha em cima de versão velha."}]}
+    ]
+  },
+  {
+    title:"Ramos (branches)",
+    goal:"Trabalhar numa ideia sem quebrar o que funciona.",
+    learn:`<p>Um <strong>ramo</strong> é uma linha paralela da história. Você cria um ramo, mexe à vontade, e o que está funcionando continua intacto no ramo principal.</p>
+<p>O ramo principal costuma se chamar <code>main</code>. Para criar e entrar num novo: <code>git checkout -b nome-do-ramo</code>.</p>
+<p>Quando a ideia dá certo, você junta com <code>git merge</code>. Quando não dá, é só abandonar o ramo. Nada foi perdido.</p>
+<p>Na prática, todo trabalho sério é feito assim: ninguém mexe direto no que está no ar.</p>`,
+    cmds:['git branch','git checkout -b nova-pagina','git branch','git merge nova-pagina'],
+    tip:"Crie um ramo, veja o git branch mostrar o asterisco no ramo atual, e depois volte com git checkout main.",
+    quiz:[
+      {q:"Para que serve um ramo?",opts:[
+        {t:"Trabalhar numa mudança sem afetar o que já funciona",ok:true,fb:"Isso. É uma linha paralela."},
+        {t:"Apagar commits antigos",ok:false,fb:"Nada é apagado ao criar ramo."},
+        {t:"Guardar imagens",ok:false,fb:"Ramo é sobre versões do projeto."}]},
+      {q:"O que git checkout -b nome faz?",opts:[
+        {t:"Cria o ramo e já entra nele",ok:true,fb:"Certo. O -b é de branch."},
+        {t:"Só lista os ramos",ok:false,fb:"Listar é git branch sozinho."},
+        {t:"Envia para o GitHub",ok:false,fb:"Enviar é push."}]},
+      {q:"O que git merge faz?",opts:[
+        {t:"Junta o trabalho de um ramo no ramo atual",ok:true,fb:"Isso."},
+        {t:"Divide o projeto em dois",ok:false,fb:"É o contrário: ele junta."},
+        {t:"Apaga o ramo",ok:false,fb:"Apagar é outro comando."}]}
+    ]
+  },
+  {
+    title:"Juntando tudo",
+    goal:"Fazer o caminho completo, do zero ao GitHub.",
+    learn:`<p>Esta é a sequência que você vai repetir a vida inteira como desenvolvedor:</p>
+<ol>
+<li><code>git init</code> — começa a versionar</li>
+<li>edita os arquivos</li>
+<li><code>git add .</code> — prepara o que mudou</li>
+<li><code>git commit -m "mensagem"</code> — salva o ponto</li>
+<li><code>git remote add origin URL</code> — liga ao GitHub (só na primeira vez)</li>
+<li><code>git push</code> — envia</li>
+</ol>
+<p>Faça o caminho inteiro aqui no terminal. É exatamente isso que a prova do módulo vai pedir.</p>`,
+    cmds:['git init','echo "<h1>Meu portfolio</h1>" > index.html','git add .','git commit -m "Primeira versao"','git remote add origin https://github.com/usuario/portfolio.git','git push'],
+    tip:"Rode os seis comandos em ordem. No fim, git log e git status devem mostrar tudo limpo e enviado.",
+    quiz:[
+      {q:"Qual é a ordem certa?",opts:[
+        {t:"init, add, commit, remote add, push",ok:true,fb:"Isso. Preparar, salvar, ligar e enviar."},
+        {t:"push, commit, add, init",ok:false,fb:"Está invertido: sem init nada funciona."},
+        {t:"commit, init, push, add",ok:false,fb:"O init vem sempre primeiro."}]},
+      {q:"O remote add precisa ser feito a cada push?",opts:[
+        {t:"Não, só na primeira vez do projeto",ok:true,fb:"Certo. Depois o Git já sabe o endereço."},
+        {t:"Sim, sempre",ok:false,fb:"Só uma vez por projeto."},
+        {t:"Só às segundas",ok:false,fb:"Só na primeira vez."}]},
+      {q:"Depois do push, o que acontece se o seu computador queimar?",opts:[
+        {t:"O projeto continua salvo no GitHub",ok:true,fb:"Exatamente por isso vale a pena versionar."},
+        {t:"Perde tudo",ok:false,fb:"O que foi enviado está seguro no GitHub."},
+        {t:"O Git recupera o computador",ok:false,fb:"Ele salva o código, não o computador."}]}
+    ]
+  }
+];
+
+const GIT_PROVA = {
+  kind:'term',
+  title:"Prova prática — Do zero ao GitHub",
+  brief:`<p><strong>Sua missão:</strong> levar este projeto do nada até o GitHub, usando o terminal. Cada comando certo acende uma missão em <span class="g">verde</span>.</p>
+  <p class="hint">Digite <code>help</code> se esquecer algum comando. Errar aqui não custa nada: é um terminal de treino.</p>`,
+  cheats:[
+    {name:'Começar a versionar',parts:[{t:'git init',re:/git\s+init/}]},
+    {name:'Ver a situação',parts:[{t:'git status',re:/git\s+status/}]},
+    {name:'Preparar o que mudou',parts:[{t:'git add .',re:/git\s+add\s+/}]},
+    {name:'Salvar o ponto',parts:[{t:'git commit -m "mensagem"',re:/git\s+commit\s+-m/}]},
+    {name:'Ligar ao GitHub',parts:[{t:'git remote add origin URL',re:/git\s+remote\s+add\s+origin/}]},
+    {name:'Enviar',parts:[{t:'git push',re:/git\s+push/}]}
+  ],
+  checks:[
+    {label:"Repositório iniciado com git init",test:c=>c.s.init},
+    {label:"Um arquivo alterado ou criado por você",test:c=>c.h.some(x=>/^echo\s/.test(x))},
+    {label:"Arquivo preparado com git add",test:c=>c.h.some(x=>/git\s+add\s+\S/.test(x))},
+    {label:"Commit feito com mensagem",test:c=>c.s.commits.length>0},
+    {label:"Remoto origin configurado",test:c=>!!c.s.remote},
+    {label:"Commits enviados com git push",test:c=>c.s.pushed>0}
+  ]
+};
+
 /* ---------- Anotações, glossário e meta semanal ---------- */
 const META_PADRAO=3;
 function hojeKey(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -1740,7 +2171,9 @@ const MODULES = [
   {id:'js',fase:'Fase 1',title:'Lógica com JavaScript',kind:'js',lessons:LESSONS,prova:PROVA,
    lead:'Oito aulas práticas com JavaScript rodando aqui no navegador: variáveis, condições, laços, funções e listas.'},
   {id:'dom',fase:'Fase 1',title:'JavaScript na página (DOM)',kind:'dom',lessons:DOM_LESSONS,prova:DOM_PROVA,
-   lead:'Oito aulas para dar vida às páginas: encontrar elementos, mudar textos e estilos, reagir a cliques, ler o que o usuário digita e criar conteúdo na hora.'}
+   lead:'Oito aulas para dar vida às páginas: encontrar elementos, mudar textos e estilos, reagir a cliques, ler o que o usuário digita e criar conteúdo na hora.'},
+  {id:'git',fase:'Fase 2',title:'Git e GitHub',kind:'term',lessons:GIT_LESSONS,prova:GIT_PROVA,
+   lead:'Oito aulas sobre versionar e publicar código, num terminal simulado dentro do site: você digita os comandos de verdade e vê a resposta do Git.'}
 ];
 
 /* ---------- Estado / progresso ---------- */
@@ -2073,6 +2506,13 @@ MODULES[2].videos=[
 ];
 MODULES[2].playlist={id:'PLHz_AreHm4dmSj0MHol_aoNYCSGFqvfXV',t:'Curso de Algoritmos e Lógica de Programação',ch:'Curso em Vídeo',n:'17 vídeos'};
 
+MODULES[4].videos=[
+  {id:'ts-H3W1uLMM',t:'Git: minicurso para sair do zero em 45 minutos',ch:'Código Fonte TV'},
+  {id:'_hZf1teRFNg',t:'Git e GitHub: introdução prática para iniciantes',ch:'DevSuperior'},
+  {id:'kB5e-gTAl_s',t:'Curso de Git e GitHub completo para iniciantes',ch:'Dev Aprender'}
+];
+MODULES[4].playlist={id:'PLbEOwbQR9lqzK14I7OOeREEIE4k6rjgIj',t:'Git e GitHub — Curso prático',ch:'Professor José de Assis',n:'21 vídeos'};
+
 MODULES[1].project=PROJETO_FASE0;
 MODULES[3].project=PROJETO_FASE1;
 
@@ -2166,7 +2606,7 @@ function renderHome(){
   const fases=[
     {n:"Fase 0",t:"Fundamentos da Web",d:"HTML para a estrutura e CSS para o visual de toda página.",m:[0,1]},
     {n:"Fase 1",t:"Lógica & JavaScript",d:"Pensar como programador e depois dar vida às páginas.",m:[2,3]},
-    {n:"Fase 2",t:"Jornada Dev",d:"Construir e publicar aplicações de verdade.",m:[]},
+    {n:"Fase 2",t:"Jornada Dev",d:"Versionar, publicar e construir aplicações de verdade.",m:[4]},
     {n:"Fase 3",t:"Marketing Digital",d:"Levar produto e público até o projeto.",m:[]}
   ];
   let html=`
@@ -2309,22 +2749,35 @@ function openLesson(m,i){
   function showLearn(){
     $('#tab-a').setAttribute('aria-selected','true');
     $('#tab-q').setAttribute('aria-selected','false');
+    const isTerm=mod.kind==='term';
     const isHtml=mod.kind==='html'||mod.kind==='css'||mod.kind==='dom';
-    panel.innerHTML=`
-      <div class="panel">
-        <div class="prose">${l.learn}</div>
-        <div class="play">
+    const playHTML = isTerm
+      ? termBox('aula')+`<div class="cmds"><span class="cmds-t">Para experimentar:</span>${(l.cmds||[]).map(c=>`<button class="cmdchip" data-cmd="${esc(c)}">${esc(c)}</button>`).join('')}</div>`
+      : `<div class="play">
           <div class="play-h"><span class="dots"><i></i><i></i><i></i></span><span class="fn">${isHtml?'index.html':'exemplo.js'}</span>
             <button class="btn btn-run run" id="run">${IC.play} ${isHtml?'Ver resultado':'Rodar'}</button></div>
           ${editorBox('ed',mod.kind==='js'?'js':'html',170)}
           ${isHtml?previewBox('pv',mod.kind==='dom'):'<div class="out" id="out"><div class="out-label">Saída</div><div class="out-body" id="outb"><span style="color:var(--faint)">Clique em Rodar para ver o resultado.</span></div></div>'}
-        </div>
+        </div>`;
+    panel.innerHTML=`
+      <div class="panel">
+        <div class="prose">${l.learn}</div>
+        ${playHTML}
         <div class="tip">${IC.bulb}<div>${esc(l.tip)}</div></div>
         ${notesBox(m,i)}
         <div style="display:flex;justify-content:flex-end;margin-top:18px">
           <button class="btn btn-primary" id="toq">Ir para as questões ${IC.arrow}</button>
         </div>
       </div>`;
+    if(isTerm){
+      bindTerm('aula',newTerm());
+      panel.querySelectorAll('.cmdchip').forEach(b=>b.addEventListener('click',()=>{
+        const inp=$('#ti-aula'); inp.value=b.dataset.cmd; inp.focus();
+      }));
+      bindNotes(m,i);
+      $('#toq').addEventListener('click',showQuiz);
+      return;
+    }
     enhanceEditor('ed',mod.kind==='js'?'js':'html');
     setEditor('ed',l.code);
     if(isHtml){
@@ -2501,6 +2954,10 @@ function evalCSS(pv,code){
   const ctx={doc,rules,hits,any};
   return pv.checks.map(c=>{ try{ return !!c.test(ctx); }catch(e){ return false; } });
 }
+function evalTERM(pv,state){
+  const ctx={s:state,h:state.hist};
+  return pv.checks.map(c=>{ try{ return !!c.test(ctx); }catch(e){ return false; } });
+}
 function evalDOM(pv,code){
   const doc=new DOMParser().parseFromString(code,'text/html');
   let js='';
@@ -2525,7 +2982,7 @@ function testJS(pv,code){
 function openProva(m,proj){
   const mod=MODULES[m], pv=proj?mod.project:mod.prova, kind=pv.kind||mod.kind, live=kind!=='js';
   const labels = live ? pv.checks.map(c=>c.label) : pv.cases.map(c=>pv.fn+'(['+c.args[0].join(', ')+']) → "'+c.exp+'"');
-  const total=labels.length, bkey=proj?mod.id+'-proj':mod.id, best=(P.best||{})[bkey];
+  const total=labels.length, isTerm=kind==='term', bkey=proj?mod.id+'-proj':mod.id, best=(P.best||{})[bkey];
   const v=$('#view');
   v.innerHTML=`
     <div class="lv-top">
@@ -2541,16 +2998,16 @@ function openProva(m,proj){
       <div class="arena-main">
         <div class="brief">${pv.brief}</div>
         <div class="meter" id="meter">
-          <div class="meter-top"><span class="meter-title">Força da sua ${kind==='js'?'solução':'página'}</span><span class="meter-level" id="mLevel">Vazia</span><span class="meter-count" id="mCount">0/${total}</span></div>
+          <div class="meter-top"><span class="meter-title">Força da sua ${kind==='js'?'solução':(isTerm?'entrega':'página')}</span><span class="meter-level" id="mLevel">Vazia</span><span class="meter-count" id="mCount">0/${total}</span></div>
           <div class="meter-bars">${'<i></i>'.repeat(total)}</div>
         </div>
         <div class="missions">${labels.map((l,i)=>`<div class="mission" id="ms-${i}"><span class="mi">${i+1}</span><span class="ml">${esc(l)}<small class="mx" id="mx-${i}"></small></span><span class="ms">Falta</span></div>`).join('')}</div>
-        <div class="play">
+        ${isTerm?`<div id="termwrap">${termBox('prova')}</div>`:`<div class="play">
           <div class="play-h"><span class="dots"><i></i><i></i><i></i></span><span class="fn">${kind==='css'?'estilo.html':(kind==='html'?'apresentacao.html':(kind==='dom'?'pagina.html':'prova.js'))}</span>
             ${live?'<span class="live-tag"><i></i>correção ao vivo</span>':`<button class="btn btn-run run" id="runp">${IC.play} Rodar testes</button>`}</div>
           ${editorBox('edp',kind==='js'?'js':'html',240)}
           ${live?previewBox('pvp',kind==='dom'):''}
-        </div>
+        </div>`}
         <div id="perr"></div>
         <div class="prova-foot">
           <button class="btn btn-ghost" id="reset">Recomeçar do zero</button>
@@ -2558,17 +3015,20 @@ function openProva(m,proj){
         </div>
       </div>
       <aside class="cola" aria-label="Cola de sintaxe">
-        <h3>${kind==='html'?'Cola das tags':(kind==='css'?'Cola do CSS':'Cola do JavaScript')}</h3>
-        <p class="sub">${kind==='html'?'Toda tag abre e fecha (menos a imagem). Cada peça acende em verde quando aparece no seu código.':'Cada peça acende em verde quando aparece no seu código.'}</p>
+        <h3>${kind==='html'?'Cola das tags':(kind==='css'?'Cola do CSS':(isTerm?'Cola dos comandos':'Cola do JavaScript'))}</h3>
+        <p class="sub">${isTerm?'Cada comando acende em verde quando você o usa no terminal.':(kind==='html'?'Toda tag abre e fecha (menos a imagem). Cada peça acende em verde quando aparece no seu código.':'Cada peça acende em verde quando aparece no seu código.')}</p>
         <div class="cola-legend"><span><i class="dotk" style="background:#39ff88"></i>já usou</span><span><i class="dotk" style="background:#ff4d5e"></i>ainda não</span></div>
         ${pv.cheats.map((c,ci)=>`<div class="cheat"><div class="cn"><span>${esc(c.name)}</span>${c.note?`<span class="note">${esc(c.note)}</span>`:''}</div>
           <div class="parts">${c.parts.map((p,pi)=>(pi?'<span class="arrow">…</span>':'')+`<span class="tagchip" id="ch-${ci}-${pi}">${esc(p.t)}</span>`).join('')}</div></div>`).join('')}
       </aside>
     </div>`;
 
+  let termState=null;
   const ed=$('#edp');
-  enhanceEditor('edp',kind==='js'?'js':'html');
-  setEditor('edp',pv.starter);
+  if(isTerm){
+    termState=newTerm();
+    bindTerm('prova',termState,()=>{ paintCheats(termState.hist.join('\n')); paint(evalTERM(pv,termState)); });
+  } else { enhanceEditor('edp',kind==='js'?'js':'html'); setEditor('edp',pv.starter); }
   const t0=Date.now(); let done=false, ran=false, prev=labels.map(()=>false), high=0;
   const elapsed=()=>Math.floor((Date.now()-t0)/1000);
   const tick=setInterval(()=>{ const el=$('#ptime'); if(!el){ clearInterval(tick); return; } if(!done) el.textContent=fmtTime(elapsed()); },1000);
@@ -2606,10 +3066,13 @@ function openProva(m,proj){
     }));
   }
 
-  const refreshPreview = live ? liveBind('edp','pvp') : null;
+  const refreshPreview = (live&&!isTerm) ? liveBind('edp','pvp') : null;
   const evaluate = kind==='css' ? evalCSS : (kind==='dom' ? evalDOM : evalHTML);
-  function check(){ const code=ed.value; paintCheats(code); if(live) paint(evaluate(pv,code)); }
-  let tmr; ed.addEventListener('input',()=>{ clearTimeout(tmr); tmr=setTimeout(check,180); });
+  function check(){
+    if(isTerm){ paintCheats(termState.hist.join('\n')); paint(evalTERM(pv,termState)); return; }
+    const code=ed.value; paintCheats(code); if(live) paint(evaluate(pv,code));
+  }
+  let tmr; if(!isTerm) ed.addEventListener('input',()=>{ clearTimeout(tmr); tmr=setTimeout(check,180); });
   if(!live){
     paint(labels.map(()=>false));
     $('#runp').addEventListener('click',()=>{
@@ -2627,6 +3090,12 @@ function openProva(m,proj){
     finishProva(m,$('#pstatus'),elapsed(),proj);
   });
   $('#reset').addEventListener('click',()=>{
+    if(isTerm){
+      termState=newTerm();
+      $('#termwrap').innerHTML=termBox('prova');
+      bindTerm('prova',termState,()=>{ paintCheats(termState.hist.join('\n')); paint(evalTERM(pv,termState)); });
+      check(); return;
+    }
     setEditor('edp',pv.starter); ran=false; $('#perr').innerHTML='';
     if(live) refreshPreview(); else paint(labels.map(()=>false));
     check();
