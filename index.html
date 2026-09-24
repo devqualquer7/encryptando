@@ -314,6 +314,8 @@
   .gt-css{background:rgba(255,207,92,.14);color:var(--gold)}
   .gt-logica{background:rgba(57,255,136,.12);color:#74efb3}
   .gt-dom{background:rgba(143,216,255,.14);color:#8fd8ff}
+  .gt-git{background:rgba(255,138,60,.14);color:#ffae6b}
+  .gt-apis{background:rgba(196,153,255,.16);color:#c9a6ff}
   .gitem p{margin:0 0 9px;font-size:13.5px;color:var(--muted);line-height:1.5}
   .gitem .snip{margin:0}
   .gitem .snip code{font-size:12px}
@@ -1890,7 +1892,44 @@ const GLOSS=[
   {t:'DOM',k:'addEventListener',d:'Registra uma função para rodar quando o evento acontecer.',e:'botao.addEventListener("click", fn);'},
   {t:'DOM',k:'createElement',d:'Cria um elemento novo, que ainda não aparece na página.',e:'document.createElement("li")'},
   {t:'DOM',k:'appendChild',d:'Encaixa um elemento dentro de outro. É aí que ele aparece.',e:'lista.appendChild(item);'},
-  {t:'DOM',k:'remove',d:'Tira o elemento da página.',e:'item.remove();'}
+  {t:'DOM',k:'remove',d:'Tira o elemento da página.',e:'item.remove();'},
+  {t:'Git',k:'Git',d:'Programa que guarda o histórico do seu projeto e deixa voltar a qualquer ponto salvo.',e:'git --version'},
+  {t:'Git',k:'GitHub',d:'Site onde o projeto fica guardado na internet. O Git é o programa; o GitHub é o lugar.',e:'github.com/seu-usuario'},
+  {t:'Git',k:'repositório',d:'A pasta do projeto que o Git está acompanhando.',e:'git init'},
+  {t:'Git',k:'git init',d:'Começa a acompanhar a pasta atual. Só se faz uma vez por projeto.',e:'git init'},
+  {t:'Git',k:'git status',d:'Mostra o que mudou e o que já está preparado para salvar.',e:'git status'},
+  {t:'Git',k:'git add',d:'Escolhe quais arquivos entram no próximo salvamento. O ponto significa todos.',e:'git add .'},
+  {t:'Git',k:'staging',d:'A área de espera entre mudar o arquivo e salvar de verdade.',e:'git add index.html'},
+  {t:'Git',k:'commit',d:'Um ponto salvo do projeto, com uma mensagem dizendo o que mudou.',e:'git commit -m "primeira pagina"'},
+  {t:'Git',k:'git log',d:'Lista os commits, do mais novo para o mais antigo.',e:'git log --oneline'},
+  {t:'Git',k:'remote',d:'O endereço do projeto lá no GitHub, guardado com um apelido (quase sempre origin).',e:'git remote add origin URL'},
+  {t:'Git',k:'origin',d:'Apelido padrão do repositório no GitHub.',e:'git push origin main'},
+  {t:'Git',k:'git push',d:'Manda os commits do seu computador para o GitHub.',e:'git push -u origin main'},
+  {t:'Git',k:'git pull',d:'Traz para o seu computador o que mudou no GitHub.',e:'git pull'},
+  {t:'Git',k:'git clone',d:'Baixa um projeto inteiro do GitHub para o seu computador.',e:'git clone URL'},
+  {t:'Git',k:'branch',d:'Um ramo do projeto: você mexe nele sem bagunçar o principal.',e:'git branch'},
+  {t:'Git',k:'main',d:'O ramo principal, o que está valendo.',e:'git checkout main'},
+  {t:'Git',k:'git checkout -b',d:'Cria um ramo novo e já troca para ele.',e:'git checkout -b menu-novo'},
+  {t:'Git',k:'merge',d:'Junta o que você fez num ramo de volta no principal.',e:'git merge menu-novo'},
+  {t:'APIs',k:'const',d:'Cria um valor que não vai ser trocado depois. É o padrão de hoje.',e:'const nome = "Ana";'},
+  {t:'APIs',k:'arrow function',d:'Jeito curto de escrever função, com uma seta.',e:'const dobro = (n) => n * 2;'},
+  {t:'APIs',k:'.map()',d:'Passa por cada item da lista e devolve uma lista nova, do mesmo tamanho.',e:'precos.map((p) => p * 2)'},
+  {t:'APIs',k:'.filter()',d:'Devolve só os itens que passam no teste.',e:'nums.filter((n) => n > 5)'},
+  {t:'APIs',k:'.find()',d:'Devolve o primeiro item que passa no teste, não uma lista.',e:'alunos.find((a) => a.nota > 9)'},
+  {t:'APIs',k:'.includes()',d:'Diz se um texto ou lista contém algo. Muito usado em busca.',e:'nome.includes("an")'},
+  {t:'APIs',k:'objeto',d:'Guarda vários dados com nome dentro de uma coisa só.',e:'{ nome: "Ana", nota: 9.5 }'},
+  {t:'APIs',k:'JSON',d:'Formato de texto que representa dados. É assim que eles viajam pela internet.',e:'{"nome":"Ana"}'},
+  {t:'APIs',k:'JSON.parse',d:'Transforma o texto JSON em objeto do JavaScript.',e:'JSON.parse(texto)'},
+  {t:'APIs',k:'JSON.stringify',d:'Transforma um objeto em texto JSON.',e:'JSON.stringify(aluno)'},
+  {t:'APIs',k:'API',d:'Endereço que entrega dados prontos para o seu código usar.',e:'https://api.encryptando.dev/produtos'},
+  {t:'APIs',k:'endpoint',d:'Cada caminho da API, com os seus próprios dados.',e:'/produtos'},
+  {t:'APIs',k:'fetch',d:'Comando que busca os dados de um endereço.',e:'fetch("https://api.encryptando.dev/produtos")'},
+  {t:'APIs',k:'.json()',d:'Extrai os dados da resposta da API e vira lista ou objeto.',e:'const dados = await r.json();'},
+  {t:'APIs',k:'async',d:'Marca uma função que vai precisar esperar por algo.',e:'async function carregar() { }'},
+  {t:'APIs',k:'await',d:'Espera a resposta chegar antes de seguir para a próxima linha.',e:'await fetch(url)'},
+  {t:'APIs',k:'try / catch',d:'Tenta rodar o código e, se der erro, cai no catch em vez de quebrar a página.',e:'try { } catch (e) { }'},
+  {t:'APIs',k:'innerHTML',d:'Troca todo o conteúdo de um elemento por HTML novo.',e:'lista.innerHTML = html;'},
+  {t:'APIs',k:'.join("")',d:'Cola os itens de uma lista num texto só. Fecha o combo com o map.',e:'itens.map(f).join("")'}
 ];
 function openGloss(){
   const v=$('#view');
@@ -1901,8 +1940,8 @@ function openGloss(){
     </div>
     <h1 class="lv-title">Glossário</h1>
     <p class="lv-goal">Esqueceu o que uma palavra significa? Procure aqui. Tudo que aparece nas aulas está nesta lista.</p>
-    <input id="gq" class="cinput" style="width:100%;margin-bottom:14px" placeholder="Buscar termo, por exemplo: classe, array, evento...">
-    <div class="gfilters">${['Tudo','HTML','CSS','Lógica','DOM'].map((f,i)=>`<button class="gf ${i===0?'on':''}" data-f="${f}">${f}</button>`).join('')}</div>
+    <input id="gq" class="cinput" style="width:100%;margin-bottom:14px" placeholder="Buscar termo, por exemplo: classe, array, commit, fetch...">
+    <div class="gfilters">${['Tudo','HTML','CSS','Lógica','DOM','Git','APIs'].map((f,i)=>`<button class="gf ${i===0?'on':''}" data-f="${f}">${f}</button>`).join('')}</div>
     <div id="glist" class="glist"></div>`;
   $('#back').addEventListener('click',renderHome);
   let filtro='Tudo';
