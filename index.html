@@ -267,6 +267,34 @@
   .t-sel{color:#ff6a5c}
   .t-prop{color:#ffcf5c}
   .t-punc{color:#9a9298}
+  /* Projetos, certificados e progresso */
+  .proj-node .card-lesson{background:linear-gradient(150deg,rgba(57,255,136,.07),var(--bg-2));border-color:rgba(57,255,136,.25)}
+  .proj-node.locked .card-lesson{background:linear-gradient(165deg,var(--surface),var(--bg-2));border-color:var(--border)}
+  .proj-node.avail .disc{background:linear-gradient(150deg,#39ff88,#12b98a);color:#04231b;box-shadow:0 0 0 1px rgba(57,255,136,.4),0 12px 40px -12px rgba(57,255,136,.8);animation:pulse 2.4s infinite}
+  .proj-node.done .disc{background:linear-gradient(150deg,#39ff88,#12b98a);color:#04231b}
+  .certs{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+  .certcard{display:flex;align-items:center;gap:12px;text-align:left;padding:13px 15px;cursor:pointer;color:inherit;min-width:0;
+    border:1px solid rgba(255,207,92,.3);border-radius:var(--radius);background:linear-gradient(150deg,rgba(255,207,92,.08),var(--bg-2));transition:transform .18s,border-color .18s}
+  .certcard:hover{transform:translateY(-2px);border-color:rgba(255,207,92,.6)}
+  .certic{flex:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(150deg,var(--gold),#e0a52d);color:#2b1d00}
+  .certic svg{width:18px;height:18px}
+  .certtx{flex:1;display:flex;flex-direction:column;min-width:0}
+  .certtx b{font-size:14px;line-height:1.3}
+  .certtx small{font-size:12px;color:var(--muted);margin-top:2px}
+  .certgo svg{width:17px;height:17px;color:var(--faint)}
+  .certform{border:1px solid var(--border);background:var(--surface);border-radius:var(--radius);padding:15px 17px;margin-bottom:14px}
+  .certform label{display:block;font-size:12.5px;color:var(--muted);font-weight:600;margin-bottom:8px}
+  .certrow{display:flex;gap:9px;flex-wrap:wrap}
+  .cinput{flex:1;min-width:180px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;color:var(--text);
+    padding:10px 13px;font-family:var(--body);font-size:14.5px;outline:0}
+  .cinput:focus{border-color:rgba(255,42,31,.5)}
+  .certwrap{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#0a0a0c}
+  .certwrap canvas{display:block;width:100%;height:auto}
+  .codebox{width:100%;min-height:96px;resize:vertical;background:#0a0c1a;border:1px solid var(--border);border-radius:12px;color:#74efb3;
+    font-family:var(--mono);font-size:12px;line-height:1.5;padding:12px 14px;outline:0;word-break:break-all;white-space:pre-wrap}
+  .codebox:focus{border-color:rgba(255,42,31,.5)}
+  .psum{margin:0;font-family:var(--mono);font-size:13px;line-height:1.7;color:#e9e2e4;white-space:pre-wrap}
+  .homefoot{display:flex;justify-content:center;margin-top:26px}
   /* Cartão de revisão */
   .revcard{display:flex;align-items:center;gap:13px;width:100%;text-align:left;margin:18px 0 4px;padding:14px 16px;cursor:pointer;
     border:1px solid rgba(255,207,92,.35);border-radius:var(--radius);background:linear-gradient(150deg,rgba(255,207,92,.09),var(--bg-2));color:inherit;
@@ -1296,6 +1324,220 @@ const DOM_PROVA = {
   ]
 };
 
+/* ---------- Projetos de fase: o que vira portfólio ---------- */
+const XP_PROJETO=400;
+
+const PROJETO_FASE0={
+  kind:'css',
+  title:'Projeto da Fase 0 — Sua página pessoal',
+  brief:`<p><strong>Seu projeto:</strong> uma página de verdade sobre você, juntando tudo da Fase 0. HTML para a estrutura, CSS para o visual.</p>
+  <p class="hint">Diferente das provas, aqui o conteúdo é seu: seu nome, seus interesses, suas cores. Quando terminar, essa página é a primeira peça do seu portfólio.</p>`,
+  starter:`<style>\n  body {\n    \n  }\n</style>\n\n<h1>Seu nome</h1>\n<img src="foto.jpg" alt="Minha foto" width="140">\n\n<p>Escreva aqui quem você é e o que está aprendendo.</p>\n\n<h2>O que eu já sei</h2>\n<ul>\n  <li></li>\n  <li></li>\n  <li></li>\n</ul>\n\n<p><a href="https://encryptedgroup.com">Um link que importa para você</a></p>`,
+  cheats:[
+    {name:'Estrutura',parts:[{t:'<h1>',re:/<h1(\s[^>]*)?>/i},{t:'</h1>',re:/<\/h1\s*>/i}]},
+    {name:'Imagem',note:'não fecha',parts:[{t:'<img src="..." alt="...">',re:/<img\s[^>]*alt\s*=\s*["'][^"']+["']/i}]},
+    {name:'Lista com itens',parts:[{t:'<li>',re:/<li(\s[^>]*)?>[^<]/i},{t:'</li>',re:/<\/li\s*>/i}]},
+    {name:'Fundo da página',parts:[{t:'body {',re:/(^|[\s,}>])body\s*\{/},{t:'background-color:',re:/background(-color)?\s*:/}]},
+    {name:'Fonte',parts:[{t:'font-family:',re:/font-family\s*:/}]},
+    {name:'Classe sua',parts:[{t:'.destaque {',re:/\.[a-zA-Z_][\w-]*\s*\{/},{t:'class="destaque"',re:/class\s*=\s*["'][^"']+["']/i}]}
+  ],
+  checks:[
+    {label:"Título <h1> com o seu nome (troque o texto)",test:c=>{const h=c.doc.querySelector('h1');return !!(h&&h.textContent.trim()&&h.textContent.trim()!=='Seu nome');}},
+    {label:"Imagem com alt preenchido",test:c=>[...c.doc.querySelectorAll('img[alt]')].some(i=>i.getAttribute('alt').trim())},
+    {label:"Lista com 3 itens escritos",test:c=>[...c.doc.querySelectorAll('ul,ol')].some(l=>[...l.querySelectorAll(':scope > li')].filter(li=>li.textContent.trim()).length>=3)},
+    {label:"Um link <a> com href",test:c=>[...c.doc.querySelectorAll('a[href]')].some(a=>a.getAttribute('href').trim())},
+    {label:"Cor de fundo no body",test:c=>c.rules.some(r=>c.hits(r,c.doc.body)&&(r.style.backgroundColor||r.style.background))},
+    {label:"Uma classe criada por você e usada no HTML",test:c=>c.rules.some(r=>r.selectorText.indexOf('.')>=0&&r.style.length>0&&c.any(r))}
+  ]
+};
+
+const PROJETO_FASE1={
+  kind:'dom',
+  title:'Projeto da Fase 1 — Seu app de tarefas',
+  brief:`<p><strong>Seu projeto:</strong> um app de tarefas que funciona. A pessoa digita, clica em adicionar, o item aparece na lista, e clicar no item remove.</p>
+  <p class="hint">É o mesmo tipo de app que todo dev faz no começo, e o primeiro que realmente parece um programa. Teste clicando na pré-visualização.</p>`,
+  starter:`<h2>Minhas tarefas</h2>\n<input id="tarefa" placeholder="O que precisa fazer?">\n<button id="add">Adicionar</button>\n<ul id="lista"></ul>\n\n<script>\n  // 1) pegue o input, o botao e a lista pelo id\n  // 2) no clique do botao, leia o que foi digitado\n  // 3) crie um item, escreva o texto nele e encaixe na lista\n  // 4) ao clicar no item, tire ele da pagina\n\n<\/script>`,
+  cheats:[
+    {name:'Campo e botão',parts:[{t:'<input id="tarefa">',re:/<input(\s[^>]*)?>/i},{t:'<button id="add">',re:/<button(\s[^>]*)?>/i}]},
+    {name:'Buscar na página',parts:[{t:'document.querySelector("#add")',re:/(querySelector|getElementById)\s*\(/}]},
+    {name:'Escutar o clique',parts:[{t:'addEventListener("click", function () {',re:/addEventListener\s*\(\s*["']click["']/},{t:'});',re:/\}\s*\)\s*;?/}]},
+    {name:'Ler o que digitaram',parts:[{t:'input.value',re:/\.value/}]},
+    {name:'Criar o item',parts:[{t:'document.createElement("li")',re:/createElement\s*\(/},{t:'lista.appendChild(item)',re:/appendChild\s*\(/}]},
+    {name:'Remover o item',parts:[{t:'item.remove()',re:/\.remove\s*\(/}]}
+  ],
+  checks:[
+    {label:"Um campo <input> na página",test:c=>!!c.doc.querySelector('input')},
+    {label:"Um botão <button> na página",test:c=>!!c.doc.querySelector('button')},
+    {label:"Uma lista <ul> ou <ol> para as tarefas",test:c=>!!c.doc.querySelector('ul,ol')},
+    {label:"Ler o que foi digitado com .value",test:c=>/\.value/.test(c.js)},
+    {label:"Criar o item com createElement e appendChild",test:c=>/createElement\s*\(/.test(c.js)&&/appendChild\s*\(/.test(c.js)},
+    {label:"Remover a tarefa com .remove()",test:c=>/\.remove\s*\(\s*\)/.test(c.js)}
+  ]
+};
+
+/* ---------- Certificado de conclusão ---------- */
+function certList(){
+  const out=[];
+  MODULES.forEach((mod,m)=>{
+    if(ST(m).prova) out.push({id:'m'+m,t:'Módulo '+(m+1)+' · '+mod.title,sub:'Prova prática concluída'});
+    if(mod.project&&ST(m).project) out.push({id:'p'+m,t:mod.project.title,sub:'Projeto entregue'});
+  });
+  return out;
+}
+function certSection(){
+  const cs=certList();
+  if(!cs.length) return '';
+  return `<div class="sec-h"><h2>Certificados</h2><span class="muted">${cs.length} conquistado${cs.length>1?'s':''}</span></div>
+  <div class="certs">${cs.map(c=>`<button class="certcard" data-cert="${c.id}">
+    <span class="certic">${IC.trophy}</span>
+    <span class="certtx"><b>${esc(c.t)}</b><small>${esc(c.sub)}</small></span>
+    <span class="certgo">${IC.arrow}</span></button>`).join('')}</div>`;
+}
+function certTitle(id){
+  const m=+id.slice(1), mod=MODULES[m];
+  return id[0]==='m' ? {t:'Módulo '+(m+1)+' — '+mod.title,s:'concluiu a prova prática do módulo'} : {t:mod.project.title,s:'entregou o projeto da fase'};
+}
+function openCert(id){
+  const info=certTitle(id);
+  const v=$('#view');
+  v.innerHTML=`
+    <div class="lv-top">
+      <button class="back" id="back">${IC.back} Trilha</button>
+      <span class="lv-kicker" style="color:var(--gold)">Certificado</span>
+    </div>
+    <h1 class="lv-title">${esc(info.t)}</h1>
+    <div class="certform">
+      <label for="cname">Nome que vai no certificado</label>
+      <div class="certrow">
+        <input id="cname" class="cinput" value="${esc(P.nome||'')}" placeholder="Digite seu nome completo">
+        <button class="btn btn-ghost" id="cupd">Atualizar</button>
+        <button class="btn btn-primary" id="cdown">${IC.trophy} Baixar imagem</button>
+      </div>
+    </div>
+    <div class="certwrap"><canvas id="cert" width="1200" height="820"></canvas></div>
+    <p class="vhint">Se o download não funcionar aqui, clique com o botão direito na imagem e escolha salvar.</p>`;
+  $('#back').addEventListener('click',renderHome);
+  const draw=()=>drawCert($('#cert'),{nome:($('#cname').value||'').trim()||'Seu nome',titulo:info.t,frase:info.s});
+  $('#cupd').addEventListener('click',()=>{ P.nome=($('#cname').value||'').trim(); save(); draw(); toast('Nome atualizado.','mint'); });
+  $('#cdown').addEventListener('click',()=>{
+    draw();
+    try{
+      const a=document.createElement('a');
+      a.href=$('#cert').toDataURL('image/png');
+      a.download='certificado-encryptando.png';
+      document.body.appendChild(a); a.click(); a.remove();
+    }catch(e){ toast('Não consegui baixar aqui. Salve a imagem pelo botão direito.'); }
+  });
+  draw();
+  scrollTo({top:0,behavior:'auto'});
+}
+function drawCert(cv,o){
+  const x=cv.getContext('2d'), W=cv.width, H=cv.height;
+  const g=x.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,'#111013'); g.addColorStop(1,'#0a0a0c');
+  x.fillStyle=g; x.fillRect(0,0,W,H);
+  const rg=x.createRadialGradient(W*.5,-80,40,W*.5,120,760);
+  rg.addColorStop(0,'rgba(255,42,31,.22)'); rg.addColorStop(1,'rgba(255,42,31,0)');
+  x.fillStyle=rg; x.fillRect(0,0,W,H);
+  x.strokeStyle='#ff2a1f'; x.lineWidth=5; x.strokeRect(26,26,W-52,H-52);
+  x.strokeStyle='rgba(255,255,255,.14)'; x.lineWidth=1; x.strokeRect(44,44,W-88,H-88);
+  const logo=document.querySelector('.logo img');
+  if(logo&&logo.complete&&logo.naturalWidth){ try{ x.drawImage(logo,W/2-46,86,92,92); }catch(e){} }
+  x.textAlign='center';
+  x.fillStyle='#ff6a5c'; x.font='700 22px Sora, system-ui, sans-serif';
+  x.fillText('E N C R Y P T A N D O', W/2, 232);
+  x.fillStyle='#b6a9ad'; x.font='600 19px "DM Sans", system-ui, sans-serif';
+  x.fillText('Certificado de conclusão', W/2, 286);
+  x.fillStyle='#f6eef0'; x.font='800 60px Sora, system-ui, sans-serif';
+  wrapText(x,o.nome,W/2,392,W-220,64);
+  x.fillStyle='#b6a9ad'; x.font='400 21px "DM Sans", system-ui, sans-serif';
+  x.fillText(o.frase, W/2, 452);
+  x.fillStyle='#ffcf5c'; x.font='700 34px Sora, system-ui, sans-serif';
+  wrapText(x,o.titulo,W/2,512,W-240,42);
+  x.strokeStyle='rgba(255,255,255,.16)'; x.lineWidth=1;
+  x.beginPath(); x.moveTo(W/2-230,640); x.lineTo(W/2+230,640); x.stroke();
+  const d=new Date();
+  const meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  x.fillStyle='#847579'; x.font='500 18px "DM Sans", system-ui, sans-serif';
+  x.fillText(d.getDate()+' de '+meses[d.getMonth()]+' de '+d.getFullYear(), W/2, 678);
+  x.fillStyle='#b6a9ad'; x.font='600 17px "DM Sans", system-ui, sans-serif';
+  x.fillText('Encrypted Group · encryptedgroup.com', W/2, 726);
+  x.fillStyle='#544c52'; x.font='500 15px "JetBrains Mono", monospace';
+  x.fillText('XP acumulado: '+P.xp+'  ·  ofensiva: '+P.streak+' dia'+(P.streak===1?'':'s'), W/2, 762);
+}
+function wrapText(x,text,cx,y,maxW,lh){
+  const words=String(text).split(' '); let line='', lines=[];
+  words.forEach(w=>{
+    const t=line?line+' '+w:w;
+    if(x.measureText(t).width>maxW&&line){ lines.push(line); line=w; } else line=t;
+  });
+  if(line) lines.push(line);
+  lines.forEach((l,i)=>x.fillText(l,cx,y+i*lh));
+}
+
+/* ---------- Progresso para o mentor ---------- */
+function progressSummary(){
+  const linhas=MODULES.map((mod,m)=>{
+    const st=ST(m);
+    let s='Módulo '+(m+1)+' ('+mod.title+'): '+st.done.length+'/'+mod.lessons.length+' aulas';
+    s+=st.prova?' · prova ok'+((P.best||{})[mod.id]?' ('+fmtTime(P.best[mod.id])+')':''):' · prova pendente';
+    if(mod.project) s+=st.project?' · projeto entregue':' · projeto pendente';
+    return s;
+  });
+  linhas.push('XP: '+P.xp+' · nível '+(Math.floor(P.xp/LEVEL_STEP)+1)+' · ofensiva: '+P.streak+' dia(s)');
+  linhas.push('Questões erradas esperando revisão: '+((P.errors||[]).length));
+  return linhas.join('\n');
+}
+function progressCode(){
+  try{ return btoa(unescape(encodeURIComponent(JSON.stringify(P)))); }catch(e){ return ''; }
+}
+function openProgress(){
+  const v=$('#view');
+  v.innerHTML=`
+    <div class="lv-top">
+      <button class="back" id="back">${IC.back} Trilha</button>
+      <span class="lv-kicker">Progresso</span>
+    </div>
+    <h1 class="lv-title">Meu progresso</h1>
+    <p class="lv-goal">Mande este resumo para quem está acompanhando seus estudos, ou use o código para levar seu progresso para outro computador.</p>
+    <div class="brief"><pre class="psum">${esc(progressSummary())}</pre></div>
+    <div class="sec-h"><h2>Código do progresso</h2><span class="muted">copie e guarde</span></div>
+    <textarea class="codebox" id="pcode" readonly>${esc(progressCode())}</textarea>
+    <div class="prova-foot" style="margin-top:12px">
+      <button class="btn btn-primary" id="pcopy">Copiar código</button>
+      <span class="pstatus" id="pmsg"></span>
+    </div>
+    <div class="sec-h"><h2>Trazer progresso de outro aparelho</h2><span class="muted">cole o código aqui</span></div>
+    <textarea class="codebox" id="pin" placeholder="Cole aqui o código copiado no outro computador"></textarea>
+    <div class="prova-foot" style="margin-top:12px">
+      <button class="btn btn-ghost" id="pload">Aplicar código</button>
+      <span class="pstatus" id="pmsg2"></span>
+    </div>`;
+  $('#back').addEventListener('click',renderHome);
+  $('#pcopy').addEventListener('click',()=>{
+    const ta=$('#pcode'); ta.select();
+    let ok=false;
+    try{ ok=document.execCommand('copy'); }catch(e){}
+    if(navigator.clipboard&&!ok){ navigator.clipboard.writeText(ta.value).then(()=>{$('#pmsg').textContent='Código copiado.';},()=>{$('#pmsg').textContent='Selecione o texto e copie com Ctrl+C.';}); return; }
+    $('#pmsg').textContent=ok?'Código copiado.':'Selecione o texto e copie com Ctrl+C.';
+  });
+  $('#pload').addEventListener('click',()=>{
+    const raw=($('#pin').value||'').trim();
+    if(!raw){ $('#pmsg2').textContent='Cole o código primeiro.'; return; }
+    try{
+      const d=JSON.parse(decodeURIComponent(escape(atob(raw))));
+      if(!d||!d.mods) throw new Error('formato');
+      P=Object.assign({mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[]},d);
+      MODULES.forEach(mod=>{ P.mods[mod.id]=Object.assign({done:[],prova:false,project:false},P.mods[mod.id]||{}); });
+      save(); renderHeader();
+      $('#pmsg2').innerHTML='<span style="color:#39ff88">Progresso aplicado!</span>';
+      toast('Progresso importado.','gold');
+      setTimeout(renderHome,900);
+    }catch(e){ $('#pmsg2').textContent='Código inválido. Confira se copiou tudo.'; }
+  });
+  scrollTo({top:0,behavior:'auto'});
+}
+
 /* ---------- Módulos da trilha ---------- */
 PROVA.fn = 'media';
 const MODULES = [
@@ -1316,13 +1558,13 @@ let P = load();
 
 function load(){
   const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[]};
-  MODULES.forEach(m=>{ base.mods[m.id]={done:[],prova:false}; });
+  MODULES.forEach(m=>{ base.mods[m.id]={done:[],prova:false,project:false}; });
   try{
     const s=localStorage.getItem(KEY);
     if(s){
       const d=JSON.parse(s);
       base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[];
-      MODULES.forEach(m=>{ if(d.mods&&d.mods[m.id]) base.mods[m.id]=Object.assign({done:[],prova:false},d.mods[m.id]); });
+      MODULES.forEach(m=>{ if(d.mods&&d.mods[m.id]) base.mods[m.id]=Object.assign({done:[],prova:false,project:false},d.mods[m.id]); });
       return base;
     }
     const o=localStorage.getItem(OLD_KEY);
@@ -1639,6 +1881,9 @@ MODULES[2].videos=[
 ];
 MODULES[2].playlist={id:'PLHz_AreHm4dmSj0MHol_aoNYCSGFqvfXV',t:'Curso de Algoritmos e Lógica de Programação',ch:'Curso em Vídeo',n:'17 vídeos'};
 
+MODULES[1].project=PROJETO_FASE0;
+MODULES[3].project=PROJETO_FASE1;
+
 MODULES[3].videos=[
   {id:'UPD0vts-eMQ',t:'Manipulação do DOM explicada na prática',ch:'Escola DNC'},
   {id:'wWnBB-mZIvY',t:'Eventos DOM — Curso JavaScript #10',ch:'Curso em Vídeo'},
@@ -1753,6 +1998,8 @@ function renderHome(){
   });
   html+=`</div>`;
   MODULES.forEach((_,m)=>{ html+=renderModule(m); });
+  html+=certSection();
+  html+=`<div class="homefoot"><button class="btn btn-ghost" id="goProg">${IC.clock} Meu progresso</button></div>`;
   html+=`<p class="foot"><b>Encryptando</b> — protótipo de plataforma de mentoria.<br>Seu progresso fica salvo neste navegador.</p>`;
   v.innerHTML=html;
 
@@ -1772,6 +2019,13 @@ function renderHome(){
   }));
   v.querySelectorAll('[data-vid]').forEach(b=>b.addEventListener('click',()=>playVideo(b.dataset.vid)));
   const rev=$('#goRev'); if(rev) rev.addEventListener('click',openReview);
+  v.querySelectorAll('[data-openproj]').forEach(b=>b.addEventListener('click',()=>{
+    const m=+b.dataset.m;
+    if(!ST(m).prova){ toast('Passe na prova do módulo para liberar o projeto.'); return; }
+    openProva(m,true);
+  }));
+  v.querySelectorAll('[data-cert]').forEach(b=>b.addEventListener('click',()=>openCert(b.dataset.cert)));
+  const gp=$('#goProg'); if(gp) gp.addEventListener('click',openProgress);
   renderHeader();
   scrollTo({top:0,behavior:'auto'});
 }
@@ -1809,9 +2063,24 @@ function renderModule(m){
         </div>
         <span class="go" style="${pav||pdone?'color:var(--gold)':''}">${pdone?'Refazer':(pav?'Fazer prova':'Bloqueada')} ${pdone?IC.check:(pav?IC.arrow:IC.lock)}</span>
       </button>
-    </div></div>`;
+    </div>`;
+  h+=projectNode(m)+`</div>`;
   h+=videosBlock(m);
   return h;
+}
+function projectNode(m){
+  const mod=MODULES[m]; if(!mod.project) return '';
+  const st=ST(m), av=st.prova, done=st.project;
+  return `<div class="node proj-node ${done?'done':(av?'avail':'locked')}">
+    <div class="dot"><div class="disc">${(done||av)?IC.spark:IC.lock}</div></div>
+    <button class="card-lesson" data-m="${m}" data-openproj="1" ${(!av&&!done)?'aria-disabled="true"':''}>
+      <div class="meta">
+        <div class="kicker">Projeto da fase</div>
+        <h3>${esc(mod.project.title.replace(/^Projeto da Fase \d+ — /,''))}<span style="color:#39ff88"> · Portfólio</span></h3>
+        <p>${done?'Entregue — já é peça do seu portfólio!':(av?'Monte a sua versão, com o seu conteúdo':'Passe na prova do módulo para liberar')}</p>
+      </div>
+      <span class="go" style="${(av||done)?'color:#39ff88':''}">${done?'Refazer':(av?'Fazer projeto':'Bloqueado')} ${done?IC.check:(av?IC.arrow:IC.lock)}</span>
+    </button></div>`;
 }
 function shake(m,i){
   const n=document.querySelector('.node[data-lesson="'+m+'-'+i+'"]');
@@ -2054,20 +2323,20 @@ function testJS(pv,code){
   return {states,detail};
 }
 
-function openProva(m){
-  const mod=MODULES[m], pv=mod.prova, kind=mod.kind, live=kind!=='js';
+function openProva(m,proj){
+  const mod=MODULES[m], pv=proj?mod.project:mod.prova, kind=pv.kind||mod.kind, live=kind!=='js';
   const labels = live ? pv.checks.map(c=>c.label) : pv.cases.map(c=>pv.fn+'(['+c.args[0].join(', ')+']) → "'+c.exp+'"');
-  const total=labels.length, best=(P.best||{})[mod.id];
+  const total=labels.length, bkey=proj?mod.id+'-proj':mod.id, best=(P.best||{})[bkey];
   const v=$('#view');
   v.innerHTML=`
     <div class="lv-top">
       <button class="back" id="back">${IC.back} Trilha</button>
-      <span class="lv-kicker" style="color:var(--gold)">Desafio final · Módulo ${m+1}</span>
+      <span class="lv-kicker" style="color:${proj?'#39ff88':'var(--gold)'}">${proj?'Projeto da fase':'Desafio final · Módulo '+(m+1)}</span>
     </div>
     <h1 class="lv-title">${pv.title}</h1>
     <div class="hud">
       <span class="chip-timer">${IC.clock}<span id="ptime">0:00</span>${best?`<span class="best">recorde ${fmtTime(best)}</span>`:''}</span>
-      <button class="btn btn-submit" id="submit" disabled>${IC.trophy} Entregar prova</button>
+      <button class="btn btn-submit" id="submit" disabled>${IC.trophy} ${proj?'Entregar projeto':'Entregar prova'}</button>
     </div>
     <div class="arena">
       <div class="arena-main">
@@ -2126,7 +2395,7 @@ function openProva(m){
     sub.disabled=!all; sub.classList.toggle('btn-win',all);
     const st=$('#pstatus');
     if(done) return;
-    if(all) st.innerHTML='<span style="color:#39ff88">Tudo verde! Clique em Entregar prova.</span>';
+    if(all) st.innerHTML='<span style="color:#39ff88">Tudo verde! Clique em Entregar '+(proj?'projeto':'prova')+'.</span>';
     else if(live) st.textContent=(total-n===1?'Falta 1 missão.':'Faltam '+(total-n)+' missões.')+' Continue!';
     else st.textContent=ran?n+' de '+total+' testes passaram. Ajuste e rode de novo.':'Escreva a função e rode os testes.';
   }
@@ -2156,7 +2425,7 @@ function openProva(m){
   $('#submit').addEventListener('click',()=>{
     if(done||$('#submit').disabled) return;
     done=true;
-    finishProva(m,$('#pstatus'),elapsed());
+    finishProva(m,$('#pstatus'),elapsed(),proj);
   });
   $('#reset').addEventListener('click',()=>{
     setEditor('edp',pv.starter); ran=false; $('#perr').innerHTML='';
@@ -2167,15 +2436,21 @@ function openProva(m){
   scrollTo({top:0,behavior:'auto'});
 }
 
-function finishProva(m,status,secs){
-  const mod=MODULES[m], first=!ST(m).prova, next=MODULES[m+1];
+function finishProva(m,status,secs,proj){
+  const mod=MODULES[m], first=proj?!ST(m).project:!ST(m).prova, next=MODULES[m+1];
+  const xp=proj?XP_PROJETO:XP_PROVA, bkey=proj?mod.id+'-proj':mod.id;
   P.best=P.best||{};
-  const prevBest=P.best[mod.id], record=!prevBest||secs<prevBest;
-  if(record) P.best[mod.id]=secs;
-  if(first){ ST(m).prova=true; P.xp+=XP_PROVA; bumpStreak(); }
+  const prevBest=P.best[bkey], record=!prevBest||secs<prevBest;
+  if(record) P.best[bkey]=secs;
+  if(first){ if(proj) ST(m).project=true; else ST(m).prova=true; P.xp+=xp; bumpStreak(); }
   save(); renderHeader(); confetti(true);
-  status.innerHTML='<span style="color:#39ff88">Prova entregue!</span>';
-  showWin({title:first?'Módulo '+(m+1)+' dominado!':'Prova concluída de novo!',time:secs,record:record&&!!prevBest,xp:first?XP_PROVA:0,next:first&&next?next.title:null});
+  status.innerHTML='<span style="color:#39ff88">'+(proj?'Projeto entregue!':'Prova entregue!')+'</span>';
+  showWin({
+    title:first?(proj?'Projeto da fase entregue!':'Módulo '+(m+1)+' dominado!'):(proj?'Projeto refeito!':'Prova concluída de novo!'),
+    time:secs,record:record&&!!prevBest,xp:first?xp:0,
+    next:(!proj&&first&&next)?next.title:null,
+    cert:(proj?'p':'m')+m
+  });
 }
 function showWin(o){
   let w=$('#win');
@@ -2189,11 +2464,11 @@ function showWin(o){
       <div><b style="color:var(--gold)">${o.xp?'+'+o.xp:'0'}</b><span>XP</span></div>
     </div>
     ${o.next?`<p class="win-next">${IC.spark}<span>${esc(o.next)} liberado!</span></p>`:''}
-    <div class="win-actions"><button class="btn btn-ghost" id="winStay">Ficar aqui</button><button class="btn btn-primary" id="winGo">Voltar à trilha ${IC.arrow}</button></div>
+    <div class="win-actions">${o.cert?`<button class="btn btn-ghost" id="winCert">${IC.trophy} Certificado</button>`:''}<button class="btn btn-primary" id="winGo">Voltar à trilha ${IC.arrow}</button></div>
   </div>`;
   w.hidden=false;
   const close=()=>{ w.hidden=true; };
-  $('#winStay').onclick=close;
+  const wc=$('#winCert'); if(wc) wc.onclick=()=>{ close(); openCert(o.cert); };
   $('#winGo').onclick=()=>{ close(); renderHome(); };
   w.onkeydown=e=>{ if(e.key==='Escape') close(); };
   $('#winGo').focus();
