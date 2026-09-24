@@ -267,6 +267,45 @@
   .t-sel{color:#ff6a5c}
   .t-prop{color:#ffcf5c}
   .t-punc{color:#9a9298}
+  /* Meta semanal, glossário e anotações */
+  .meta{border:1px solid var(--border);background:linear-gradient(150deg,var(--surface),var(--bg-2));border-radius:var(--radius);padding:14px 16px;margin:18px 0 4px}
+  .meta.ok{border-color:rgba(57,255,136,.4)}
+  .meta-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+  .meta-t{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px}
+  .meta-t svg{width:16px;height:16px;color:var(--gold)}
+  .meta-n{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .meta-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:9px;font-size:12.5px;color:var(--muted)}
+  .meta-set{display:flex;align-items:center;gap:5px}
+  .metabtn{width:26px;height:26px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);color:var(--muted);
+    font-family:var(--mono);font-size:12px;font-weight:600;cursor:pointer;transition:all .18s}
+  .metabtn:hover{border-color:var(--border-strong)}
+  .metabtn.on{background:var(--violet);border-color:transparent;color:#fff}
+  .gfilters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+  .gf{border:1px solid var(--border);background:var(--surface);color:var(--muted);font-weight:600;font-size:13px;
+    padding:7px 14px;border-radius:999px;cursor:pointer;transition:all .18s}
+  .gf:hover{border-color:var(--border-strong)}
+  .gf.on{background:var(--violet);border-color:transparent;color:#fff}
+  .glist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+  .gitem{border:1px solid var(--border);background:var(--surface);border-radius:var(--radius);padding:14px 15px;min-width:0}
+  .gtop{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:6px}
+  .gtop b{font-size:15px}
+  .gtag{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;flex:none}
+  .gt-html{background:rgba(255,42,31,.14);color:#ff8a95}
+  .gt-css{background:rgba(255,207,92,.14);color:var(--gold)}
+  .gt-logica{background:rgba(57,255,136,.12);color:#74efb3}
+  .gt-dom{background:rgba(143,216,255,.14);color:#8fd8ff}
+  .gitem p{margin:0 0 9px;font-size:13.5px;color:var(--muted);line-height:1.5}
+  .gitem .snip{margin:0}
+  .gitem .snip code{font-size:12px}
+  .notes{margin-top:16px;border:1px solid var(--border);background:var(--surface);border-radius:var(--radius);padding:14px 16px}
+  .notes label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:9px}
+  .notes label svg{width:16px;height:16px;color:var(--gold)}
+  .nsaved{margin-left:auto;font-size:11px;font-weight:600;color:var(--faint);letter-spacing:.06em;text-transform:uppercase}
+  .nsaved.flash{color:#39ff88}
+  .notebox{width:100%;min-height:92px;resize:vertical;background:var(--surface-2);border:1px solid var(--border);border-radius:11px;
+    color:var(--text);font-family:var(--body);font-size:14.5px;line-height:1.6;padding:11px 13px;outline:0}
+  .notebox:focus{border-color:rgba(255,42,31,.45)}
+  .homefoot{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:26px}
   /* Projetos, certificados e progresso */
   .proj-node .card-lesson{background:linear-gradient(150deg,rgba(57,255,136,.07),var(--bg-2));border-color:rgba(57,255,136,.25)}
   .proj-node.locked .card-lesson{background:linear-gradient(165deg,var(--surface),var(--bg-2));border-color:var(--border)}
@@ -294,7 +333,6 @@
     font-family:var(--mono);font-size:12px;line-height:1.5;padding:12px 14px;outline:0;word-break:break-all;white-space:pre-wrap}
   .codebox:focus{border-color:rgba(255,42,31,.5)}
   .psum{margin:0;font-family:var(--mono);font-size:13px;line-height:1.7;color:#e9e2e4;white-space:pre-wrap}
-  .homefoot{display:flex;justify-content:center;margin-top:26px}
   /* Cartão de revisão */
   .revcard{display:flex;align-items:center;gap:13px;width:100%;text-align:left;margin:18px 0 4px;padding:14px 16px;cursor:pointer;
     border:1px solid rgba(255,207,92,.35);border-radius:var(--radius);background:linear-gradient(150deg,rgba(255,207,92,.09),var(--bg-2));color:inherit;
@@ -1324,6 +1362,158 @@ const DOM_PROVA = {
   ]
 };
 
+/* ---------- Anotações, glossário e meta semanal ---------- */
+const META_PADRAO=3;
+function hojeKey(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function registrarAula(){
+  P.hist=P.hist||{};
+  const k=hojeKey();
+  P.hist[k]=(P.hist[k]||0)+1;
+}
+function semanaAtual(){
+  const hoje=new Date(), dia=(hoje.getDay()+6)%7;
+  let n=0;
+  for(let i=0;i<=dia;i++){
+    const d=new Date(hoje); d.setDate(hoje.getDate()-i);
+    n+=(P.hist||{})[hojeKey(d)]||0;
+  }
+  return n;
+}
+function metaCard(){
+  const alvo=P.meta||META_PADRAO, feito=semanaAtual();
+  const pct=Math.min(100,Math.round(feito/alvo*100));
+  const ok=feito>=alvo;
+  return `<div class="meta ${ok?'ok':''}">
+    <div class="meta-top">
+      <span class="meta-t">${IC.clock} Meta da semana</span>
+      <span class="meta-n">${feito}/${alvo} aula${alvo>1?'s':''}</span>
+    </div>
+    <div class="miniprog"><i style="width:${pct}%"></i></div>
+    <div class="meta-foot">
+      <span>${ok?'Meta batida. Bom trabalho!':'Faltam '+(alvo-feito)+' para bater a meta.'}</span>
+      <span class="meta-set">Alvo: ${[2,3,5,7].map(n=>`<button class="metabtn ${n===alvo?'on':''}" data-meta="${n}">${n}</button>`).join('')}</span>
+    </div>
+  </div>`;
+}
+
+const GLOSS=[
+  {t:'HTML',k:'HTML',d:'Linguagem de marcação que estrutura o conteúdo da página. Não é programação: você marca o que cada pedaço é.',e:'<h1>Título</h1>'},
+  {t:'HTML',k:'tag',d:'A etiqueta que marca um pedaço de conteúdo. Quase toda tag abre e fecha.',e:'<p>texto</p>'},
+  {t:'HTML',k:'elemento',d:'O conjunto completo: abertura, conteúdo e fechamento.',e:'<p>Oi</p>'},
+  {t:'HTML',k:'atributo',d:'Informação extra escrita dentro da abertura da tag, no formato nome="valor".',e:'<a href="site.com">'},
+  {t:'HTML',k:'h1 a h6',d:'Os seis níveis de título. O h1 é o principal e costuma ser único na página.',e:'<h2>Seção</h2>'},
+  {t:'HTML',k:'p',d:'Parágrafo: bloco de texto corrido.',e:'<p>Um texto.</p>'},
+  {t:'HTML',k:'br',d:'Quebra a linha dentro de um texto. Não tem fechamento.',e:'linha um<br>linha dois'},
+  {t:'HTML',k:'ul, ol, li',d:'Listas: ul com marcadores, ol numerada, e li para cada item.',e:'<ul><li>Item</li></ul>'},
+  {t:'HTML',k:'a (link)',d:'Cria um link. O destino vai no atributo href.',e:'<a href="https://x.com">ir</a>'},
+  {t:'HTML',k:'href',d:'Atributo que guarda o endereço de destino de um link.',e:'href="contato.html"'},
+  {t:'HTML',k:'img',d:'Insere uma imagem. Não tem fechamento.',e:'<img src="foto.jpg" alt="Eu">'},
+  {t:'HTML',k:'src',d:'Atributo que diz onde está o arquivo da imagem.',e:'src="logo.png"'},
+  {t:'HTML',k:'alt',d:'Descrição da imagem em texto. Aparece se ela não carregar e é lida por leitores de tela.',e:'alt="Logo da empresa"'},
+  {t:'HTML',k:'DOCTYPE',d:'Primeira linha do arquivo: avisa o navegador que é HTML moderno.',e:'<!DOCTYPE html>'},
+  {t:'HTML',k:'head',d:'Guarda informações sobre a página. Nada dele aparece na tela.',e:'<head><title>Site</title></head>'},
+  {t:'HTML',k:'body',d:'Tudo que aparece na tela fica aqui dentro.',e:'<body><h1>Oi</h1></body>'},
+  {t:'HTML',k:'title',d:'O nome da página, que aparece na aba do navegador.',e:'<title>Meu site</title>'},
+  {t:'CSS',k:'CSS',d:'Linguagem que define o visual: cores, fontes, espaços e posição.',e:'h1 { color: red; }'},
+  {t:'CSS',k:'seletor',d:'A parte da regra que escolhe quais elementos vão mudar.',e:'.cartao { }'},
+  {t:'CSS',k:'propriedade e valor',d:'O que muda e para quanto. Vão dentro das chaves, separados por dois pontos.',e:'font-size: 20px;'},
+  {t:'CSS',k:'color',d:'Cor do texto.',e:'color: #ff2a1f;'},
+  {t:'CSS',k:'background-color',d:'Cor do fundo do elemento.',e:'background-color: black;'},
+  {t:'CSS',k:'hexadecimal',d:'Jeito de escrever cor começando com # e usando números e letras de 0 a f.',e:'#0a0a0c'},
+  {t:'CSS',k:'font-family',d:'A fonte usada no texto.',e:'font-family: Arial, sans-serif;'},
+  {t:'CSS',k:'font-size',d:'Tamanho da letra, normalmente em pixels.',e:'font-size: 18px;'},
+  {t:'CSS',k:'text-align',d:'Alinhamento do texto: left, center ou right.',e:'text-align: center;'},
+  {t:'CSS',k:'classe',d:'Marca que você cria para estilizar só alguns elementos. No CSS começa com ponto.',e:'.destaque { color: red; }'},
+  {t:'CSS',k:'id',d:'Identificador único de um elemento. No CSS começa com cerquilha.',e:'#topo { }'},
+  {t:'CSS',k:'padding',d:'Espaço interno, entre o conteúdo e a borda da caixa.',e:'padding: 20px;'},
+  {t:'CSS',k:'margin',d:'Espaço externo, que afasta a caixa das outras.',e:'margin: 30px;'},
+  {t:'CSS',k:'border',d:'Borda da caixa: espessura, estilo e cor.',e:'border: 2px solid red;'},
+  {t:'CSS',k:'border-radius',d:'Arredonda os cantos. Com 50% um quadrado vira círculo.',e:'border-radius: 12px;'},
+  {t:'CSS',k:'box-shadow',d:'Sombra da caixa: deslocamento, desfoque e cor.',e:'box-shadow: 0 4px 14px black;'},
+  {t:'CSS',k:'display: flex',d:'Coloca os elementos filhos lado a lado. Vai no elemento pai.',e:'.linha { display: flex; }'},
+  {t:'CSS',k:'gap',d:'Espaço entre os itens de um container flex.',e:'gap: 12px;'},
+  {t:'CSS',k:'justify-content',d:'Distribui os itens na linha: center, space-between e outros.',e:'justify-content: center;'},
+  {t:'Lógica',k:'variável',d:'Caixa com nome que guarda um valor para usar depois.',e:'let nome = "David";'},
+  {t:'Lógica',k:'let',d:'Palavra que cria uma variável.',e:'let idade = 25;'},
+  {t:'Lógica',k:'string',d:'Texto. Vai sempre entre aspas.',e:'"Olá"'},
+  {t:'Lógica',k:'number',d:'Número, escrito sem aspas.',e:'42'},
+  {t:'Lógica',k:'boolean',d:'Valor de verdadeiro ou falso.',e:'true'},
+  {t:'Lógica',k:'operador %',d:'Resto da divisão. Serve para descobrir se um número é par.',e:'10 % 3  // 1'},
+  {t:'Lógica',k:'=== e !==',d:'Comparam igualdade e diferença, devolvendo true ou false.',e:'5 === 5  // true'},
+  {t:'Lógica',k:'if / else',d:'Faz o programa decidir: se a condição for verdadeira faz uma coisa, senão faz outra.',e:'if (n >= 6) { } else { }'},
+  {t:'Lógica',k:'for',d:'Laço que repete um bloco um número de vezes.',e:'for (let i = 0; i < 3; i++) { }'},
+  {t:'Lógica',k:'função',d:'Bloco de código com nome, que você chama quando quiser.',e:'function soma(a, b) { }'},
+  {t:'Lógica',k:'return',d:'Devolve o resultado de uma função para quem a chamou.',e:'return a + b;'},
+  {t:'Lógica',k:'parâmetro',d:'Valor que a função recebe para trabalhar.',e:'function media(notas) { }'},
+  {t:'Lógica',k:'array',d:'Lista de valores. O primeiro item fica na posição 0.',e:'let notas = [8, 6, 10];'},
+  {t:'Lógica',k:'.length',d:'Quantidade de itens de um array.',e:'notas.length  // 3'},
+  {t:'DOM',k:'DOM',d:'A página transformada em objetos, que o JavaScript consegue ler e mudar.',e:'document'},
+  {t:'DOM',k:'document',d:'Objeto que representa a página inteira.',e:'document.querySelector("h1")'},
+  {t:'DOM',k:'querySelector',d:'Busca o primeiro elemento que combina com um seletor de CSS.',e:'document.querySelector("#titulo")'},
+  {t:'DOM',k:'querySelectorAll',d:'Busca todos os elementos que combinam, em forma de lista.',e:'document.querySelectorAll(".item")'},
+  {t:'DOM',k:'textContent',d:'O texto dentro de um elemento. Serve para ler e para trocar.',e:'alvo.textContent = "Novo";'},
+  {t:'DOM',k:'value',d:'O que a pessoa digitou num campo de formulário.',e:'input.value'},
+  {t:'DOM',k:'style',d:'Muda o CSS do elemento pelo código. Propriedades com hífen viram maiúscula no meio.',e:'el.style.backgroundColor = "red";'},
+  {t:'DOM',k:'classList',d:'Liga e desliga classes do elemento: add, remove e toggle.',e:'el.classList.add("ativo");'},
+  {t:'DOM',k:'evento',d:'Algo que acontece na página: um clique, uma tecla, o mouse passando.',e:'"click"'},
+  {t:'DOM',k:'addEventListener',d:'Registra uma função para rodar quando o evento acontecer.',e:'botao.addEventListener("click", fn);'},
+  {t:'DOM',k:'createElement',d:'Cria um elemento novo, que ainda não aparece na página.',e:'document.createElement("li")'},
+  {t:'DOM',k:'appendChild',d:'Encaixa um elemento dentro de outro. É aí que ele aparece.',e:'lista.appendChild(item);'},
+  {t:'DOM',k:'remove',d:'Tira o elemento da página.',e:'item.remove();'}
+];
+function openGloss(){
+  const v=$('#view');
+  v.innerHTML=`
+    <div class="lv-top">
+      <button class="back" id="back">${IC.back} Trilha</button>
+      <span class="lv-kicker">${GLOSS.length} termos</span>
+    </div>
+    <h1 class="lv-title">Glossário</h1>
+    <p class="lv-goal">Esqueceu o que uma palavra significa? Procure aqui. Tudo que aparece nas aulas está nesta lista.</p>
+    <input id="gq" class="cinput" style="width:100%;margin-bottom:14px" placeholder="Buscar termo, por exemplo: classe, array, evento...">
+    <div class="gfilters">${['Tudo','HTML','CSS','Lógica','DOM'].map((f,i)=>`<button class="gf ${i===0?'on':''}" data-f="${f}">${f}</button>`).join('')}</div>
+    <div id="glist" class="glist"></div>`;
+  $('#back').addEventListener('click',renderHome);
+  let filtro='Tudo';
+  function pinta(){
+    const q=($('#gq').value||'').toLowerCase().trim();
+    const itens=GLOSS.filter(g=>(filtro==='Tudo'||g.t===filtro)&&(!q||g.k.toLowerCase().includes(q)||g.d.toLowerCase().includes(q)));
+    $('#glist').innerHTML=itens.length?itens.map(g=>`<div class="gitem">
+      <div class="gtop"><b>${esc(g.k)}</b><span class="gtag gt-${g.t==='Lógica'?'logica':g.t.toLowerCase()}">${esc(g.t)}</span></div>
+      <p>${esc(g.d)}</p><pre class="snip"><code>${esc(g.e)}</code></pre></div>`).join('')
+      :`<p class="pstatus">Nenhum termo encontrado para "${esc(q)}".</p>`;
+  }
+  $('#gq').addEventListener('input',pinta);
+  v.querySelectorAll('.gf').forEach(b=>b.addEventListener('click',()=>{
+    filtro=b.dataset.f;
+    v.querySelectorAll('.gf').forEach(x=>x.classList.toggle('on',x===b));
+    pinta();
+  }));
+  pinta();
+  scrollTo({top:0,behavior:'auto'});
+}
+function notesBox(m,i){
+  const k=m+':'+i, val=(P.notes||{})[k]||'';
+  return `<div class="notes">
+    <label for="note">${IC.bulb} Minhas anotações desta aula <span class="nsaved" id="nsaved">${val?'salvo':''}</span></label>
+    <textarea id="note" class="notebox" placeholder="Escreva o que não quer esquecer. Fica salvo neste navegador.">${esc(val)}</textarea>
+  </div>`;
+}
+function bindNotes(m,i){
+  const ta=$('#note'); if(!ta) return;
+  let t;
+  ta.addEventListener('input',()=>{
+    clearTimeout(t);
+    t=setTimeout(()=>{
+      P.notes=P.notes||{};
+      const k=m+':'+i;
+      if(ta.value.trim()) P.notes[k]=ta.value; else delete P.notes[k];
+      save();
+      const s=$('#nsaved'); if(s){ s.textContent='salvo'; s.classList.add('flash'); setTimeout(()=>s.classList.remove('flash'),600); }
+    },600);
+  });
+}
+
 /* ---------- Projetos de fase: o que vira portfólio ---------- */
 const XP_PROJETO=400;
 
@@ -1486,6 +1676,8 @@ function progressSummary(){
   });
   linhas.push('XP: '+P.xp+' · nível '+(Math.floor(P.xp/LEVEL_STEP)+1)+' · ofensiva: '+P.streak+' dia(s)');
   linhas.push('Questões erradas esperando revisão: '+((P.errors||[]).length));
+  linhas.push('Aulas nesta semana: '+semanaAtual()+'/'+(P.meta||META_PADRAO)+' (meta)');
+  linhas.push('Anotações escritas: '+Object.keys(P.notes||{}).length);
   return linhas.join('\n');
 }
 function progressCode(){
@@ -1557,13 +1749,13 @@ const XP_LESSON=60, XP_PROVA=240, LEVEL_STEP=300;
 let P = load();
 
 function load(){
-  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[]};
+  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:''};
   MODULES.forEach(m=>{ base.mods[m.id]={done:[],prova:false,project:false}; });
   try{
     const s=localStorage.getItem(KEY);
     if(s){
       const d=JSON.parse(s);
-      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[];
+      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||'';
       MODULES.forEach(m=>{ if(d.mods&&d.mods[m.id]) base.mods[m.id]=Object.assign({done:[],prova:false,project:false},d.mods[m.id]); });
       return base;
     }
@@ -1982,6 +2174,7 @@ function renderHome(){
     <h1 class="title">${cur===0?'Sua jornada começa pelo <span class="hl">HTML</span>':'Próxima parada: <span class="hl">'+cm.title+'</span>'}</h1>
     <p class="lead">${cm.lead} Aprenda, pratique e prove, uma etapa de cada vez.</p>
 
+    ${metaCard()}
     ${reviewCard()}
     <div class="sec-h"><h2>A trilha completa</h2><span class="muted">4 fases · do zero ao avançado</span></div>
     <div class="fases">`;
@@ -1999,7 +2192,7 @@ function renderHome(){
   html+=`</div>`;
   MODULES.forEach((_,m)=>{ html+=renderModule(m); });
   html+=certSection();
-  html+=`<div class="homefoot"><button class="btn btn-ghost" id="goProg">${IC.clock} Meu progresso</button></div>`;
+  html+=`<div class="homefoot"><button class="btn btn-ghost" id="goProg">${IC.clock} Meu progresso</button><button class="btn btn-ghost" id="goGloss">${IC.book} Glossário</button></div>`;
   html+=`<p class="foot"><b>Encryptando</b> — protótipo de plataforma de mentoria.<br>Seu progresso fica salvo neste navegador.</p>`;
   v.innerHTML=html;
 
@@ -2026,6 +2219,10 @@ function renderHome(){
   }));
   v.querySelectorAll('[data-cert]').forEach(b=>b.addEventListener('click',()=>openCert(b.dataset.cert)));
   const gp=$('#goProg'); if(gp) gp.addEventListener('click',openProgress);
+  const gg=$('#goGloss'); if(gg) gg.addEventListener('click',openGloss);
+  v.querySelectorAll('[data-meta]').forEach(b=>b.addEventListener('click',()=>{
+    P.meta=+b.dataset.meta; save(); renderHome(); toast('Meta da semana: '+P.meta+' aulas.','mint');
+  }));
   renderHeader();
   scrollTo({top:0,behavior:'auto'});
 }
@@ -2123,6 +2320,7 @@ function openLesson(m,i){
           ${isHtml?previewBox('pv',mod.kind==='dom'):'<div class="out" id="out"><div class="out-label">Saída</div><div class="out-body" id="outb"><span style="color:var(--faint)">Clique em Rodar para ver o resultado.</span></div></div>'}
         </div>
         <div class="tip">${IC.bulb}<div>${esc(l.tip)}</div></div>
+        ${notesBox(m,i)}
         <div style="display:flex;justify-content:flex-end;margin-top:18px">
           <button class="btn btn-primary" id="toq">Ir para as questões ${IC.arrow}</button>
         </div>
@@ -2135,6 +2333,7 @@ function openLesson(m,i){
     } else {
       $('#run').addEventListener('click',()=>runPlayground($('#ed').value,$('#outb'),$('#out')));
     }
+    bindNotes(m,i);
     $('#toq').addEventListener('click',showQuiz);
   }
 
@@ -2214,7 +2413,7 @@ function runPlayground(code,bodyEl,box){
 
 function completeLesson(m,i){
   const first=!isDone(m,i);
-  if(first){ ST(m).done.push(i); P.xp+=XP_LESSON; bumpStreak(); save(); }
+  if(first){ ST(m).done.push(i); P.xp+=XP_LESSON; bumpStreak(); registrarAula(); save(); }
   renderHeader();
   if(first){
     confetti(false);
