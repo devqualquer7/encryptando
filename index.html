@@ -1997,13 +1997,37 @@ const PROJETO_FASE1={
 };
 
 /* ---------- Certificado de conclusão ---------- */
+function trilhaCompleta(){
+  return MODULES.every((mod,m)=>ST(m).prova && (!mod.project || ST(m).project));
+}
 function certList(){
   const out=[];
   MODULES.forEach((mod,m)=>{
     if(ST(m).prova) out.push({id:'m'+m,t:'Módulo '+(m+1)+' · '+mod.title,sub:'Prova prática concluída'});
     if(mod.project&&ST(m).project) out.push({id:'p'+m,t:mod.project.title,sub:'Projeto entregue'});
   });
+  if(trilhaCompleta()) out.unshift({id:'final',t:'Trilha Encryptando completa',sub:'Todos os módulos, provas e projetos'});
   return out;
+}
+/* Código de verificação: determinístico a partir do certificado + nome + data */
+function certHash(txt){
+  let h1=0x811c9dc5, h2=0x1000193;
+  for(let i=0;i<txt.length;i++){
+    h1=(h1^txt.charCodeAt(i))>>>0; h1=(h1*16777619)>>>0;
+    h2=(h2+txt.charCodeAt(i)*(i+7))>>>0; h2=((h2<<5)^(h2>>>3))>>>0;
+  }
+  const a=h1.toString(36).toUpperCase().padStart(6,'0').slice(-6);
+  const b=h2.toString(36).toUpperCase().padStart(4,'0').slice(-4);
+  return 'ENC-'+a+'-'+b;
+}
+function certMeta(id){
+  P.certs=P.certs||{};
+  if(!P.certs[id]){ P.certs[id]={data:new Date().toISOString().slice(0,10)}; save(); }
+  return P.certs[id];
+}
+function certCode(id,nome){
+  const meta=certMeta(id);
+  return certHash(id+'|'+(nome||'').toLowerCase().replace(/\s+/g,' ').trim()+'|'+meta.data);
 }
 function certSection(){
   const cs=certList();
@@ -2015,6 +2039,7 @@ function certSection(){
     <span class="certgo">${IC.arrow}</span></button>`).join('')}</div>`;
 }
 function certTitle(id){
+  if(id==='final') return {t:'Trilha completa — do zero ao avançado',s:'concluiu todos os módulos, provas e projetos da trilha'};
   const m=+id.slice(1), mod=MODULES[m];
   return id[0]==='m' ? {t:'Módulo '+(m+1)+' — '+mod.title,s:'concluiu a prova prática do módulo'} : {t:mod.project.title,s:'entregou o projeto da fase'};
 }
@@ -2036,16 +2061,16 @@ function openCert(id){
       </div>
     </div>
     <div class="certwrap"><canvas id="cert" width="1200" height="820"></canvas></div>
-    <p class="vhint">Se o download não funcionar aqui, clique com o botão direito na imagem e escolha salvar.</p>`;
+    <p class="vhint">Cada certificado tem um código próprio, gerado a partir do seu nome e da data em que você concluiu. Se o download não funcionar aqui, clique com o botão direito na imagem e escolha salvar.</p>`;
   $('#back').addEventListener('click',renderHome);
-  const draw=()=>drawCert($('#cert'),{nome:($('#cname').value||'').trim()||'Seu nome',titulo:info.t,frase:info.s});
+  const draw=()=>drawCert($('#cert'),{id:id,nome:($('#cname').value||'').trim()||'Seu nome',titulo:info.t,frase:info.s});
   $('#cupd').addEventListener('click',()=>{ P.nome=($('#cname').value||'').trim(); save(); draw(); toast('Nome atualizado.','mint'); });
   $('#cdown').addEventListener('click',()=>{
     draw();
     try{
       const a=document.createElement('a');
       a.href=$('#cert').toDataURL('image/png');
-      a.download='certificado-encryptando.png';
+      a.download='certificado-encryptando-'+id+'.png';
       document.body.appendChild(a); a.click(); a.remove();
     }catch(e){ toast('Não consegui baixar aqui. Salve a imagem pelo botão direito.'); }
   });
@@ -2077,14 +2102,19 @@ function drawCert(cv,o){
   wrapText(x,o.titulo,W/2,512,W-240,42);
   x.strokeStyle='rgba(255,255,255,.16)'; x.lineWidth=1;
   x.beginPath(); x.moveTo(W/2-230,640); x.lineTo(W/2+230,640); x.stroke();
-  const d=new Date();
+  const iso=(o.id?certMeta(o.id).data:new Date().toISOString().slice(0,10)).split('-');
+  const d=new Date(+iso[0],+iso[1]-1,+iso[2]);
   const meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
   x.fillStyle='#847579'; x.font='500 18px "DM Sans", system-ui, sans-serif';
   x.fillText(d.getDate()+' de '+meses[d.getMonth()]+' de '+d.getFullYear(), W/2, 678);
   x.fillStyle='#b6a9ad'; x.font='600 17px "DM Sans", system-ui, sans-serif';
-  x.fillText('Encrypted Group · encryptedgroup.com', W/2, 726);
+  x.fillText('Encrypted Group · encryptedgroup.com', W/2, 722);
   x.fillStyle='#544c52'; x.font='500 15px "JetBrains Mono", monospace';
-  x.fillText('XP acumulado: '+P.xp+'  ·  ofensiva: '+P.streak+' dia'+(P.streak===1?'':'s'), W/2, 762);
+  x.fillText('XP acumulado: '+P.xp+'  ·  ofensiva: '+P.streak+' dia'+(P.streak===1?'':'s'), W/2, 752);
+  if(o.id){
+    x.fillStyle='#ff6a5c'; x.font='600 15px "JetBrains Mono", monospace';
+    x.fillText('código de verificação  '+certCode(o.id,o.nome), W/2, 780);
+  }
 }
 function wrapText(x,text,cx,y,maxW,lh){
   const words=String(text).split(' '); let line='', lines=[];
@@ -2161,6 +2191,267 @@ function openProgress(){
   scrollTo({top:0,behavior:'auto'});
 }
 
+/* ---------- API simulada: o fetch funciona mesmo sem internet ---------- */
+const API_MOCK = `<script>
+(function(){
+  var dados = {
+    '/produtos': [
+      {id:1, nome:'Checkout enCrypteD', preco:97, categoria:'software', estoque:12},
+      {id:2, nome:'Rastreio Facil', preco:67, categoria:'software', estoque:30},
+      {id:3, nome:'Licenca KeyAuth', preco:149, categoria:'licenca', estoque:5},
+      {id:4, nome:'Bot de Discord', preco:127, categoria:'software', estoque:0},
+      {id:5, nome:'Suporte mensal', preco:49, categoria:'servico', estoque:99}
+    ],
+    '/alunos': [
+      {id:1, nome:'Ana', nota:9.5, modulo:'HTML'},
+      {id:2, nome:'Bruno', nota:7.0, modulo:'CSS'},
+      {id:3, nome:'Carla', nota:4.5, modulo:'Logica'},
+      {id:4, nome:'Diego', nota:8.2, modulo:'DOM'}
+    ]
+  };
+  var real = window.fetch;
+  window.fetch = function(url){
+    var u = String(url);
+    if(u.indexOf('https://api.encryptando.dev') === 0){
+      var rota = u.replace('https://api.encryptando.dev','').split('?')[0];
+      var corpo = dados[rota];
+      return new Promise(function(res){
+        setTimeout(function(){
+          if(!corpo){
+            res(new Response(JSON.stringify({erro:'rota nao encontrada'}),{status:404,headers:{'Content-Type':'application/json'}}));
+          } else {
+            res(new Response(JSON.stringify(corpo),{status:200,headers:{'Content-Type':'application/json'}}));
+          }
+        }, 400);
+      });
+    }
+    return real ? real.apply(window, arguments) : Promise.reject(new Error('sem rede'));
+  };
+})();
+<\/script>`;
+
+/* ---------- Conteúdo: Módulo 6 — JavaScript moderno e APIs ---------- */
+const API_LESSONS = [
+  {
+    title:"JavaScript moderno",
+    goal:"Escrever o JavaScript que se usa hoje.",
+    learn:`<p>Três coisas mudaram o jeito de escrever JavaScript, e você vai ver isso em todo código atual:</p>
+<ul>
+<li><code>const</code> para valores que não mudam, <code>let</code> só quando muda mesmo</li>
+<li><strong>arrow function</strong>: <code>(a, b) =&gt; a + b</code> é a forma curta de escrever função</li>
+<li><strong>template literal</strong>: com crases dá para juntar texto e variável sem somar com <code>+</code></li>
+</ul>
+<p>Repare no exemplo como o texto fica bem mais legível com a crase e o <code>\${}</code>.</p>`,
+    code:`<div id="saida"></div>\n\n<script>\n  const nome = "David";\n  const preco = 97;\n\n  const dobro = (n) => n * 2;\n\n  const frase = \`O produto de \${nome} custa R$ \${preco}, e o dobro é \${dobro(preco)}.\`;\n\n  document.querySelector("#saida").textContent = frase;\n<\/script>`,
+    tip:"Troque o nome e o preço. Repare que não precisou somar strings com +.",
+    quiz:[
+      {q:"Quando usar const em vez de let?",opts:[
+        {t:"Quando o valor não vai mudar depois",ok:true,fb:"Isso. Use const por padrão e let só quando precisar mudar."},
+        {t:"Quando o valor for número",ok:false,fb:"Não tem relação com o tipo."},
+        {t:"Nunca, const é antigo",ok:false,fb:"Ao contrário: const é o moderno."}]},
+      {q:"Qual é a arrow function equivalente a function soma(a,b){ return a+b }?",opts:[
+        {t:"const soma = (a, b) => a + b;",ok:true,fb:"Certo. Com uma linha só, o return fica implícito."},
+        {t:"const soma = a, b => return a + b;",ok:false,fb:"Faltam os parênteses e sobra o return."},
+        {t:"arrow soma(a, b) { a + b }",ok:false,fb:"Não existe a palavra arrow."}]},
+      {q:"Para que serve a crase no template literal?",opts:[
+        {t:"Permite colocar variáveis dentro do texto com ${}",ok:true,fb:"Isso, e deixa o código bem mais legível."},
+        {t:"Deixa o texto em negrito",ok:false,fb:"Negrito é visual, isso é código."},
+        {t:"Transforma texto em número",ok:false,fb:"Não converte nada."}]}
+    ]
+  },
+  {
+    title:"Listas de verdade: map e filter",
+    goal:"Transformar e filtrar listas sem escrever laços.",
+    learn:`<p>Você já sabe percorrer um array com <code>for</code>. Agora vêm os três métodos que todo dev usa todo dia:</p>
+<ul>
+<li><code>map</code> transforma cada item e devolve uma lista nova do mesmo tamanho</li>
+<li><code>filter</code> devolve só os itens que passam num teste</li>
+<li><code>find</code> devolve o primeiro item que combina</li>
+</ul>
+<p>O original nunca é alterado: eles sempre devolvem uma lista nova.</p>`,
+    code:`<div id="saida"></div>\n\n<script>\n  const precos = [97, 67, 149, 127, 49];\n\n  const comDesconto = precos.map((p) => p * 0.9);\n  const caros = precos.filter((p) => p > 100);\n  const primeiro = precos.find((p) => p < 70);\n\n  document.querySelector("#saida").innerHTML =\n    "Com desconto: " + comDesconto.join(", ") + "<br>" +\n    "Acima de 100: " + caros.join(", ") + "<br>" +\n    "Primeiro abaixo de 70: " + primeiro;\n<\/script>`,
+    tip:"Mude o teste do filter para p < 70 e veja a lista mudar.",
+    quiz:[
+      {q:"O que map devolve?",opts:[
+        {t:"Uma lista nova com cada item transformado",ok:true,fb:"Isso, do mesmo tamanho da original."},
+        {t:"Só os itens que passam no teste",ok:false,fb:"Esse é o filter."},
+        {t:"Um número",ok:false,fb:"Ele devolve uma lista."}]},
+      {q:"O que filter devolve?",opts:[
+        {t:"Uma lista só com os itens que passaram no teste",ok:true,fb:"Certo. Pode até vir vazia."},
+        {t:"O primeiro item que combina",ok:false,fb:"Esse é o find."},
+        {t:"A lista original alterada",ok:false,fb:"A original nunca é alterada."}]},
+      {q:"O que faz precos.filter((p) => p > 100)?",code:`const precos = [97, 67, 149, 127, 49];`,opts:[
+        {t:"Devolve [149, 127]",ok:true,fb:"Isso: só os maiores que 100."},
+        {t:"Devolve [97, 67, 49]",ok:false,fb:"Esses são os que não passam no teste."},
+        {t:"Devolve 2",ok:false,fb:"Devolve a lista, não a contagem."}]}
+    ]
+  },
+  {
+    title:"Objetos e JSON",
+    goal:"Guardar informação com nome e entender o formato da internet.",
+    learn:`<p>Um <strong>objeto</strong> guarda vários dados com nome, entre chaves: <code>{ nome: "Ana", nota: 9.5 }</code>. Você acessa com ponto: <code>aluno.nome</code>.</p>
+<p>Uma lista de objetos é o formato mais comum do mundo real: um array de produtos, de alunos, de pedidos.</p>
+<p><strong>JSON</strong> é esse mesmo formato escrito como texto, para viajar pela internet. <code>JSON.stringify</code> transforma objeto em texto; <code>JSON.parse</code> faz o caminho de volta.</p>`,
+    code:`<div id="saida"></div>\n\n<script>\n  const aluno = { nome: "Ana", nota: 9.5, modulo: "HTML" };\n\n  const texto = JSON.stringify(aluno);\n  const devolta = JSON.parse(texto);\n\n  document.querySelector("#saida").innerHTML =\n    "Nome: " + aluno.nome + "<br>" +\n    "Como texto (JSON): " + texto + "<br>" +\n    "De volta a objeto, a nota é: " + devolta.nota;\n<\/script>`,
+    tip:"Adicione um campo novo no objeto, como idade: 20, e veja aparecer no JSON.",
+    quiz:[
+      {q:"Como acessar o nome do objeto aluno?",opts:[
+        {t:"aluno.nome",ok:true,fb:"Isso, com ponto."},
+        {t:"aluno[nome]",ok:false,fb:"Assim só funcionaria com aspas dentro: aluno['nome']."},
+        {t:"nome.aluno",ok:false,fb:"Está invertido."}]},
+      {q:"O que é JSON?",opts:[
+        {t:"Um formato de texto para representar dados, usado na internet",ok:true,fb:"Certo. É como os dados viajam entre sistemas."},
+        {t:"Uma linguagem de programação",ok:false,fb:"É só um formato de dados."},
+        {t:"Um banco de dados",ok:false,fb:"Não armazena nada sozinho."}]},
+      {q:"O que JSON.parse faz?",opts:[
+        {t:"Transforma texto JSON em objeto do JavaScript",ok:true,fb:"Isso. O caminho contrário é o stringify."},
+        {t:"Transforma objeto em texto",ok:false,fb:"Esse é o stringify."},
+        {t:"Apaga o objeto",ok:false,fb:"Nada é apagado."}]}
+    ]
+  },
+  {
+    title:"O que é uma API",
+    goal:"Entender de onde vêm os dados de um site.",
+    learn:`<p>Quando você abre um app de banco, os dados não estão dentro do app: ele <strong>pede</strong> para um servidor. Esse pedido vai para uma <strong>API</strong>.</p>
+<p>API é um endereço que devolve dados em vez de página. Você chama <code>https://api.encryptando.dev/produtos</code> e recebe uma lista em JSON.</p>
+<p>Cada endereço desses é uma <strong>rota</strong>. E toda resposta vem com um número de status: <strong>200</strong> deu certo, <strong>404</strong> não existe, <strong>500</strong> o servidor quebrou.</p>
+<p>Este site tem uma API de treino embutida, com as rotas <code>/produtos</code> e <code>/alunos</code>. Ela funciona igual a uma de verdade.</p>`,
+    code:`<div id="saida">Carregando...</div>\n\n<script>\n  fetch("https://api.encryptando.dev/produtos")\n    .then((resposta) => {\n      document.querySelector("#saida").textContent =\n        "Status da resposta: " + resposta.status;\n    });\n<\/script>`,
+    tip:"Troque /produtos por /naoexiste e veja o status virar 404.",
+    quiz:[
+      {q:"O que uma API devolve?",opts:[
+        {t:"Dados, normalmente em JSON",ok:true,fb:"Isso. Dados, não página pronta."},
+        {t:"Uma página HTML completa",ok:false,fb:"Isso é um site; a API devolve dados."},
+        {t:"Um programa instalável",ok:false,fb:"Nada disso."}]},
+      {q:"O que significa o status 404?",opts:[
+        {t:"O endereço pedido não existe",ok:true,fb:"Certo, é o famoso 'não encontrado'."},
+        {t:"Deu tudo certo",ok:false,fb:"Isso é o 200."},
+        {t:"A internet caiu",ok:false,fb:"Aí nem status chega."}]},
+      {q:"O que é uma rota?",opts:[
+        {t:"Um endereço específico da API, como /produtos",ok:true,fb:"Isso. Cada rota entrega um tipo de dado."},
+        {t:"O caminho do arquivo no seu computador",ok:false,fb:"Aqui é endereço na internet."},
+        {t:"Um tipo de variável",ok:false,fb:"Não é variável."}]}
+    ]
+  },
+  {
+    title:"fetch: buscando dados",
+    goal:"Trazer a lista da API para o seu código.",
+    learn:`<p>O <code>fetch</code> faz o pedido. Mas a resposta não chega na hora: ela <strong>demora</strong>, porque viaja pela internet.</p>
+<p>Por isso o fetch devolve uma <strong>promessa</strong>: um "te aviso quando chegar". Você encadeia o que fazer depois com <code>.then()</code>.</p>
+<p>São dois passos: o primeiro <code>.then</code> recebe a resposta e chama <code>.json()</code> para extrair os dados; o segundo recebe os dados já prontos.</p>`,
+    code:`<div id="saida">Carregando...</div>\n\n<script>\n  fetch("https://api.encryptando.dev/produtos")\n    .then((resposta) => resposta.json())\n    .then((produtos) => {\n      document.querySelector("#saida").textContent =\n        "Chegaram " + produtos.length + " produtos. O primeiro é " + produtos[0].nome;\n    });\n<\/script>`,
+    tip:"Repare no 'Carregando...' antes dos dados chegarem. Essa espera é real.",
+    quiz:[
+      {q:"Por que o fetch não devolve os dados na hora?",opts:[
+        {t:"Porque a resposta vem pela internet e demora",ok:true,fb:"Isso. Por isso existe a promessa."},
+        {t:"Porque o JavaScript é lento",ok:false,fb:"Não é lentidão da linguagem, é a rede."},
+        {t:"Porque falta memória",ok:false,fb:"Nada a ver com memória."}]},
+      {q:"O que resposta.json() faz?",opts:[
+        {t:"Extrai os dados da resposta e transforma em objeto",ok:true,fb:"Certo, e também devolve uma promessa."},
+        {t:"Transforma a página em JSON",ok:false,fb:"Só a resposta da API."},
+        {t:"Salva um arquivo",ok:false,fb:"Nada é salvo."}]},
+      {q:"O que o segundo .then recebe?",opts:[
+        {t:"Os dados já prontos para usar",ok:true,fb:"Isso: a lista de produtos."},
+        {t:"A resposta crua",ok:false,fb:"Essa é a do primeiro .then."},
+        {t:"Um erro",ok:false,fb:"Erro se trata com catch."}]}
+    ]
+  },
+  {
+    title:"async, await e erros",
+    goal:"Escrever código de espera de um jeito legível.",
+    learn:`<p>Encadear <code>.then</code> funciona, mas fica difícil de ler. O jeito moderno é <code>async</code> e <code>await</code>.</p>
+<p>Marque a função com <code>async</code> e use <code>await</code> antes do que demora. O código volta a ser lido de cima para baixo, como se não houvesse espera.</p>
+<p>E o que fazer quando a internet cai ou a rota não existe? Envolva em <code>try</code> e <code>catch</code>: o try tenta, e o catch recebe o erro em vez de quebrar a página.</p>`,
+    code:`<div id="saida">Carregando...</div>\n\n<script>\n  async function carregar() {\n    const alvo = document.querySelector("#saida");\n    try {\n      const resposta = await fetch("https://api.encryptando.dev/alunos");\n      const alunos = await resposta.json();\n      alvo.textContent = "Primeiro aluno: " + alunos[0].nome + " (nota " + alunos[0].nota + ")";\n    } catch (erro) {\n      alvo.textContent = "Não consegui carregar: " + erro.message;\n    }\n  }\n\n  carregar();\n<\/script>`,
+    tip:"Troque a rota para /naoexiste: a resposta vem, mas sem a lista. Depois tente quebrar de propósito.",
+    quiz:[
+      {q:"Para que serve o await?",opts:[
+        {t:"Esperar o resultado antes de seguir para a próxima linha",ok:true,fb:"Isso, e só funciona dentro de função async."},
+        {t:"Repetir a chamada",ok:false,fb:"Ele espera, não repete."},
+        {t:"Cancelar o pedido",ok:false,fb:"Não cancela nada."}]},
+      {q:"Onde o await pode ser usado?",opts:[
+        {t:"Dentro de uma função marcada com async",ok:true,fb:"Certo. Fora dela dá erro."},
+        {t:"Em qualquer lugar",ok:false,fb:"Precisa do async."},
+        {t:"Só dentro de um if",ok:false,fb:"Não tem relação com if."}]},
+      {q:"Para que serve o try/catch?",opts:[
+        {t:"Tratar o erro sem quebrar a página",ok:true,fb:"Isso: o catch recebe o problema e você decide o que mostrar."},
+        {t:"Deixar o código mais rápido",ok:false,fb:"Não muda a velocidade."},
+        {t:"Impedir que erros existam",ok:false,fb:"Erros acontecem; o try/catch é como você lida com eles."}]}
+    ]
+  },
+  {
+    title:"Mostrando os dados na tela",
+    goal:"Transformar a lista de dados em uma lista visível.",
+    learn:`<p>Dado na memória não serve de nada: ele precisa virar HTML. Junta-se aqui tudo o que você viu: <strong>fetch + map + DOM</strong>.</p>
+<p>A receita é sempre a mesma: buscar os dados, transformar cada item em um pedaço de HTML com <code>map</code>, juntar com <code>join("")</code> e jogar na página com <code>innerHTML</code>.</p>
+<p>Um detalhe que separa amador de profissional: mostrar "Carregando..." enquanto espera, e uma mensagem clara se não vier nada.</p>`,
+    code:`<h2>Produtos</h2>\n<ul id="lista"><li>Carregando...</li></ul>\n\n<script>\n  async function mostrar() {\n    const resposta = await fetch("https://api.encryptando.dev/produtos");\n    const produtos = await resposta.json();\n\n    const html = produtos\n      .map((p) => \`<li><strong>\${p.nome}</strong> — R$ \${p.preco}</li>\`)\n      .join("");\n\n    document.querySelector("#lista").innerHTML = html;\n  }\n\n  mostrar();\n<\/script>`,
+    tip:"Adicione a categoria no template e veja a lista ficar mais completa.",
+    quiz:[
+      {q:"Para que serve o join(\"\") depois do map?",opts:[
+        {t:"Juntar os pedaços de HTML num texto só",ok:true,fb:"Isso. Sem ele, as vírgulas do array apareceriam."},
+        {t:"Ordenar a lista",ok:false,fb:"Ordenar é o sort."},
+        {t:"Contar os itens",ok:false,fb:"Contar é o length."}]},
+      {q:"O que innerHTML faz nesse código?",opts:[
+        {t:"Coloca o HTML montado dentro do elemento",ok:true,fb:"Certo, e o navegador desenha na hora."},
+        {t:"Lê o texto do elemento",ok:false,fb:"Aqui ele está escrevendo."},
+        {t:"Cria uma API",ok:false,fb:"Nada a ver."}]},
+      {q:"Por que mostrar 'Carregando...' antes?",opts:[
+        {t:"Porque os dados demoram e o usuário precisa saber que algo está acontecendo",ok:true,fb:"Isso. Tela parada parece site quebrado."},
+        {t:"Porque o JavaScript exige",ok:false,fb:"Não é obrigatório, é boa prática."},
+        {t:"Para deixar mais lento",ok:false,fb:"Não muda a velocidade."}]}
+    ]
+  },
+  {
+    title:"Juntando tudo",
+    goal:"Montar uma busca que filtra a lista ao vivo.",
+    learn:`<p>Agora o pacote completo: buscar da API, mostrar na tela e <strong>filtrar conforme a pessoa digita</strong>.</p>
+<p>O truque é guardar a lista original numa variável e, a cada tecla, filtrar uma cópia. Assim nada se perde quando ele apaga a busca.</p>
+<p><code>toLowerCase()</code> deixa tudo em minúsculo antes de comparar, para "CHECKOUT" encontrar "Checkout".</p>`,
+    code:`<h2>Catálogo</h2>\n<input id="busca" placeholder="Buscar produto...">\n<ul id="lista"><li>Carregando...</li></ul>\n\n<script>\n  let todos = [];\n\n  function desenhar(produtos) {\n    const lista = document.querySelector("#lista");\n    if (produtos.length === 0) {\n      lista.innerHTML = "<li>Nenhum produto encontrado.</li>";\n      return;\n    }\n    lista.innerHTML = produtos\n      .map((p) => \`<li><strong>\${p.nome}</strong> — R$ \${p.preco}</li>\`)\n      .join("");\n  }\n\n  async function iniciar() {\n    const resposta = await fetch("https://api.encryptando.dev/produtos");\n    todos = await resposta.json();\n    desenhar(todos);\n  }\n\n  document.querySelector("#busca").addEventListener("input", (evento) => {\n    const termo = evento.target.value.toLowerCase();\n    const filtrados = todos.filter((p) => p.nome.toLowerCase().includes(termo));\n    desenhar(filtrados);\n  });\n\n  iniciar();\n<\/script>`,
+    tip:"Digite 'lic' na busca da pré-visualização. Você acabou de fazer o que todo e-commerce faz.",
+    quiz:[
+      {q:"Por que guardar a lista original numa variável?",opts:[
+        {t:"Para poder filtrar sem perder os itens quando a busca é apagada",ok:true,fb:"Isso. O filter sempre parte da lista completa."},
+        {t:"Para economizar internet",ok:false,fb:"O motivo é não perder os dados."},
+        {t:"Porque o JavaScript exige",ok:false,fb:"É decisão de quem programa."}]},
+      {q:"O que includes faz?",opts:[
+        {t:"Diz se um texto contém outro",ok:true,fb:"Certo, devolve true ou false."},
+        {t:"Soma dois textos",ok:false,fb:"Somar é com + ou template literal."},
+        {t:"Apaga parte do texto",ok:false,fb:"Nada é apagado."}]},
+      {q:"Por que usar toLowerCase antes de comparar?",opts:[
+        {t:"Para a busca funcionar com maiúsculas e minúsculas",ok:true,fb:"Isso: 'CHECKOUT' passa a encontrar 'Checkout'."},
+        {t:"Para deixar a letra bonita",ok:false,fb:"É sobre comparação, não visual."},
+        {t:"Para ordenar",ok:false,fb:"Ordenar é outra coisa."}]}
+    ]
+  }
+];
+
+const API_PROVA = {
+  kind:'api',
+  title:"Prova prática — Catálogo da loja",
+  brief:`<p><strong>Sua missão:</strong> buscar os produtos na API e mostrar na tela, com um campo que filtra a lista. A API de treino responde em <code>https://api.encryptando.dev/produtos</code>.</p>
+  <p class="hint">Cada produto tem <code>nome</code>, <code>preco</code>, <code>categoria</code> e <code>estoque</code>. Teste digitando na busca da pré-visualização.</p>`,
+  starter:`<h2>Catálogo</h2>\n<input id="busca" placeholder="Buscar...">\n<ul id="lista"><li>Carregando...</li></ul>\n\n<script>\n  // 1) crie uma funcao async e chame a API com fetch\n  // 2) converta a resposta e guarde a lista numa variavel\n  // 3) percorra os produtos e mostre cada um na lista\n  // 4) no input, use o texto digitado para filtrar\n\n<\/script>`,
+  cheats:[
+    {name:'Função que espera',parts:[{t:'async function carregar() {',re:/async\s+function/},{t:'await fetch(...)',re:/await\s+fetch/}]},
+    {name:'Chamar a API',parts:[{t:'fetch("https://api.encryptando.dev/produtos")',re:/fetch\s*\(/}]},
+    {name:'Extrair os dados',parts:[{t:'await resposta.json()',re:/\.json\s*\(\s*\)/}]},
+    {name:'Percorrer a lista',parts:[{t:'produtos.map((p) => ...)',re:/\.(map|forEach)\s*\(/}]},
+    {name:'Mostrar na tela',parts:[{t:'lista.innerHTML = html',re:/(innerHTML|appendChild|textContent)\s*[=(]/}]},
+    {name:'Filtrar pela busca',parts:[{t:'.filter((p) => ...)',re:/\.filter\s*\(/},{t:'.includes(termo)',re:/\.includes\s*\(/}]}
+  ],
+  checks:[
+    {label:"Um lugar na página para a lista (id)",test:c=>!!c.doc.querySelector('ul[id], ol[id], div[id]')},
+    {label:"Chamar a API com fetch",test:c=>/fetch\s*\(\s*["'`]https:\/\/api\.encryptando\.dev/.test(c.js)},
+    {label:"Extrair os dados com .json()",test:c=>/\.json\s*\(\s*\)/.test(c.js)},
+    {label:"Esperar a resposta com await ou .then",test:c=>/await\s/.test(c.js)||/\.then\s*\(/.test(c.js)},
+    {label:"Percorrer os produtos com map ou forEach",test:c=>/\.(map|forEach)\s*\(/.test(c.js)},
+    {label:"Mostrar os produtos na tela",test:c=>/(innerHTML\s*=|appendChild\s*\(|textContent\s*=)/.test(c.js)},
+    {label:"Filtrar a lista pela busca",test:c=>/\.filter\s*\(/.test(c.js)&&/\.includes\s*\(/.test(c.js)}
+  ]
+};
+
 /* ---------- Módulos da trilha ---------- */
 PROVA.fn = 'media';
 const MODULES = [
@@ -2173,7 +2464,9 @@ const MODULES = [
   {id:'dom',fase:'Fase 1',title:'JavaScript na página (DOM)',kind:'dom',lessons:DOM_LESSONS,prova:DOM_PROVA,
    lead:'Oito aulas para dar vida às páginas: encontrar elementos, mudar textos e estilos, reagir a cliques, ler o que o usuário digita e criar conteúdo na hora.'},
   {id:'git',fase:'Fase 2',title:'Git e GitHub',kind:'term',lessons:GIT_LESSONS,prova:GIT_PROVA,
-   lead:'Oito aulas sobre versionar e publicar código, num terminal simulado dentro do site: você digita os comandos de verdade e vê a resposta do Git.'}
+   lead:'Oito aulas sobre versionar e publicar código, num terminal simulado dentro do site: você digita os comandos de verdade e vê a resposta do Git.'},
+  {id:'api',fase:'Fase 2',title:'JavaScript moderno e APIs',kind:'api',lessons:API_LESSONS,prova:API_PROVA,
+   lead:'Oito aulas para sair do básico: const/let, arrow, map e filter, objetos e JSON, e o fetch buscando dados de uma API de verdade para montar a tela.'}
 ];
 
 /* ---------- Estado / progresso ---------- */
@@ -2182,13 +2475,13 @@ const XP_LESSON=60, XP_PROVA=240, LEVEL_STEP=300;
 let P = load();
 
 function load(){
-  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:''};
+  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{}};
   MODULES.forEach(m=>{ base.mods[m.id]={done:[],prova:false,project:false}; });
   try{
     const s=localStorage.getItem(KEY);
     if(s){
       const d=JSON.parse(s);
-      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||'';
+      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||''; base.certs=d.certs||{};
       MODULES.forEach(m=>{ if(d.mods&&d.mods[m.id]) base.mods[m.id]=Object.assign({done:[],prova:false,project:false},d.mods[m.id]); });
       return base;
     }
@@ -2513,6 +2806,13 @@ MODULES[4].videos=[
 ];
 MODULES[4].playlist={id:'PLbEOwbQR9lqzK14I7OOeREEIE4k6rjgIj',t:'Git e GitHub — Curso prático',ch:'Professor José de Assis',n:'21 vídeos'};
 
+MODULES[5].videos=[
+  {id:'mLjrUc5oMGw',t:'O que é uma API? Entenda de uma vez por todas',ch:'Senhor Programador'},
+  {id:'qIGYM4S8x50',t:'Fetch API e async/await na prática',ch:'Matheus Battisti — Hora de Codar'},
+  {id:'NJzNc8-KqQI',t:'Consumindo API com JavaScript do zero',ch:'Gustavo Caetano'}
+];
+MODULES[5].playlist={id:'PLnex8IkmReXxZEXje06kW1uCwm5iC8M_Z',t:'Curso de JavaScript completo',ch:'Professor Edson Maia',n:'115 vídeos'};
+
 MODULES[1].project=PROJETO_FASE0;
 MODULES[3].project=PROJETO_FASE1;
 
@@ -2579,20 +2879,21 @@ function videoBlocked(id){
 
 /* ---------- Pré-visualização de HTML ---------- */
 const PREVIEW_BASE='<meta charset="utf-8"><style>body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;margin:0;padding:16px;color:#16161a;background:#fff;line-height:1.5}img{max-width:100%}</style>';
-function renderPreview(frame,code){
+function renderPreview(frame,code,extra){
+  const head=PREVIEW_BASE+(extra||'');
   const m=code.match(/<head[^>]*>/i);
-  frame.srcdoc = m ? code.replace(m[0], m[0]+PREVIEW_BASE) : PREVIEW_BASE+code;
+  frame.srcdoc = m ? code.replace(m[0], m[0]+head) : head+code;
 }
 function previewBox(id,scripts){
   const sb=(scripts?'allow-scripts ':'')+'allow-popups allow-popups-to-escape-sandbox';
   return `<div class="prev-wrap"><div class="out-label">Resultado${scripts?' <span class="run-tag">o código roda de verdade</span>':''}</div>
     <iframe class="preview" id="${id}" title="Resultado da página" sandbox="${sb}"></iframe></div>`;
 }
-function liveBind(edId,frameId){
+function liveBind(edId,frameId,extra){
   const ed=$('#'+edId), fr=$('#'+frameId); let t;
-  renderPreview(fr,ed.value);
-  ed.addEventListener('input',()=>{ clearTimeout(t); t=setTimeout(()=>renderPreview(fr,ed.value),250); });
-  return ()=>renderPreview(fr,ed.value);
+  renderPreview(fr,ed.value,extra);
+  ed.addEventListener('input',()=>{ clearTimeout(t); t=setTimeout(()=>renderPreview(fr,ed.value,extra),250); });
+  return ()=>renderPreview(fr,ed.value,extra);
 }
 
 /* ---------- HOME ---------- */
@@ -2606,7 +2907,7 @@ function renderHome(){
   const fases=[
     {n:"Fase 0",t:"Fundamentos da Web",d:"HTML para a estrutura e CSS para o visual de toda página.",m:[0,1]},
     {n:"Fase 1",t:"Lógica & JavaScript",d:"Pensar como programador e depois dar vida às páginas.",m:[2,3]},
-    {n:"Fase 2",t:"Jornada Dev",d:"Versionar, publicar e construir aplicações de verdade.",m:[4]},
+    {n:"Fase 2",t:"Jornada Dev",d:"Versionar, publicar e construir aplicações de verdade.",m:[4,5]},
     {n:"Fase 3",t:"Marketing Digital",d:"Levar produto e público até o projeto.",m:[]}
   ];
   let html=`
@@ -2750,14 +3051,16 @@ function openLesson(m,i){
     $('#tab-a').setAttribute('aria-selected','true');
     $('#tab-q').setAttribute('aria-selected','false');
     const isTerm=mod.kind==='term';
-    const isHtml=mod.kind==='html'||mod.kind==='css'||mod.kind==='dom';
+    const isHtml=mod.kind==='html'||mod.kind==='css'||mod.kind==='dom'||mod.kind==='api';
+    const runsJs=mod.kind==='dom'||mod.kind==='api';
+    const mock=mod.kind==='api'?API_MOCK:'';
     const playHTML = isTerm
       ? termBox('aula')+`<div class="cmds"><span class="cmds-t">Para experimentar:</span>${(l.cmds||[]).map(c=>`<button class="cmdchip" data-cmd="${esc(c)}">${esc(c)}</button>`).join('')}</div>`
       : `<div class="play">
           <div class="play-h"><span class="dots"><i></i><i></i><i></i></span><span class="fn">${isHtml?'index.html':'exemplo.js'}</span>
             <button class="btn btn-run run" id="run">${IC.play} ${isHtml?'Ver resultado':'Rodar'}</button></div>
           ${editorBox('ed',mod.kind==='js'?'js':'html',170)}
-          ${isHtml?previewBox('pv',mod.kind==='dom'):'<div class="out" id="out"><div class="out-label">Saída</div><div class="out-body" id="outb"><span style="color:var(--faint)">Clique em Rodar para ver o resultado.</span></div></div>'}
+          ${isHtml?previewBox('pv',runsJs):'<div class="out" id="out"><div class="out-label">Saída</div><div class="out-body" id="outb"><span style="color:var(--faint)">Clique em Rodar para ver o resultado.</span></div></div>'}
         </div>`;
     panel.innerHTML=`
       <div class="panel">
@@ -2781,7 +3084,7 @@ function openLesson(m,i){
     enhanceEditor('ed',mod.kind==='js'?'js':'html');
     setEditor('ed',l.code);
     if(isHtml){
-      const refresh=liveBind('ed','pv');
+      const refresh=liveBind('ed','pv',mock);
       $('#run').addEventListener('click',refresh);
     } else {
       $('#run').addEventListener('click',()=>runPlayground($('#ed').value,$('#outb'),$('#out')));
@@ -3003,10 +3306,10 @@ function openProva(m,proj){
         </div>
         <div class="missions">${labels.map((l,i)=>`<div class="mission" id="ms-${i}"><span class="mi">${i+1}</span><span class="ml">${esc(l)}<small class="mx" id="mx-${i}"></small></span><span class="ms">Falta</span></div>`).join('')}</div>
         ${isTerm?`<div id="termwrap">${termBox('prova')}</div>`:`<div class="play">
-          <div class="play-h"><span class="dots"><i></i><i></i><i></i></span><span class="fn">${kind==='css'?'estilo.html':(kind==='html'?'apresentacao.html':(kind==='dom'?'pagina.html':'prova.js'))}</span>
+          <div class="play-h"><span class="dots"><i></i><i></i><i></i></span><span class="fn">${kind==='css'?'estilo.html':(kind==='html'?'apresentacao.html':(kind==='dom'?'pagina.html':(kind==='api'?'catalogo.html':'prova.js')))}</span>
             ${live?'<span class="live-tag"><i></i>correção ao vivo</span>':`<button class="btn btn-run run" id="runp">${IC.play} Rodar testes</button>`}</div>
           ${editorBox('edp',kind==='js'?'js':'html',240)}
-          ${live?previewBox('pvp',kind==='dom'):''}
+          ${live?previewBox('pvp',kind==='dom'||kind==='api'):''}
         </div>`}
         <div id="perr"></div>
         <div class="prova-foot">
@@ -3066,8 +3369,8 @@ function openProva(m,proj){
     }));
   }
 
-  const refreshPreview = (live&&!isTerm) ? liveBind('edp','pvp') : null;
-  const evaluate = kind==='css' ? evalCSS : (kind==='dom' ? evalDOM : evalHTML);
+  const refreshPreview = (live&&!isTerm) ? liveBind('edp','pvp',kind==='api'?API_MOCK:'') : null;
+  const evaluate = kind==='css' ? evalCSS : ((kind==='dom'||kind==='api') ? evalDOM : evalHTML);
   function check(){
     if(isTerm){ paintCheats(termState.hist.join('\n')); paint(evalTERM(pv,termState)); return; }
     const code=ed.value; paintCheats(code); if(live) paint(evaluate(pv,code));
@@ -3119,6 +3422,7 @@ function finishProva(m,status,secs,proj){
     next:(!proj&&first&&next)?next.title:null,
     cert:(proj?'p':'m')+m
   });
+  if(first&&trilhaCompleta()) certMeta('final');
 }
 function showWin(o){
   let w=$('#win');
