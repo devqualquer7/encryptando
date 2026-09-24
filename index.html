@@ -1,0 +1,2206 @@
+<title>Encryptando</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: dark;
+    --bg:#0a0a0c;
+    --bg-2:#111013;
+    --surface:#171518;
+    --surface-2:#221d21;
+    --surface-3:#2c252a;
+    --border:rgba(255,255,255,.09);
+    --border-strong:rgba(255,255,255,.18);
+    --text:#f6eef0;
+    --muted:#b6a9ad;
+    --faint:#847579;
+    --violet:#ff2a1f;
+    --violet-2:#ff6a5c;
+    --mint:#35d98a;
+    --mint-2:#74efb3;
+    --gold:#ffcf5c;
+    --danger:#ff5a6a;
+    --glow-violet:0 0 0 1px rgba(255,42,31,.4), 0 10px 40px -12px rgba(255,42,31,.6);
+    --glow-mint:0 0 0 1px rgba(53,217,138,.35), 0 10px 40px -12px rgba(53,217,138,.5);
+    --radius:16px;
+    --radius-sm:11px;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --display:"Sora",system-ui,sans-serif;
+    --body:"DM Sans",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 620px at 82% -8%, rgba(255,42,31,.16), transparent 60%),
+      radial-gradient(900px 560px at 6% 4%, rgba(55,224,166,.10), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--violet-2)}
+  button{font-family:inherit}
+  h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+  code{font-family:var(--mono);font-size:.9em;background:rgba(255,42,31,.13);color:var(--violet-2);padding:.08em .38em;border-radius:6px}
+
+  .wrap{max-width:940px;margin:0 auto;padding-inline:18px}
+
+  /* Header */
+  header.app{
+    position:sticky;top:env(safe-area-inset-top,0px);z-index:40;
+    backdrop-filter:blur(14px);
+    background:linear-gradient(180deg, rgba(10,10,12,.92), rgba(10,10,12,.72));
+    border-bottom:1px solid var(--border);
+  }
+  .hbar{display:flex;align-items:center;gap:16px;padding-block:12px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.01em}
+  .logo{width:36px;height:36px;border-radius:10px;overflow:hidden;background:#0b0b0d;border:1px solid rgba(255,255,255,.14);box-shadow:var(--glow-violet);flex:none}
+  .logo img{width:100%;height:100%;object-fit:cover;display:block}
+  .brand b{color:var(--violet-2)}
+  .brand span.tag{font-family:var(--body);font-weight:600;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);border:1px solid var(--border);padding:2px 7px;border-radius:999px;margin-left:2px}
+  .hstats{margin-left:auto;display:flex;align-items:center;gap:14px}
+  .stat{display:flex;align-items:center;gap:7px;font-weight:600;font-size:13.5px}
+  .stat svg{width:17px;height:17px;flex:none}
+  .streak-n{color:var(--gold)}
+  .lvlbox{min-width:150px}
+  .lvlrow{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600}
+  .lvlrow b{color:var(--text)}
+  .xpbar{height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden;border:1px solid var(--border)}
+  .xpfill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--violet-2),var(--violet));transition:width .7s cubic-bezier(.2,.8,.2,1)}
+  @media (max-width:640px){
+    .lvlbox{display:none}
+    .brand span.tag{display:none}
+  }
+
+  main{padding-block:26px 60px}
+
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--violet-2);margin:0 0 8px}
+  .lead{color:var(--muted);font-size:15.5px;max-width:62ch}
+  h1.title{font-size:clamp(27px,5vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.08;margin-bottom:12px}
+  h1.title .hl{background:linear-gradient(120deg,var(--violet-2),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* Fases */
+  .sec-h{display:flex;align-items:baseline;gap:12px;margin:38px 0 16px}
+  .sec-h h2{font-size:21px;font-weight:700;letter-spacing:-.01em}
+  .sec-h .muted{color:var(--faint);font-size:13px;font-weight:600}
+  .fases{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:720px){.fases{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:400px){.fases{grid-template-columns:1fr}}
+  .fase{border:1px solid var(--border);background:linear-gradient(165deg,var(--surface),var(--bg-2));border-radius:var(--radius);padding:15px 15px 16px;position:relative;overflow:hidden}
+  .fase.active{border-color:rgba(255,42,31,.4);box-shadow:0 14px 40px -22px rgba(255,42,31,.7)}
+  .fase .num{font-family:var(--mono);font-size:12px;color:var(--faint);font-weight:600}
+  .fase h3{font-size:15.5px;margin:8px 0 5px;font-weight:700}
+  .fase p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.45}
+  .fase .badge{position:absolute;top:13px;right:13px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
+  .badge.on{background:rgba(55,224,166,.16);color:var(--mint-2);border:1px solid rgba(55,224,166,.3)}
+  .badge.soon{background:var(--surface-2);color:var(--faint);border:1px solid var(--border)}
+  .fase.locked{opacity:.62}
+
+  /* Trilha de aulas */
+  .path{position:relative;margin-top:6px}
+  .path::before{content:"";position:absolute;left:26px;top:22px;bottom:22px;width:3px;border-radius:3px;
+    background:linear-gradient(180deg,var(--violet),rgba(255,42,31,.15));}
+  .node{position:relative;display:flex;gap:16px;align-items:stretch;padding:7px 0}
+  .dot{width:54px;flex:none;display:flex;justify-content:center}
+  .disc{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:18px;
+    background:var(--surface-2);border:1px solid var(--border);color:var(--muted);position:relative;z-index:2;transition:transform .25s}
+  .node.done .disc{background:linear-gradient(150deg,var(--mint),#12b98a);color:#04231b;border-color:transparent;box-shadow:var(--glow-mint)}
+  .node.avail .disc{background:linear-gradient(150deg,var(--violet),#c00d08);color:#fff;border-color:transparent;box-shadow:var(--glow-violet);animation:pulse 2.4s infinite}
+  .node.locked .disc{color:var(--faint)}
+  .disc svg{width:22px;height:22px}
+  @keyframes pulse{0%,100%{box-shadow:var(--glow-violet)}50%{box-shadow:0 0 0 1px rgba(255,42,31,.5),0 14px 46px -10px rgba(255,42,31,.85)}}
+
+  .card-lesson{flex:1;min-width:0;text-align:left;border:1px solid var(--border);background:linear-gradient(165deg,var(--surface),var(--bg-2));
+    border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;
+    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;color:inherit;width:100%}
+  .card-lesson:hover{transform:translateY(-2px);border-color:var(--border-strong)}
+  .node.locked .card-lesson{cursor:not-allowed}
+  .card-lesson .meta{flex:1;min-width:0}
+  .card-lesson .kicker{font-family:var(--mono);font-size:11px;color:var(--faint);font-weight:600;letter-spacing:.02em}
+  .card-lesson h3{font-size:16px;font-weight:700;margin:2px 0 3px}
+  .card-lesson p{margin:0;font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .card-lesson .go{flex:none;color:var(--faint);display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600}
+  .node.done .card-lesson .go{color:var(--mint-2)}
+  .card-lesson .go svg{width:18px;height:18px}
+  .node.locked .card-lesson{opacity:.6}
+  .node.shake .card-lesson{animation:shake .4s}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
+  .prova-node .card-lesson{background:linear-gradient(150deg,rgba(255,207,92,.1),var(--bg-2));border-color:rgba(255,207,92,.28)}
+  .prova-node.locked .card-lesson{background:linear-gradient(165deg,var(--surface),var(--bg-2));border-color:var(--border)}
+  .prova-node.avail .disc{background:linear-gradient(150deg,var(--gold),#e0a52d);color:#2b1d00;box-shadow:0 0 0 1px rgba(255,207,92,.4),0 12px 40px -12px rgba(255,207,92,.7);animation:pulse 2.4s infinite}
+  .prova-node.done .disc{background:linear-gradient(150deg,var(--gold),#e0a52d);color:#2b1d00}
+
+  /* Lesson view */
+  .lv-top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .back{display:inline-flex;align-items:center;gap:7px;background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    padding:8px 13px;border-radius:10px;font-weight:600;font-size:13.5px;cursor:pointer;transition:border-color .18s}
+  .back:hover{border-color:var(--border-strong)}
+  .back svg{width:16px;height:16px}
+  .lv-kicker{font-family:var(--mono);font-size:12px;color:var(--faint);font-weight:600}
+  h1.lv-title{font-size:clamp(23px,4.5vw,32px);font-weight:800;letter-spacing:-.02em;margin:4px 0 6px}
+  .lv-goal{color:var(--muted);font-size:15px;margin-bottom:18px}
+
+  .tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:5px;margin-bottom:20px;width:fit-content;max-width:100%}
+  .tab{flex:1;white-space:nowrap;border:0;background:transparent;color:var(--muted);font-weight:700;font-size:13.5px;padding:9px 16px;border-radius:9px;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:7px;justify-content:center}
+  .tab svg{width:15px;height:15px}
+  .tab[aria-selected="true"]{background:var(--surface-3);color:var(--text);box-shadow:0 2px 12px -6px rgba(0,0,0,.6)}
+  .tab .chk{color:var(--mint)}
+
+  .panel{animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .prose p{font-size:15.5px;color:#dfe2ff;margin:0 0 13px}
+  .prose ul{margin:0 0 14px;padding-left:20px}
+  .prose li{font-size:15px;color:#dfe2ff;margin-bottom:6px}
+  .prose strong{color:#fff}
+
+  /* Code playground */
+  .play{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#0a0c1a;margin:16px 0 6px}
+  .play-h{display:flex;align-items:center;gap:9px;padding:10px 14px;background:linear-gradient(180deg,var(--surface-2),var(--surface));border-bottom:1px solid var(--border)}
+  .dots{display:flex;gap:6px}
+  .dots i{width:11px;height:11px;border-radius:50%;display:block}
+  .dots i:nth-child(1){background:#ff5f57}.dots i:nth-child(2){background:#febc2e}.dots i:nth-child(3){background:#28c840}
+  .play-h .fn{font-family:var(--mono);font-size:12px;color:var(--faint);margin-left:4px}
+  .play-h .run{margin-left:auto}
+  .btn{display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;font-weight:700;font-size:13.5px;padding:9px 16px;border-radius:10px;transition:transform .12s, box-shadow .2s, opacity .2s}
+  .btn:active{transform:scale(.97)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn-run{background:linear-gradient(135deg,var(--mint),#12b98a);color:#04231b;box-shadow:0 8px 26px -12px rgba(55,224,166,.9)}
+  .btn-primary{background:linear-gradient(135deg,var(--violet),#c00d08);color:#fff;box-shadow:0 8px 26px -12px rgba(255,42,31,.9)}
+  .btn-ghost{background:var(--surface-2);color:var(--text);border:1px solid var(--border)}
+  .btn svg{width:16px;height:16px}
+  .editor{width:100%;border:0;outline:0;resize:vertical;min-height:150px;background:#0a0c1a;color:#e6e9ff;
+    font-family:var(--mono);font-size:13.5px;line-height:1.7;padding:14px;tab-size:2;display:block}
+  .editor:focus{box-shadow:inset 0 0 0 2px rgba(255,42,31,.4)}
+  .out{border-top:1px solid var(--border);background:#070812;padding:12px 14px;font-family:var(--mono);font-size:13px;min-height:44px;color:var(--mint-2)}
+  .out-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-bottom:6px;font-family:var(--body)}
+  .out-line{white-space:pre-wrap;word-break:break-word;padding:1px 0}
+  .out.out-error{color:var(--danger)}
+  .tip{display:flex;gap:10px;align-items:flex-start;background:rgba(255,42,31,.08);border:1px solid rgba(255,42,31,.2);border-radius:12px;padding:12px 14px;margin-top:14px;font-size:14px;color:#dfe2ff}
+  .tip svg{width:18px;height:18px;flex:none;color:var(--violet-2);margin-top:2px}
+
+  /* Quiz */
+  .q{border:1px solid var(--border);background:var(--surface);border-radius:var(--radius);padding:18px 18px 16px;margin-bottom:14px}
+  .q .qn{font-family:var(--mono);font-size:11px;color:var(--faint);font-weight:600;letter-spacing:.05em}
+  .q .qt{font-size:16px;font-weight:600;margin:5px 0 8px;color:#fff}
+  pre.snip{background:#0a0c1a;border:1px solid var(--border);border-radius:10px;padding:12px 14px;overflow-x:auto;margin:0 0 12px}
+  pre.snip code{background:none;color:#e6e9ff;padding:0;font-size:12.8px;line-height:1.65;white-space:pre}
+  .opts{display:flex;flex-direction:column;gap:8px}
+  .opt{text-align:left;border:1px solid var(--border);background:var(--surface-2);color:var(--text);padding:11px 14px;border-radius:11px;cursor:pointer;font-size:14.5px;font-weight:500;transition:all .16s;display:flex;align-items:center;gap:11px}
+  .opt:hover:not(:disabled){border-color:var(--border-strong);transform:translateX(2px)}
+  .opt .mk{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--faint);flex:none;display:grid;place-items:center}
+  .opt .mk svg{width:13px;height:13px;opacity:0}
+  .opt.correct{border-color:rgba(55,224,166,.55);background:rgba(55,224,166,.12);color:var(--mint-2)}
+  .opt.correct .mk{border-color:var(--mint);background:var(--mint)}
+  .opt.correct .mk svg{opacity:1;color:#04231b}
+  .opt.wrong{border-color:rgba(255,107,129,.5);background:rgba(255,107,129,.1);color:#ffb3bf}
+  .opt.wrong .mk{border-color:var(--danger)}
+  .opt:disabled{cursor:default}
+  .fb{margin-top:10px;font-size:13.5px;padding:10px 13px;border-radius:10px;display:none}
+  .fb.show{display:block;animation:fade .25s}
+  .fb.ok{background:rgba(55,224,166,.1);color:var(--mint-2);border:1px solid rgba(55,224,166,.25)}
+  .fb.no{background:rgba(255,107,129,.09);color:#ffb3bf;border:1px solid rgba(255,107,129,.22)}
+
+  .finish{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:20px;padding:18px;border:1px solid var(--border);border-radius:var(--radius);background:linear-gradient(150deg,var(--surface),var(--bg-2))}
+  .finish .prog{flex:1;min-width:180px}
+  .finish .prog .lbl{font-size:12.5px;color:var(--muted);font-weight:600;margin-bottom:6px}
+  .miniprog{height:7px;border-radius:999px;background:var(--surface-2);overflow:hidden;border:1px solid var(--border)}
+  .miniprog i{display:block;height:100%;background:linear-gradient(90deg,var(--violet-2),var(--violet));border-radius:999px;transition:width .4s}
+
+  /* Prova */
+  .prova-desc{border:1px solid rgba(255,207,92,.28);background:linear-gradient(150deg,rgba(255,207,92,.08),var(--bg-2));border-radius:var(--radius);padding:18px;margin-bottom:18px}
+  .prova-desc h3{font-size:16px;color:var(--gold);margin-bottom:8px}
+  .prova-desc p{font-size:15px;color:#dfe2ff;margin:0 0 10px}
+  .prova-desc ul{margin:0;padding-left:20px}
+  .prova-desc li{font-size:14.5px;color:#dfe2ff;margin-bottom:5px}
+  .tests{margin-top:16px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+  .tests table{width:100%;border-collapse:collapse;font-size:13px}
+  .tests th{text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border)}
+  .tests td{padding:11px 14px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12.5px;color:#dfe2ff;vertical-align:top}
+  .tests tr:last-child td{border-bottom:0}
+  .tests .st{font-family:var(--body);font-weight:700;display:inline-flex;align-items:center;gap:6px}
+  .tests .st svg{width:15px;height:15px}
+  .st.pass{color:var(--mint-2)}.st.fail{color:var(--danger)}.st.idle{color:var(--faint)}
+
+  /* Toast */
+  #toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(120%);z-index:80;
+    background:var(--surface-3);border:1px solid var(--border-strong);color:var(--text);padding:13px 20px;border-radius:13px;
+    font-weight:600;font-size:14px;box-shadow:0 20px 50px -18px rgba(0,0,0,.8);display:flex;align-items:center;gap:10px;
+    transition:transform .45s cubic-bezier(.2,.9,.2,1);max-width:90vw}
+  #toast.show{transform:translateX(-50%) translateY(0)}
+  #toast svg{width:19px;height:19px;flex:none}
+  #toast.gold{border-color:rgba(255,207,92,.4)}#toast.gold svg{color:var(--gold)}
+  #toast.mint svg{color:var(--mint)}
+
+  /* Pré-visualização de HTML + checklist da prova */
+  .prev-wrap{border-top:1px solid var(--border);background:#070812}
+  .prev-wrap .out-label{padding:10px 14px 8px;margin:0}
+  .preview{display:block;width:100%;height:260px;border:0;background:#fff}
+  .checks{margin-top:16px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+  .check{display:flex;gap:10px;align-items:center;padding:11px 14px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600}
+  .check:last-child{border-bottom:0}
+  .check svg{width:16px;height:16px;flex:none}
+  .check.pass{color:var(--mint-2)}.check.fail{color:#ffb3bf}.check.idle{color:var(--muted)}
+  .modlock{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:13.5px;background:var(--surface);border:1px dashed var(--border-strong);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+  .modlock svg{width:18px;height:18px;flex:none}
+  /* Editor com cores e numeração */
+  .edwrap{display:flex;background:#0a0c1a;max-width:100%;overflow:hidden}
+  .edwrap:focus-within{box-shadow:inset 0 0 0 2px rgba(255,42,31,.35)}
+  .gutter{flex:none;min-width:40px;padding:14px 8px 14px 12px;font-family:var(--mono);font-size:13.5px;line-height:1.7;color:#544c52;text-align:right;user-select:none;overflow:hidden;white-space:pre;border-right:1px solid var(--border)}
+  .edbox{position:relative;flex:1;min-width:0}
+  .hl{margin:0;padding:14px;font-family:var(--mono);font-size:13.5px;line-height:1.7;white-space:pre;overflow:auto;height:100%;color:#e6e9ff;scrollbar-width:none}
+  .hl::-webkit-scrollbar{display:none}
+  .hl code{font-family:inherit;background:none;padding:0;color:inherit;font-size:inherit;border-radius:0}
+  textarea.editor{position:absolute;inset:0;width:100%;height:100%;padding:14px;margin:0;border:0;outline:0;resize:none;background:transparent;color:transparent;caret-color:#fff;font-family:var(--mono);font-size:13.5px;line-height:1.7;white-space:pre;overflow:auto;tab-size:2;display:block}
+  textarea.editor::selection{background:rgba(255,42,31,.4);color:transparent}
+  .t-tag{color:#ff6a5c}
+  .t-attr{color:#ffcf5c}
+  .t-str{color:#74efb3}
+  .t-com{color:#7b7280;font-style:italic}
+  .t-kw{color:#ff8a95}
+  .t-num{color:#c8f542}
+  .t-fn{color:#8fd8ff}
+  .t-sel{color:#ff6a5c}
+  .t-prop{color:#ffcf5c}
+  .t-punc{color:#9a9298}
+  /* Cartão de revisão */
+  .revcard{display:flex;align-items:center;gap:13px;width:100%;text-align:left;margin:18px 0 4px;padding:14px 16px;cursor:pointer;
+    border:1px solid rgba(255,207,92,.35);border-radius:var(--radius);background:linear-gradient(150deg,rgba(255,207,92,.09),var(--bg-2));color:inherit;
+    transition:transform .18s,border-color .18s}
+  .revcard:hover{transform:translateY(-2px);border-color:rgba(255,207,92,.6)}
+  .revic{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(150deg,var(--gold),#e0a52d);color:#2b1d00}
+  .revic svg{width:19px;height:19px}
+  .revtxt{flex:1;display:flex;flex-direction:column;min-width:0}
+  .revtxt b{font-size:15px}
+  .revtxt small{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .revgo svg{width:18px;height:18px;color:var(--gold)}
+  /* Vídeo-aulas */
+  .vid-sec{margin:14px 0 6px}
+  .vid-h{display:flex;align-items:center;gap:9px;margin-bottom:10px;flex-wrap:wrap}
+  .vid-h svg{width:18px;height:18px;color:var(--violet-2)}
+  .vid-h h3{font-size:16px;font-weight:700}
+  .vid-h span{font-size:12.5px;color:var(--faint)}
+  .vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vid{border:1px solid var(--border);background:linear-gradient(165deg,var(--surface),var(--bg-2));border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+  .vid.playing{grid-column:1/-1}
+  .vbody{display:flex;gap:11px;align-items:center;min-width:0}
+  .vthumb{flex:none;width:54px;height:40px;border-radius:9px;border:0;cursor:pointer;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--violet),#c00d08);box-shadow:0 8px 20px -10px rgba(255,42,31,.9);transition:transform .15s}
+  .vthumb:hover{transform:scale(1.06)}
+  .vthumb svg{width:17px;height:17px}
+  .vmeta{min-width:0}
+  .vt{margin:0;font-weight:700;font-size:13.5px;line-height:1.35}
+  .vc{margin:2px 0 0;font-size:12px;color:var(--muted)}
+  .vacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+  .btn-sm{padding:7px 12px;font-size:12.5px;border-radius:9px}
+  .vid .frame{width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000;max-width:100%}
+  .vid .frame iframe{width:100%;height:100%;border:0;display:block}
+  .playlist{display:flex;align-items:center;gap:11px;margin-top:10px;padding:12px 14px;border:1px solid var(--border);border-radius:13px;background:var(--surface);color:inherit;text-decoration:none;transition:border-color .18s,transform .18s}
+  .playlist:hover{border-color:var(--border-strong);transform:translateY(-1px)}
+  .playlist>svg{width:20px;height:20px;flex:none;color:var(--gold)}
+  .playlist>svg:last-child{width:17px;height:17px;color:var(--faint);margin-left:auto}
+  .playlist span{display:flex;flex-direction:column;min-width:0}
+  .playlist b{font-size:13.5px;line-height:1.3}
+  .playlist small{font-size:12px;color:var(--muted);margin-top:2px}
+  .run-tag{margin-left:8px;color:#39ff88;font-size:10px;letter-spacing:.06em;font-weight:800}
+  .vfall{display:flex;gap:11px;align-items:flex-start;border:1px dashed var(--border-strong);background:var(--surface-2);border-radius:11px;padding:12px}
+  .vfall svg{width:20px;height:20px;flex:none;color:var(--gold);margin-top:2px}
+  .vfall p{margin:0;font-size:13px;color:var(--muted);line-height:1.45}
+  .vfall p+p{margin-top:4px}
+  .vhint{margin:9px 0 0;font-size:12px;color:var(--faint)}
+  /* Prova: modo desafio */
+  .hud{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:4px 0 16px}
+  .chip-timer{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;font-weight:600;background:var(--surface-2);border:1px solid var(--border);padding:7px 13px;border-radius:999px;font-variant-numeric:tabular-nums}
+  .chip-timer svg{width:15px;height:15px;color:var(--gold)}
+  .chip-timer .best{color:var(--gold);font-size:12px;border-left:1px solid var(--border);padding-left:8px}
+  .btn-submit{background:var(--surface-3);color:var(--faint)}
+  .btn-submit.btn-win{background:linear-gradient(135deg,#39ff88,#12b98a);color:#04231b;animation:glowg 1.6s infinite}
+  @keyframes glowg{0%,100%{box-shadow:0 0 0 0 rgba(57,255,136,.55),0 0 24px -6px rgba(57,255,136,.9)}50%{box-shadow:0 0 0 7px rgba(57,255,136,0),0 0 36px -4px rgba(57,255,136,1)}}
+  .arena{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+  @media (max-width:880px){.arena{grid-template-columns:1fr}}
+  .arena-main{min-width:0;display:flex;flex-direction:column;gap:14px}
+  .arena-main .play{margin:0}
+  .brief{border:1px solid rgba(255,207,92,.28);background:linear-gradient(150deg,rgba(255,207,92,.07),var(--bg-2));border-radius:var(--radius);padding:15px 17px}
+  .brief p{margin:0 0 8px;font-size:15px;color:#e9e2e4}
+  .brief ul{margin:0 0 8px;padding-left:20px}.brief li{font-size:14.5px;color:#e9e2e4;margin-bottom:4px}
+  .brief .g{color:#39ff88;font-weight:700}
+  .brief .hint{color:var(--muted);font-size:13.5px;margin:0}
+  .meter{--lv:#ff4d5e;border:1px solid var(--border);background:linear-gradient(160deg,var(--surface),var(--bg-2));border-radius:var(--radius);padding:15px 17px}
+  .meter-top{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .meter-title{font-weight:700;font-size:13.5px;color:var(--muted)}
+  .meter-level{display:inline-block;font-family:var(--display);font-weight:800;font-size:21px;color:var(--lv);text-shadow:0 0 18px var(--lv);transition:color .3s}
+  .meter-count{margin-left:auto;font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .meter-bars{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px}
+  .meter-bars i{height:12px;border-radius:6px;background:var(--surface-3);transition:background .35s,box-shadow .35s}
+  .meter-bars i.on{background:var(--lv);box-shadow:0 0 14px var(--lv)}
+  .missions{display:grid;gap:8px}
+  .mission{display:flex;gap:12px;align-items:center;padding:11px 14px;border-radius:12px;border:1px solid rgba(255,77,94,.4);background:rgba(255,77,94,.06);transition:border-color .3s,background .3s,box-shadow .3s}
+  .mission .mi{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;flex:none;border:2px solid #ff4d5e;color:#ff6b78;font-family:var(--mono);font-size:12px;font-weight:700;transition:all .3s}
+  .mission .ml{flex:1;min-width:0;font-weight:600;font-size:14px}
+  .mission .mx{display:block;font-family:var(--mono);font-size:12px;color:#ffb3bf;font-weight:500}
+  .mission .mx:empty{display:none}
+  .mission .ms{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:#ff6b78}
+  .mission.ok{border-color:rgba(57,255,136,.6);background:rgba(57,255,136,.08);box-shadow:0 0 22px -8px rgba(57,255,136,.7)}
+  .mission.ok .mi{background:#39ff88;border-color:#39ff88;color:#04231b}
+  .mission.ok .ms{color:#39ff88}
+  .pop{animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+  @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
+  .live-tag{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:#39ff88;letter-spacing:.03em}
+  .live-tag i{width:8px;height:8px;border-radius:50%;background:#39ff88;box-shadow:0 0 10px #39ff88;animation:blink 1.4s infinite}
+  @keyframes blink{50%{opacity:.3}}
+  .prova-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .pstatus{color:var(--muted);font-weight:600;font-size:13.5px}
+  .cola{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);border:1px solid var(--border);background:var(--surface);border-radius:var(--radius);padding:16px}
+  @media (max-width:880px){.cola{position:static}}
+  .cola h3{font-size:15.5px;margin-bottom:4px}
+  .cola .sub{font-size:12.5px;color:var(--muted);margin:0 0 10px;line-height:1.45}
+  .cola-legend{display:flex;gap:14px;font-size:11.5px;color:var(--muted);margin-bottom:6px;font-weight:600}
+  .dotk{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle}
+  .cheat{padding:9px 0;border-top:1px solid var(--border)}
+  .cheat .cn{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;gap:8px}
+  .cheat .note{font-size:10px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;font-weight:800}
+  .cheat .parts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .cheat .arrow{color:var(--faint);font-size:12px}
+  .tagchip{font-family:var(--mono);font-size:12.5px;padding:4px 9px;border-radius:8px;border:1px solid rgba(255,77,94,.55);color:#ff8a95;background:rgba(255,77,94,.08);transition:border-color .3s,color .3s,background .3s,box-shadow .3s;word-break:break-word}
+  .tagchip.ok{border-color:#39ff88;color:#39ff88;background:rgba(57,255,136,.1);box-shadow:0 0 14px -4px rgba(57,255,136,.9)}
+  .spark{position:fixed;width:6px;height:6px;border-radius:50%;background:#39ff88;box-shadow:0 0 8px #39ff88;pointer-events:none;z-index:85;animation:spark .75s ease-out forwards}
+  @keyframes spark{to{transform:translate(var(--dx),var(--dy));opacity:0}}
+  #win{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:16px;background:rgba(5,5,7,.72);backdrop-filter:blur(6px)}
+  #win[hidden]{display:none}
+  .win-card{width:100%;max-width:420px;text-align:center;background:linear-gradient(165deg,var(--surface-2),var(--bg));border:1px solid rgba(255,207,92,.45);border-radius:22px;padding:28px 22px 22px;box-shadow:0 30px 80px -20px rgba(0,0,0,.9),0 0 60px -20px rgba(255,207,92,.5);animation:rise .55s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes rise{from{opacity:0;transform:translateY(24px) scale(.94)}to{opacity:1;transform:none}}
+  .win-ic{width:72px;height:72px;margin:0 auto 12px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(150deg,var(--gold),#e0a52d);color:#2b1d00;box-shadow:0 0 40px -6px rgba(255,207,92,.8)}
+  .win-ic svg{width:38px;height:38px}
+  .win-card h2{font-size:24px;margin-bottom:16px}
+  .win-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+  .win-stats div{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;gap:2px}
+  .win-stats b{font-family:var(--display);font-size:18px;font-variant-numeric:tabular-nums}
+  .win-stats span{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+  .win-next{display:flex;gap:8px;justify-content:center;align-items:center;color:var(--mint-2);font-weight:700;margin:0 0 14px}
+  .win-next svg{width:16px;height:16px}
+  .win-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  #fx{position:fixed;inset:0;pointer-events:none;z-index:70;display:none}
+
+  .foot{color:var(--faint);font-size:12.5px;text-align:center;margin-top:46px;border-top:1px solid var(--border);padding-top:20px;line-height:1.7}
+  .foot b{color:var(--muted)}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+
+<header class="app">
+  <div class="wrap hbar">
+    <div class="brand">
+      <span class="logo"><img src="data:image/png;base64,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" alt="Logo da enCrypteD"></span>
+      <span>Encrypt<b>ando</b></span>
+      <span class="tag">beta</span>
+    </div>
+    <div class="hstats">
+      <div class="stat" title="Ofensiva de dias">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--gold)"><path d="M12 2s5 4 5 9a5 5 0 0 1-10 0c0-1.5.5-2.5.5-2.5S9 10 9 12c0-3 3-4 3-10z"/></svg>
+        <span class="streak-n" id="streakN">0</span>
+      </div>
+      <div class="lvlbox">
+        <div class="lvlrow"><span>Nível <b id="lvlN">1</b></span><span id="xpN">0 XP</span></div>
+        <div class="xpbar"><div class="xpfill" id="xpFill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main><div class="wrap" id="view"></div></main>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<canvas id="fx"></canvas>
+
+<script>
+/* ---------- Ícones ---------- */
+const IC = {
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+  arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>',
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>',
+  book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M18 3v16"/></svg>',
+  quiz:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>',
+  trophy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v4a6 6 0 0 1-12 0z"/><path d="M6 6H3v2a3 3 0 0 0 3 3M18 6h3v2a3 3 0 0 1-3 3"/><path d="M9 20h6M12 15v5"/></svg>',
+  bulb:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.3 1 2.5h6c0-1.2.3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+  spark:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3L20 10l-5.8 1.7L12 18l-2.2-6.3L4 10l5.8-1.7z"/></svg>'
+};
+
+/* ---------- Conteúdo: Módulo 2 — Lógica com JavaScript ---------- */
+const LESSONS = [
+  {
+    title:"Primeiros passos",
+    goal:"Falar com o computador e entender o que é um algoritmo.",
+    learn:`<p>Programar é dar <strong>ordens claras</strong> ao computador, uma de cada vez. Essa sequência de passos tem um nome: <strong>algoritmo</strong> — pense numa receita de bolo.</p>
+<p>O comando que você vai usar o tempo todo é o <code>console.log()</code>. Ele mostra na tela o que estiver dentro dos parênteses.</p>
+<p>Tudo entre aspas é <strong>texto</strong>. Números vão <strong>sem</strong> aspas — e o computador ainda faz as contas.</p>`,
+    code:`console.log("Olá, mundo!");\nconsole.log("Estou aprendendo a programar");\nconsole.log(3 + 2);`,
+    tip:"Clique em Rodar e veja o resultado. Depois troque o texto e rode de novo.",
+    quiz:[
+      {q:"Para que serve o console.log()?",opts:[
+        {t:"Mostrar algo na tela",ok:true,fb:"Isso. Ele imprime no console o que estiver entre parênteses."},
+        {t:"Apagar o código",ok:false,fb:"Não — ele só exibe informação, não apaga nada."},
+        {t:"Desligar o computador",ok:false,fb:"Não. É apenas uma forma de exibir valores."}]},
+      {q:"Um algoritmo é...",opts:[
+        {t:"Uma sequência de passos para resolver um problema",ok:true,fb:"Exato — como uma receita."},
+        {t:"Um tipo de vírus",ok:false,fb:"Não. Algoritmo é só um passo a passo."},
+        {t:"Uma peça do computador",ok:false,fb:"Não — é uma ideia: a ordem dos passos."}]},
+      {q:"O que aparece ao rodar este código?",code:`console.log(3 + 2);`,opts:[
+        {t:"5",ok:true,fb:"Certo — sem aspas, ele faz a conta antes de mostrar."},
+        {t:"3 + 2",ok:false,fb:"Só apareceria assim se estivesse entre aspas (texto)."},
+        {t:"Erro",ok:false,fb:"Não dá erro; ele soma normalmente."}]}
+    ]
+  },
+  {
+    title:"Variáveis e tipos",
+    goal:"Guardar informações para usar quando quiser.",
+    learn:`<p>Uma <strong>variável</strong> é uma caixa com nome onde você guarda um valor. Criamos com a palavra <code>let</code>.</p>
+<p>Os três tipos mais comuns:</p>
+<ul>
+<li><code>number</code> — números: <code>25</code>, <code>3.5</code></li>
+<li><code>string</code> — textos, sempre entre aspas: <code>"David"</code></li>
+<li><code>boolean</code> — verdadeiro ou falso: <code>true</code> / <code>false</code></li>
+</ul>`,
+    code:`let nome = "David";\nlet idade = 25;\nlet estudando = true;\n\nconsole.log(nome);\nconsole.log(idade);\nconsole.log(estudando);`,
+    tip:"Troque o que está guardado nas caixas e veja a saída mudar.",
+    quiz:[
+      {q:"Qual palavra cria uma variável?",opts:[
+        {t:"let",ok:true,fb:"Isso — let cria uma nova variável."},
+        {t:"print",ok:false,fb:"print não existe assim em JavaScript."},
+        {t:"box",ok:false,fb:"Não é uma palavra da linguagem."}]},
+      {q:"Qual destes valores é uma string?",opts:[
+        {t:'"joão"',ok:true,fb:"Texto entre aspas é string."},
+        {t:"42",ok:false,fb:"Isso é um number."},
+        {t:"true",ok:false,fb:"Isso é um boolean."}]},
+      {q:"De que tipo é a variável pontos?",code:`let pontos = 10;`,opts:[
+        {t:"number",ok:true,fb:"Número sem aspas — é number."},
+        {t:"string",ok:false,fb:"Seria string só se estivesse entre aspas."},
+        {t:"boolean",ok:false,fb:"boolean é só true ou false."}]}
+    ]
+  },
+  {
+    title:"Operadores",
+    goal:"Fazer contas e comparar valores.",
+    learn:`<p>Operadores <strong>aritméticos</strong> fazem contas: <code>+</code> soma, <code>-</code> subtrai, <code>*</code> multiplica, <code>/</code> divide e <code>%</code> devolve o <strong>resto</strong> da divisão.</p>
+<p>Operadores de <strong>comparação</strong> devolvem <code>true</code> ou <code>false</code>: <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>===</code> (igual) e <code>!==</code> (diferente).</p>
+<p>Dica de ouro: o resto (<code>%</code>) descobre se um número é par — se <code>n % 2</code> dá 0, é par.</p>`,
+    code:`console.log(10 + 4);\nconsole.log(10 % 3);\nconsole.log(7 > 2);\nconsole.log(5 === 5);`,
+    tip:"Teste 8 % 2 e depois 7 % 2. Veja a diferença entre par e ímpar.",
+    quiz:[
+      {q:"Quanto é 10 % 3?",code:`console.log(10 % 3);`,opts:[
+        {t:"1",ok:true,fb:"O resto de 10 dividido por 3 é 1."},
+        {t:"3",ok:false,fb:"3 seria o resultado da divisão inteira, não o resto."},
+        {t:"0",ok:false,fb:"Seria 0 só se a divisão fosse exata."}]},
+      {q:"O que 8 > 12 devolve?",opts:[
+        {t:"false",ok:true,fb:"Correto — 8 não é maior que 12."},
+        {t:"true",ok:false,fb:"8 é menor que 12, então é false."},
+        {t:"8",ok:false,fb:"Comparações devolvem true ou false."}]},
+      {q:"Qual operador verifica se dois valores são iguais?",opts:[
+        {t:"===",ok:true,fb:"Isso — === compara igualdade."},
+        {t:"=",ok:false,fb:"= atribui valor; para comparar use ===."},
+        {t:"=>",ok:false,fb:"=> é outra coisa (funções seta)."}]}
+    ]
+  },
+  {
+    title:"Condições",
+    goal:"Fazer o programa tomar decisões.",
+    learn:`<p>Com <code>if</code> (se) e <code>else</code> (senão) o programa escolhe o que fazer.</p>
+<p>Ele testa uma condição: se der <code>true</code>, roda o bloco do <code>if</code>; senão, roda o bloco do <code>else</code>.</p>
+<p>É a mesma decisão do dia a dia: "<em>se</em> estiver chovendo, levo guarda-chuva; <em>senão</em>, vou sem".</p>`,
+    code:`let idade = 18;\n\nif (idade >= 18) {\n  console.log("Pode entrar");\n} else {\n  console.log("Ainda não pode");\n}`,
+    tip:"Troque idade para 15 e rode. Depois volte para 18.",
+    quiz:[
+      {q:"O que aparece ao rodar este código?",code:`let nota = 7;\nif (nota >= 6) {\n  console.log("Aprovado");\n} else {\n  console.log("Reprovado");\n}`,opts:[
+        {t:"Aprovado",ok:true,fb:"7 é maior ou igual a 6, então roda o if."},
+        {t:"Reprovado",ok:false,fb:"Só apareceria se nota fosse menor que 6."},
+        {t:"7",ok:false,fb:"O código imprime um texto, não o número."}]},
+      {q:"Quando o bloco do else roda?",opts:[
+        {t:"Quando a condição do if é false",ok:true,fb:"Exato — o else é o plano B."},
+        {t:"Sempre",ok:false,fb:"Não — só quando o if não é atendido."},
+        {t:"Nunca",ok:false,fb:"Ele roda sim, quando a condição falha."}]},
+      {q:"O bloco do if abaixo vai rodar?",code:`if (5 > 10) {\n  console.log("oi");\n}`,opts:[
+        {t:"Não",ok:true,fb:"5 não é maior que 10, então o if é pulado."},
+        {t:"Sim",ok:false,fb:"A condição é false, então ele não roda."},
+        {t:"Dá erro",ok:false,fb:"Não há erro; a condição só é false."}]}
+    ]
+  },
+  {
+    title:"Laços",
+    goal:"Repetir tarefas sem copiar e colar.",
+    learn:`<p>Um <strong>laço</strong> repete um bloco várias vezes. O <code>for</code> é o mais comum.</p>
+<p><code>for (let i = 1; i &lt;= 5; i++)</code> quer dizer: comece com <code>i = 1</code>, repita <strong>enquanto</strong> <code>i &lt;= 5</code>, e some 1 a <code>i</code> a cada volta (<code>i++</code>).</p>`,
+    code:`for (let i = 1; i <= 5; i++) {\n  console.log("Volta número " + i);\n}`,
+    tip:"Mude o 5 para 3 e veja quantas voltas o laço dá.",
+    quiz:[
+      {q:"Quantas vezes este laço repete?",code:`for (let i = 0; i < 3; i++) {\n  console.log(i);\n}`,opts:[
+        {t:"3",ok:true,fb:"i vale 0, 1 e 2 — três voltas."},
+        {t:"4",ok:false,fb:"Para em i = 3 porque 3 não é < 3."},
+        {t:"Infinitas",ok:false,fb:"Não — a condição faz ele parar."}]},
+      {q:"O que o i++ faz a cada volta?",opts:[
+        {t:"Soma 1 em i",ok:true,fb:"Isso — avança o contador."},
+        {t:"Multiplica i por 2",ok:false,fb:"Não; i++ apenas soma 1."},
+        {t:"Zera i",ok:false,fb:"Ele aumenta i, não zera."}]},
+      {q:"O que este código imprime?",code:`for (let i = 1; i <= 2; i++) {\n  console.log(i);\n}`,opts:[
+        {t:"1 e 2",ok:true,fb:"Começa em 1 e para depois do 2."},
+        {t:"1, 2 e 3",ok:false,fb:"Para em 2, porque 3 não é <= 2."},
+        {t:"Só 1",ok:false,fb:"Ele dá duas voltas: 1 e 2."}]}
+    ]
+  },
+  {
+    title:"Funções",
+    goal:"Empacotar código para reusar quando quiser.",
+    learn:`<p>Uma <strong>função</strong> é um bloco de código com nome, que você chama quantas vezes quiser. Cria-se com <code>function</code>.</p>
+<p>Ela pode receber <strong>parâmetros</strong> (entradas) e devolver um resultado com <code>return</code>.</p>`,
+    code:`function soma(a, b) {\n  return a + b;\n}\n\nconsole.log(soma(2, 3));\nconsole.log(soma(10, 7));`,
+    tip:"Crie sua própria chamada: console.log(soma(100, 1));",
+    quiz:[
+      {q:"Para que serve o return?",opts:[
+        {t:"Devolver um resultado da função",ok:true,fb:"Isso — é a resposta que a função entrega."},
+        {t:"Repetir o código",ok:false,fb:"Repetir é papel dos laços."},
+        {t:"Criar uma variável",ok:false,fb:"Variáveis se criam com let."}]},
+      {q:"O que soma(4, 4) devolve?",code:`function soma(a, b) {\n  return a + b;\n}`,opts:[
+        {t:"8",ok:true,fb:"Números somam: 4 + 4 = 8."},
+        {t:"44",ok:false,fb:"Seria 44 só se fossem textos entre aspas."},
+        {t:"Erro",ok:false,fb:"Sem erro — soma normalmente."}]},
+      {q:"O que são a e b?",code:`function soma(a, b) { }`,opts:[
+        {t:"Parâmetros (entradas da função)",ok:true,fb:"Isso — os valores que a função recebe."},
+        {t:"O resultado",ok:false,fb:"O resultado vem do return."},
+        {t:"Mensagens de erro",ok:false,fb:"Não têm relação com erros."}]}
+    ]
+  },
+  {
+    title:"Listas (arrays)",
+    goal:"Guardar vários valores em uma coisa só.",
+    learn:`<p>Um <strong>array</strong> é uma lista de valores, escrita entre colchetes <code>[]</code>. Cada item tem uma posição (índice), começando em <strong>0</strong>.</p>
+<p><code>.length</code> diz quantos itens há. Um <code>for</code> percorre a lista inteira, item por item.</p>`,
+    code:`let notas = [8, 6, 10];\n\nconsole.log(notas[0]);\nconsole.log(notas.length);\n\nfor (let i = 0; i < notas.length; i++) {\n  console.log(notas[i]);\n}`,
+    tip:"Adicione uma nota na lista e rode de novo. O length muda sozinho.",
+    quiz:[
+      {q:"Em qual índice fica o primeiro item de um array?",opts:[
+        {t:"0",ok:true,fb:"Arrays começam no índice 0."},
+        {t:"1",ok:false,fb:"O item 1 é, na verdade, o segundo."},
+        {t:"-1",ok:false,fb:"-1 costuma ser o último, não o primeiro."}]},
+      {q:"Quanto vale x.length?",code:`let x = [5, 9, 2];`,opts:[
+        {t:"3",ok:true,fb:"São três itens na lista."},
+        {t:"2",ok:false,fb:"length conta itens, não índices."},
+        {t:"9",ok:false,fb:"9 é um valor da lista, não a quantidade."}]},
+      {q:"O que é x[1]?",code:`let x = [5, 9, 2];`,opts:[
+        {t:"9",ok:true,fb:"Índice 1 é o segundo item: 9."},
+        {t:"5",ok:false,fb:"5 está no índice 0."},
+        {t:"2",ok:false,fb:"2 está no índice 2."}]}
+    ]
+  },
+  {
+    title:"Juntando tudo",
+    goal:"Combinar as peças num programinha de verdade.",
+    learn:`<p>Agora junte tudo: <strong>array + laço + condição + função</strong>. Veja um programa que conta quantas notas passaram de 6.</p>
+<p>Leia devagar: cada linha usa algo que você já aprendeu nas aulas anteriores.</p>`,
+    code:`function contarAprovados(notas) {\n  let total = 0;\n  for (let i = 0; i < notas.length; i++) {\n    if (notas[i] >= 6) {\n      total = total + 1;\n    }\n  }\n  return total;\n}\n\nconsole.log(contarAprovados([8, 4, 6, 9, 3]));`,
+    tip:"Troque a lista de notas e veja o total mudar. Você já lê código!",
+    quiz:[
+      {q:"O que a variável total guarda no fim?",opts:[
+        {t:"Quantas notas são maiores ou iguais a 6",ok:true,fb:"Isso — ela conta os aprovados."},
+        {t:"A soma de todas as notas",ok:false,fb:"Ela conta itens, não soma valores."},
+        {t:"A maior nota da lista",ok:false,fb:"Não compara qual é a maior."}]},
+      {q:"Quanto devolve contarAprovados([8, 4, 6])?",opts:[
+        {t:"2",ok:true,fb:"8 e 6 passam; 4 não. Total = 2."},
+        {t:"3",ok:false,fb:"Só 8 e 6 são >= 6."},
+        {t:"1",ok:false,fb:"São duas notas aprovadas, não uma."}]},
+      {q:"Qual peça decide se a nota é contada?",opts:[
+        {t:"O if (a condição)",ok:true,fb:"Exato — o if testa notas[i] >= 6."},
+        {t:"O return",ok:false,fb:"O return só entrega o total no fim."},
+        {t:"O .length",ok:false,fb:"length só diz o tamanho da lista."}]}
+    ]
+  }
+];
+
+const PROVA = {
+  title:"Prova prática — Boletim do aluno",
+  descHTML:`<h3>Desafio final do Módulo 3</h3>
+  <p>Escreva a função <code>media(notas)</code>, que recebe uma lista de notas e devolve o resultado do aluno com base na média:</p>
+  <ul>
+    <li><code>"Aprovado"</code> — se a média for maior ou igual a 6</li>
+    <li><code>"Recuperacao"</code> — se a média ficar entre 4 e 6 (4 até menos de 6)</li>
+    <li><code>"Reprovado"</code> — se a média for menor que 4</li>
+  </ul>
+  <p>Este desafio junta <strong>array, laço, operadores, condições e função</strong> — tudo o que você viu no módulo. Seu código roda automaticamente contra os testes abaixo.</p>`,
+  starter:`function media(notas) {\n  // 1) some todas as notas usando um laço\n  // 2) divida pela quantidade (notas.length) para achar a média\n  // 3) devolva "Aprovado", "Recuperacao" ou "Reprovado"\n\n}`,
+  cases:[
+    {args:[[8,7,9]],exp:"Aprovado"},
+    {args:[[5,5,4]],exp:"Recuperacao"},
+    {args:[[2,3,1]],exp:"Reprovado"}
+  ]
+};
+
+
+/* ---------- Conteúdo: Módulo 1 — HTML do zero ---------- */
+const HTML_LESSONS = [
+  {
+    title:"O que é HTML",
+    goal:"Entender como uma página nasce.",
+    learn:`<p>Todo site que você abre é, no fundo, um <strong>arquivo de texto</strong> que o navegador lê e transforma em página. A linguagem desse arquivo se chama <strong>HTML</strong>.</p>
+<p>HTML não é programação: é uma linguagem de <strong>marcação</strong>. Você marca o que cada pedaço é ("isto é um título", "isto é um parágrafo") e o navegador desenha na tela.</p>
+<p>Edite o código abaixo: o resultado se atualiza sozinho, igual ao que o navegador mostraria.</p>`,
+    code:`<h1>Olá, mundo!</h1>\n<p>Esta é a minha primeira página.</p>`,
+    tip:"Troque o texto dentro das marcações e veja a página mudar na hora.",
+    quiz:[
+      {q:"O que é HTML?",opts:[
+        {t:"A linguagem que estrutura o conteúdo das páginas",ok:true,fb:"Isso. Todo site da internet tem HTML por baixo."},
+        {t:"Um programa para editar fotos",ok:false,fb:"Não. HTML é texto que o navegador transforma em página."},
+        {t:"Um tipo de banco de dados",ok:false,fb:"Não. Banco de dados guarda informação; HTML monta a página."}]},
+      {q:"Quem transforma o HTML em página visual?",opts:[
+        {t:"O navegador (Chrome, Edge, Firefox)",ok:true,fb:"Exato. O navegador lê as marcações e desenha a página."},
+        {t:"O teclado",ok:false,fb:"O teclado só serve para digitar o código."},
+        {t:"O provedor de internet",ok:false,fb:"O provedor só entrega o arquivo. Quem desenha é o navegador."}]},
+      {q:"HTML é uma linguagem de...",opts:[
+        {t:"Marcação",ok:true,fb:"Certo. Você marca o que cada parte do conteúdo é."},
+        {t:"Programação, com contas e repetições",ok:false,fb:"Contas e repetições vêm depois, com JavaScript."},
+        {t:"Design de logotipos",ok:false,fb:"Não. O visual fica por conta do CSS e das imagens."}]}
+    ]
+  },
+  {
+    title:"Tags: as etiquetas",
+    goal:"Conhecer a peça básica de todo HTML.",
+    learn:`<p>Cada marcação se chama <strong>tag</strong>. Quase toda tag tem uma <strong>abertura</strong> e um <strong>fechamento</strong>: <code>&lt;p&gt;</code> abre e <code>&lt;/p&gt;</code> fecha. Repare na barra <code>/</code>.</p>
+<p>O que fica entre as duas é o <strong>conteúdo</strong>. O conjunto todo (abertura + conteúdo + fechamento) se chama <strong>elemento</strong>.</p>
+<p>Tags podem ficar dentro de outras, e isso se chama <strong>aninhar</strong>: <code>&lt;p&gt;Eu sou &lt;strong&gt;forte&lt;/strong&gt;&lt;/p&gt;</code>. <code>&lt;strong&gt;</code> deixa o texto em destaque (negrito) e <code>&lt;em&gt;</code> dá ênfase (itálico).</p>`,
+    code:`<p>Isto é um parágrafo.</p>\n<p>Isto é <strong>importante</strong> e isto é <em>ênfase</em>.</p>`,
+    tip:"Apague o </strong> e veja o que acontece com o resto do texto. Depois coloque de volta.",
+    quiz:[
+      {q:"Qual é a tag de fechamento de <p>?",opts:[
+        {t:"</p>",ok:true,fb:"Isso. O fechamento repete o nome com uma barra na frente."},
+        {t:"<p/>",ok:false,fb:"A barra vem antes do nome: </p>."},
+        {t:"<fim p>",ok:false,fb:"Não existe essa tag. O fechamento é </p>."}]},
+      {q:"Como se chama o conjunto abertura + conteúdo + fechamento?",opts:[
+        {t:"Elemento",ok:true,fb:"Certo. <p>Oi</p> é um elemento parágrafo."},
+        {t:"Navegador",ok:false,fb:"O navegador é o programa que lê o HTML."},
+        {t:"Atributo",ok:false,fb:"Atributo é outra coisa, você vai ver na aula de links."}]},
+      {q:"O que aparece em negrito aqui?",code:`<p>Eu gosto de <strong>pizza</strong>.</p>`,opts:[
+        {t:"pizza",ok:true,fb:"Isso. Só o que está dentro do <strong> fica em destaque."},
+        {t:"Eu gosto de",ok:false,fb:"Esse trecho está fora do <strong>."},
+        {t:"A frase inteira",ok:false,fb:"Só a palavra dentro do <strong> fica em negrito."}]}
+    ]
+  },
+  {
+    title:"Títulos e parágrafos",
+    goal:"Organizar o texto da página.",
+    learn:`<p>Existem seis níveis de título: de <code>&lt;h1&gt;</code> (o mais importante) até <code>&lt;h6&gt;</code> (o menor).</p>
+<p>Use <strong>um</strong> <code>&lt;h1&gt;</code> por página, que é o título principal. Os outros organizam as seções, como capítulos de um livro.</p>
+<p>Texto corrido vai em <code>&lt;p&gt;</code>. Para quebrar a linha dentro de um parágrafo, use <code>&lt;br&gt;</code>, uma tag que não tem fechamento.</p>`,
+    code:`<h1>Minha receita de bolo</h1>\n<h2>Ingredientes</h2>\n<p>Farinha, ovos e açúcar.</p>\n<h2>Modo de preparo</h2>\n<p>Misture tudo.<br>Asse por 40 minutos.</p>`,
+    tip:"Troque um <h2> por <h3> e compare o tamanho dos títulos.",
+    quiz:[
+      {q:"Qual é o título mais importante da página?",opts:[
+        {t:"<h1>",ok:true,fb:"Isso. O h1 é o título principal."},
+        {t:"<h6>",ok:false,fb:"O h6 é o menor nível de título."},
+        {t:"<p>",ok:false,fb:"<p> é parágrafo, não título."}]},
+      {q:"Quantos <h1> o ideal é ter por página?",opts:[
+        {t:"Um",ok:true,fb:"Certo. Um título principal, e as seções usam h2, h3..."},
+        {t:"Seis",ok:false,fb:"Seis são os níveis (h1 a h6), não a quantidade de h1."},
+        {t:"Nenhum",ok:false,fb:"Toda página precisa de um título principal."}]},
+      {q:"Qual tag quebra a linha e não tem fechamento?",opts:[
+        {t:"<br>",ok:true,fb:"Isso. <br> quebra a linha sozinha, sem </br>."},
+        {t:"<p>",ok:false,fb:"<p> cria um parágrafo e precisa de </p>."},
+        {t:"<h2>",ok:false,fb:"<h2> é um título e precisa de </h2>."}]}
+    ]
+  },
+  {
+    title:"Listas",
+    goal:"Mostrar itens em sequência.",
+    learn:`<p><code>&lt;ul&gt;</code> cria uma lista com marcadores (bolinhas), boa quando a ordem não importa. <code>&lt;ol&gt;</code> cria uma lista numerada, para passos em ordem.</p>
+<p>Nos dois casos, cada item vai dentro de <code>&lt;li&gt;</code>. Recuar os itens com espaços não muda nada na tela, mas deixa o código muito mais fácil de ler.</p>`,
+    code:`<h2>Compras</h2>\n<ul>\n  <li>Arroz</li>\n  <li>Feijão</li>\n  <li>Café</li>\n</ul>\n\n<h2>Como fazer café</h2>\n<ol>\n  <li>Ferva a água</li>\n  <li>Coloque o pó no filtro</li>\n  <li>Despeje a água</li>\n</ol>`,
+    tip:"Troque o <ul> por <ol> (e o </ul> por </ol>) e veja as bolinhas virarem números.",
+    quiz:[
+      {q:"Qual tag cria uma lista numerada?",opts:[
+        {t:"<ol>",ok:true,fb:"Isso. ol = ordered list, lista ordenada."},
+        {t:"<ul>",ok:false,fb:"<ul> cria a lista com bolinhas."},
+        {t:"<li>",ok:false,fb:"<li> é cada item, não a lista."}]},
+      {q:"Cada item da lista vai dentro de...",opts:[
+        {t:"<li>",ok:true,fb:"Certo. li = list item."},
+        {t:"<item>",ok:false,fb:"Não existe <item> em HTML. O certo é <li>."},
+        {t:"<p>",ok:false,fb:"<p> é parágrafo. Itens de lista usam <li>."}]},
+      {q:"Quantos itens tem esta lista?",code:`<ul>\n  <li>A</li>\n  <li>B</li>\n</ul>`,opts:[
+        {t:"2",ok:true,fb:"Isso. Dois <li>, dois itens."},
+        {t:"1",ok:false,fb:"Conte os <li>: são dois."},
+        {t:"3",ok:false,fb:"O <ul> não conta como item. São dois <li>."}]}
+    ]
+  },
+  {
+    title:"Links",
+    goal:"Ligar uma página a outra.",
+    learn:`<p>Um link é criado com a tag <code>&lt;a&gt;</code>. O endereço vai no <strong>atributo</strong> <code>href</code>: <code>&lt;a href="https://encryptedgroup.com"&gt;Visite&lt;/a&gt;</code>.</p>
+<p><strong>Atributo</strong> é uma informação extra escrita <strong>dentro da abertura</strong> da tag, no formato <code>nome="valor"</code>.</p>
+<p>Com <code>target="_blank"</code>, o link abre numa nova aba.</p>`,
+    code:`<p>Conheça a <a href="https://encryptedgroup.com" target="_blank">Encrypted Group</a>.</p>\n<p><a href="https://developer.mozilla.org/pt-BR/docs/Web/HTML" target="_blank">Guia de HTML da MDN</a></p>`,
+    tip:"Troque o texto entre <a> e </a>: é o que a pessoa vê e clica.",
+    quiz:[
+      {q:"Qual tag cria um link?",opts:[
+        {t:"<a>",ok:true,fb:"Isso. a vem de anchor, âncora."},
+        {t:"<link>",ok:false,fb:"<link> existe, mas serve para ligar arquivos no <head>, não para links clicáveis."},
+        {t:"<href>",ok:false,fb:"href é o atributo, não a tag."}]},
+      {q:"Onde fica o endereço do link?",opts:[
+        {t:"No atributo href",ok:true,fb:"Certo. href guarda o destino do link."},
+        {t:"Entre <a> e </a>",ok:false,fb:"Ali fica o texto clicável, não o endereço."},
+        {t:"Dentro de um <h1>",ok:false,fb:"O endereço vai sempre no href."}]},
+      {q:"O que target=\"_blank\" faz?",opts:[
+        {t:"Abre o link em uma nova aba",ok:true,fb:"Isso. A página atual continua aberta."},
+        {t:"Deixa o link em branco",ok:false,fb:"_blank aqui significa nova aba."},
+        {t:"Desativa o link",ok:false,fb:"O link continua funcionando, só abre em outra aba."}]}
+    ]
+  },
+  {
+    title:"Imagens",
+    goal:"Colocar imagens na página.",
+    learn:`<p>Imagens usam a tag <code>&lt;img&gt;</code>, que <strong>não tem fechamento</strong>. O caminho da imagem vai no atributo <code>src</code>.</p>
+<p>O atributo <code>alt</code> descreve a imagem em texto. Ele aparece quando a imagem não carrega, é lido por leitores de tela para quem não enxerga, e o Google também usa. Sempre preencha.</p>
+<p><code>width</code> define a largura em pixels.</p>`,
+    code:`<h2>Minha logo</h2>\n<img src="logo.png" alt="Logo da Encrypted Group" width="200">\n<p>Se a imagem não existir, o navegador mostra o texto do alt.</p>`,
+    tip:"O arquivo logo.png não existe aqui, então aparece o texto do alt. É exatamente para isso que ele serve.",
+    quiz:[
+      {q:"Qual atributo diz onde está a imagem?",opts:[
+        {t:"src",ok:true,fb:"Isso. src = source, a origem da imagem."},
+        {t:"alt",ok:false,fb:"alt é a descrição em texto."},
+        {t:"href",ok:false,fb:"href é o endereço dos links."}]},
+      {q:"Para que serve o alt?",opts:[
+        {t:"Descrever a imagem em texto",ok:true,fb:"Certo. Ajuda quem não vê a imagem e quando ela não carrega."},
+        {t:"Deixar a imagem maior",ok:false,fb:"Tamanho é com width."},
+        {t:"Transformar a imagem em link",ok:false,fb:"Para isso, a imagem precisaria ficar dentro de um <a>."}]},
+      {q:"A tag <img> precisa de fechamento?",opts:[
+        {t:"Não",ok:true,fb:"Isso. Ela não tem conteúdo dentro, então não fecha."},
+        {t:"Sim, com </img>",ok:false,fb:"</img> não existe. A <img> não tem fechamento."},
+        {t:"Só em sites grandes",ok:false,fb:"A regra vale para qualquer página."}]}
+    ]
+  },
+  {
+    title:"A estrutura da página",
+    goal:"Montar o esqueleto de todo arquivo HTML.",
+    learn:`<p>Toda página completa segue o mesmo esqueleto:</p>
+<ul>
+<li><code>&lt;!DOCTYPE html&gt;</code>: avisa que é HTML moderno.</li>
+<li><code>&lt;html&gt;</code>: envolve tudo.</li>
+<li><code>&lt;head&gt;</code>: informações <strong>sobre</strong> a página, como o <code>&lt;title&gt;</code> (o nome que aparece na aba). Nada do head aparece na tela.</li>
+<li><code>&lt;body&gt;</code>: tudo o que <strong>aparece</strong> na tela.</li>
+</ul>`,
+    code:`<!DOCTYPE html>\n<html lang="pt-BR">\n  <head>\n    <meta charset="UTF-8">\n    <title>Meu primeiro site</title>\n  </head>\n  <body>\n    <h1>Bem-vindo!</h1>\n    <p>Tudo que aparece fica dentro do body.</p>\n  </body>\n</html>`,
+    tip:"Copie este código, salve num arquivo chamado index.html e abra no navegador. É um site de verdade.",
+    quiz:[
+      {q:"O que aparece na tela do usuário?",opts:[
+        {t:"O conteúdo do <body>",ok:true,fb:"Isso. O body é a parte visível."},
+        {t:"O conteúdo do <head>",ok:false,fb:"O head guarda informações sobre a página, que não aparecem."},
+        {t:"Só o <title>",ok:false,fb:"O title aparece na aba, não dentro da página."}]},
+      {q:"Onde fica o <title>?",opts:[
+        {t:"Dentro do <head>",ok:true,fb:"Certo. Ele é informação sobre a página."},
+        {t:"Dentro do <body>",ok:false,fb:"No body fica o conteúdo visível. O title vai no head."},
+        {t:"Fora do <html>",ok:false,fb:"Tudo fica dentro do <html>, menos o DOCTYPE."}]},
+      {q:"Para que serve o <!DOCTYPE html>?",opts:[
+        {t:"Avisar o navegador que é HTML moderno",ok:true,fb:"Isso. É sempre a primeira linha."},
+        {t:"Criar o título da página",ok:false,fb:"O título é o <title>."},
+        {t:"Colocar uma imagem",ok:false,fb:"Imagem é com <img>."}]}
+    ]
+  },
+  {
+    title:"Juntando tudo",
+    goal:"Montar uma página de perfil completa.",
+    learn:`<p>Agora junte as peças: <strong>título, imagem, parágrafo, lista e link</strong> numa página de apresentação.</p>
+<p>Leia devagar: cada linha usa algo que você já aprendeu. Depois troque pelos seus dados. Esse é o treino para a prova do módulo.</p>`,
+    code:`<h1>Seu Nome</h1>\n<img src="foto.jpg" alt="Minha foto" width="120">\n<p>Estou aprendendo a <strong>programar</strong> do zero.</p>\n\n<h2>O que já sei</h2>\n<ul>\n  <li>O que é HTML</li>\n  <li>Títulos, listas e links</li>\n  <li>A estrutura de uma página</li>\n</ul>\n\n<p>Acompanhe no <a href="https://encryptedgroup.com" target="_blank">site da Encrypted</a>.</p>`,
+    tip:"Coloque seu nome, mude a lista e adicione um novo item. Você já monta páginas!",
+    quiz:[
+      {q:"Qual combinação monta uma lista corretamente?",opts:[
+        {t:"<ul> com vários <li> dentro",ok:true,fb:"Isso. A lista envolve os itens."},
+        {t:"<li> com um <ul> dentro",ok:false,fb:"É ao contrário: a lista (<ul>) envolve os itens (<li>)."},
+        {t:"<a> com <li> dentro",ok:false,fb:"<a> é link. Itens de lista ficam dentro de <ul> ou <ol>."}]},
+      {q:"Que tag usar para o seu nome no topo, como título principal?",opts:[
+        {t:"<h1>",ok:true,fb:"Certo. O título principal da página é o h1."},
+        {t:"<p>",ok:false,fb:"<p> é para texto corrido."},
+        {t:"<li>",ok:false,fb:"<li> é item de lista."}]},
+      {q:"Qual destes links está escrito corretamente?",opts:[
+        {t:"<a href=\"site.com\">Site</a>",ok:true,fb:"Isso. O href fica na abertura e o texto entre as tags."},
+        {t:"<a>site.com</a href>",ok:false,fb:"Atributos nunca vão no fechamento."},
+        {t:"<href=\"site.com\">Site</href>",ok:false,fb:"A tag é <a>. href é só o atributo."}]}
+    ]
+  }
+];
+
+const HTML_PROVA = {
+  title:"Prova prática — Minha página de apresentação",
+  descHTML:`<h3>Desafio final do Módulo 1</h3>
+  <p>Monte uma página se apresentando. O corretor confere se ela tem:</p>
+  <ul>
+    <li>um título principal <code>&lt;h1&gt;</code> com o seu nome</li>
+    <li>pelo menos um parágrafo <code>&lt;p&gt;</code> falando de você</li>
+    <li>uma lista (<code>&lt;ul&gt;</code> ou <code>&lt;ol&gt;</code>) com pelo menos 3 itens</li>
+    <li>um link <code>&lt;a&gt;</code> com o endereço no <code>href</code></li>
+    <li>uma imagem <code>&lt;img&gt;</code> com o <code>alt</code> preenchido</li>
+  </ul>
+  <p>O resultado aparece ao vivo embaixo do editor. Quando terminar, clique em <strong>Corrigir</strong>.</p>`,
+  starter:`<h1>Seu nome</h1>\n\n`,
+  checks:[
+    {label:"Título principal <h1> com texto",test:d=>{const h=d.querySelector('h1');return !!(h&&h.textContent.trim());}},
+    {label:"Parágrafo <p> com texto",test:d=>[...d.querySelectorAll('p')].some(p=>p.textContent.trim().length>0)},
+    {label:"Lista <ul> ou <ol> com 3 itens ou mais",test:d=>[...d.querySelectorAll('ul,ol')].some(l=>l.querySelectorAll(':scope > li').length>=3)},
+    {label:"Link <a> com href preenchido",test:d=>[...d.querySelectorAll('a[href]')].some(a=>a.getAttribute('href').trim().length>0)},
+    {label:"Imagem <img> com alt preenchido",test:d=>[...d.querySelectorAll('img[alt]')].some(i=>i.getAttribute('alt').trim().length>0)}
+  ]
+};
+
+
+/* ---------- Conteúdo: Módulo 2 — CSS: o visual ---------- */
+const CSS_LESSONS = [
+  {
+    title:"O que é CSS",
+    goal:"Entender quem cuida do visual da página.",
+    learn:`<p>O HTML diz <strong>o que</strong> cada coisa é. O <strong>CSS</strong> diz <strong>como</strong> ela aparece: cor, tamanho, fonte, espaço, posição.</p>
+<p>Toda regra de CSS tem o mesmo formato: <code>seletor { propriedade: valor; }</code>. O <strong>seletor</strong> escolhe quem vai mudar, e dentro das chaves vêm as mudanças.</p>
+<p>A forma mais simples de usar é dentro de uma tag <code>&lt;style&gt;</code>, no começo da página.</p>`,
+    code:`<style>\n  h1 {\n    color: red;\n  }\n  p {\n    color: gray;\n  }\n</style>\n\n<h1>Meu primeiro CSS</h1>\n<p>Este parágrafo ficou cinza.</p>`,
+    tip:"Troque red por blue e veja o título mudar na hora.",
+    quiz:[
+      {q:"Para que serve o CSS?",opts:[
+        {t:"Definir o visual da página: cores, fontes, espaços",ok:true,fb:"Isso. HTML estrutura, CSS deixa bonito."},
+        {t:"Criar a estrutura com títulos e parágrafos",ok:false,fb:"Isso é papel do HTML."},
+        {t:"Fazer contas e tomar decisões",ok:false,fb:"Isso é papel do JavaScript, que vem no próximo módulo."}]},
+      {q:"Nesta regra, qual é o seletor?",code:`h1 {\n  color: red;\n}`,opts:[
+        {t:"h1",ok:true,fb:"Certo. O seletor escolhe quais elementos mudam."},
+        {t:"color",ok:false,fb:"color é a propriedade."},
+        {t:"red",ok:false,fb:"red é o valor."}]},
+      {q:"Onde o CSS pode ser escrito dentro da página?",opts:[
+        {t:"Dentro de uma tag <style>",ok:true,fb:"Isso. Tudo dentro do <style> é CSS."},
+        {t:"Dentro de um <p>",ok:false,fb:"O <p> é para texto. CSS vai no <style>."},
+        {t:"Dentro do <title>",ok:false,fb:"O <title> é o nome da aba."}]}
+    ]
+  },
+  {
+    title:"Cores",
+    goal:"Pintar textos e fundos.",
+    learn:`<p><code>color</code> muda a cor do <strong>texto</strong>. <code>background-color</code> muda a cor do <strong>fundo</strong>.</p>
+<p>Você pode escrever a cor de três jeitos:</p>
+<ul>
+<li>Pelo nome: <code>red</code>, <code>black</code>, <code>white</code></li>
+<li>Em hexadecimal: <code>#ff2a1f</code> (o vermelho da Encrypted)</li>
+<li>Em RGB: <code>rgb(255, 42, 31)</code> (quanto de vermelho, verde e azul, de 0 a 255)</li>
+</ul>`,
+    code:`<style>\n  body {\n    background-color: #0a0a0c;\n  }\n  h1 {\n    color: #ff2a1f;\n  }\n  p {\n    color: rgb(230, 230, 230);\n  }\n</style>\n\n<h1>Vermelho e preto</h1>\n<p>As cores da Encrypted Group.</p>`,
+    tip:"Troque o fundo para white e o texto do parágrafo para black.",
+    quiz:[
+      {q:"Qual propriedade muda a cor do fundo?",opts:[
+        {t:"background-color",ok:true,fb:"Isso. background = fundo."},
+        {t:"color",ok:false,fb:"color muda a cor do texto."},
+        {t:"font-color",ok:false,fb:"Essa propriedade não existe em CSS."}]},
+      {q:"#ff2a1f é uma cor escrita em...",opts:[
+        {t:"Hexadecimal",ok:true,fb:"Certo. Começa com # e usa números e letras de 0 a f."},
+        {t:"RGB",ok:false,fb:"RGB se escreve rgb(255, 42, 31)."},
+        {t:"Nome da cor",ok:false,fb:"Nomes são palavras, como red ou blue."}]},
+      {q:"Qual regra deixa o texto dos parágrafos branco?",opts:[
+        {t:"p { color: white; }",ok:true,fb:"Isso. Seletor p, propriedade color, valor white."},
+        {t:"p { background-color: white; }",ok:false,fb:"Essa pinta o fundo, não o texto."},
+        {t:"white { color: p; }",ok:false,fb:"Invertido: o seletor vem antes e o valor dentro."}]}
+    ]
+  },
+  {
+    title:"Textos e fontes",
+    goal:"Controlar fonte, tamanho e alinhamento.",
+    learn:`<p>As propriedades mais usadas para texto:</p>
+<ul>
+<li><code>font-family</code>: a fonte, como <code>Arial</code> ou <code>sans-serif</code></li>
+<li><code>font-size</code>: o tamanho, geralmente em pixels (<code>24px</code>)</li>
+<li><code>font-weight</code>: a espessura, como <code>bold</code> (negrito)</li>
+<li><code>text-align</code>: o alinhamento: <code>left</code>, <code>center</code> ou <code>right</code></li>
+</ul>`,
+    code:`<style>\n  body {\n    font-family: Arial, sans-serif;\n  }\n  h1 {\n    font-size: 36px;\n    text-align: center;\n  }\n  p {\n    font-size: 18px;\n    font-weight: bold;\n  }\n</style>\n\n<h1>Título centralizado</h1>\n<p>Texto maior e em negrito.</p>`,
+    tip:"Mude o text-align do título para right e o font-size para 50px.",
+    quiz:[
+      {q:"Qual propriedade muda o tamanho da letra?",opts:[
+        {t:"font-size",ok:true,fb:"Isso. size = tamanho."},
+        {t:"font-weight",ok:false,fb:"font-weight muda a espessura (negrito)."},
+        {t:"text-align",ok:false,fb:"text-align muda o alinhamento."}]},
+      {q:"Como centralizar um texto?",opts:[
+        {t:"text-align: center;",ok:true,fb:"Certo."},
+        {t:"font-size: center;",ok:false,fb:"font-size recebe um tamanho, como 20px."},
+        {t:"align: middle;",ok:false,fb:"Essa propriedade não existe. O certo é text-align."}]},
+      {q:"O que font-weight: bold; faz?",opts:[
+        {t:"Deixa o texto em negrito",ok:true,fb:"Isso."},
+        {t:"Aumenta o tamanho",ok:false,fb:"Tamanho é com font-size."},
+        {t:"Muda a fonte",ok:false,fb:"A fonte muda com font-family."}]}
+    ]
+  },
+  {
+    title:"Classes e IDs",
+    goal:"Estilizar só os elementos que você escolher.",
+    learn:`<p>Um seletor como <code>p</code> muda <strong>todos</strong> os parágrafos. Para mudar só alguns, use uma <strong>classe</strong>.</p>
+<p>No HTML você marca o elemento com <code>class="destaque"</code>. No CSS, o seletor da classe começa com <strong>ponto</strong>: <code>.destaque { ... }</code>.</p>
+<p>O <strong>id</strong> funciona parecido, mas é único na página: <code>id="topo"</code> no HTML e <code>#topo</code> no CSS. Na dúvida, use classe: ela pode se repetir em vários elementos.</p>`,
+    code:`<style>\n  .destaque {\n    color: #ff2a1f;\n    font-weight: bold;\n  }\n  #aviso {\n    background-color: #fff3cd;\n  }\n</style>\n\n<p>Parágrafo normal.</p>\n<p class="destaque">Parágrafo com a classe destaque.</p>\n<p>Outro normal.</p>\n<p id="aviso">Parágrafo com o id aviso.</p>`,
+    tip:"Adicione class=\"destaque\" no primeiro parágrafo e veja ele mudar também.",
+    quiz:[
+      {q:"Como se escreve o seletor da classe \"botao\" no CSS?",opts:[
+        {t:".botao",ok:true,fb:"Isso. Classe começa com ponto."},
+        {t:"#botao",ok:false,fb:"# é para id."},
+        {t:"botao",ok:false,fb:"Sem o ponto, o CSS procura uma tag chamada botao."}]},
+      {q:"Qual a diferença entre classe e id?",opts:[
+        {t:"A classe pode se repetir, o id é único na página",ok:true,fb:"Certo."},
+        {t:"O id pode se repetir, a classe é única",ok:false,fb:"É o contrário."},
+        {t:"Não existe diferença",ok:false,fb:"Existe: o id é único na página."}]},
+      {q:"Qual parágrafo fica vermelho?",code:`<style>\n  .alerta { color: red; }\n</style>\n<p>Um</p>\n<p class="alerta">Dois</p>`,opts:[
+        {t:"Dois",ok:true,fb:"Isso. Só ele tem a classe alerta."},
+        {t:"Um",ok:false,fb:"O primeiro não tem a classe."},
+        {t:"Os dois",ok:false,fb:"A regra .alerta só pega quem tem a classe."}]}
+    ]
+  },
+  {
+    title:"O modelo de caixa",
+    goal:"Entender espaço interno, borda e espaço externo.",
+    learn:`<p>Para o navegador, todo elemento é uma <strong>caixa</strong> com quatro camadas, de dentro para fora:</p>
+<ul>
+<li><strong>conteúdo</strong>: o texto ou a imagem</li>
+<li><code>padding</code>: o espaço <strong>interno</strong>, entre o conteúdo e a borda</li>
+<li><code>border</code>: a borda</li>
+<li><code>margin</code>: o espaço <strong>externo</strong>, que afasta a caixa das outras</li>
+</ul>
+<p><code>width</code> define a largura da caixa.</p>`,
+    code:`<style>\n  .caixa {\n    width: 220px;\n    padding: 20px;\n    border: 3px solid #ff2a1f;\n    margin: 30px;\n    background-color: #f2f2f2;\n  }\n</style>\n\n<div class="caixa">Eu sou uma caixa.</div>\n<div class="caixa">Eu sou outra caixa.</div>`,
+    tip:"Coloque padding: 0 e depois padding: 50px. Compare o espaço dentro da caixa.",
+    quiz:[
+      {q:"Qual propriedade cria espaço DENTRO da caixa?",opts:[
+        {t:"padding",ok:true,fb:"Isso. padding é o espaço interno."},
+        {t:"margin",ok:false,fb:"margin é o espaço de fora."},
+        {t:"border",ok:false,fb:"border é a borda."}]},
+      {q:"Qual propriedade afasta uma caixa das outras?",opts:[
+        {t:"margin",ok:true,fb:"Certo. margin é o espaço externo."},
+        {t:"padding",ok:false,fb:"padding é o espaço interno."},
+        {t:"width",ok:false,fb:"width é a largura."}]},
+      {q:"O que border: 3px solid red; desenha?",opts:[
+        {t:"Uma borda vermelha, contínua, de 3 pixels",ok:true,fb:"Isso: espessura, estilo e cor."},
+        {t:"Um fundo vermelho",ok:false,fb:"O fundo é com background-color."},
+        {t:"Um texto de 3 pixels",ok:false,fb:"Tamanho de texto é com font-size."}]}
+    ]
+  },
+  {
+    title:"Bordas e cantos",
+    goal:"Arredondar cantos e dar profundidade.",
+    learn:`<p><code>border-radius</code> arredonda os cantos. Com valores pequenos (<code>8px</code>) os cantos ficam suaves. Com <code>50%</code> um quadrado vira círculo.</p>
+<p><code>box-shadow</code> coloca uma sombra: <code>box-shadow: 0 4px 12px black;</code> significa deslocamento horizontal, vertical, desfoque e cor.</p>`,
+    code:`<style>\n  .cartao {\n    width: 200px;\n    padding: 20px;\n    background-color: white;\n    border-radius: 12px;\n    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);\n  }\n  .bola {\n    width: 80px;\n    height: 80px;\n    background-color: #ff2a1f;\n    border-radius: 50%;\n    margin-top: 20px;\n  }\n</style>\n\n<div class="cartao">Cartão com cantos arredondados.</div>\n<div class="bola"></div>`,
+    tip:"Troque o border-radius do cartão para 40px e veja os cantos.",
+    quiz:[
+      {q:"Qual propriedade arredonda os cantos?",opts:[
+        {t:"border-radius",ok:true,fb:"Isso. radius = raio da curva."},
+        {t:"border-round",ok:false,fb:"Essa propriedade não existe."},
+        {t:"box-shadow",ok:false,fb:"box-shadow cria sombra."}]},
+      {q:"Com que valor um quadrado vira círculo?",opts:[
+        {t:"border-radius: 50%;",ok:true,fb:"Certo. Metade da largura em todos os cantos forma um círculo."},
+        {t:"border-radius: 1px;",ok:false,fb:"1px arredonda quase nada."},
+        {t:"border: circle;",ok:false,fb:"Esse valor não existe."}]},
+      {q:"Para que serve box-shadow?",opts:[
+        {t:"Criar uma sombra na caixa",ok:true,fb:"Isso. Dá sensação de profundidade."},
+        {t:"Escurecer o texto",ok:false,fb:"Cor do texto é com color."},
+        {t:"Esconder a caixa",ok:false,fb:"A caixa continua visível, só ganha sombra."}]}
+    ]
+  },
+  {
+    title:"Flexbox: lado a lado",
+    goal:"Organizar elementos em linha com poucas regras.",
+    learn:`<p>Por padrão, blocos como <code>&lt;div&gt;</code> ficam um embaixo do outro. Com <code>display: flex</code> no elemento <strong>pai</strong>, os filhos ficam lado a lado.</p>
+<ul>
+<li><code>gap</code>: o espaço entre os filhos</li>
+<li><code>justify-content</code>: como eles se distribuem na linha (<code>center</code>, <code>space-between</code>)</li>
+<li><code>align-items</code>: o alinhamento na vertical (<code>center</code>)</li>
+</ul>`,
+    code:`<style>\n  .linha {\n    display: flex;\n    gap: 12px;\n    justify-content: center;\n  }\n  .item {\n    padding: 16px 20px;\n    background-color: #ff2a1f;\n    color: white;\n    border-radius: 8px;\n  }\n</style>\n\n<div class="linha">\n  <div class="item">HTML</div>\n  <div class="item">CSS</div>\n  <div class="item">JS</div>\n</div>`,
+    tip:"Troque justify-content: center por space-between e veja os itens se espalharem.",
+    quiz:[
+      {q:"Onde se coloca display: flex?",opts:[
+        {t:"No elemento pai, que envolve os itens",ok:true,fb:"Isso. O pai organiza os filhos."},
+        {t:"Em cada item filho",ok:false,fb:"O flex vai no pai."},
+        {t:"No <style>",ok:false,fb:"O <style> guarda as regras. O flex vai numa regra do pai."}]},
+      {q:"Qual propriedade define o espaço entre os itens?",opts:[
+        {t:"gap",ok:true,fb:"Certo. gap = vão entre os itens."},
+        {t:"padding",ok:false,fb:"padding é o espaço interno de cada caixa."},
+        {t:"border",ok:false,fb:"border é a borda."}]},
+      {q:"O que justify-content: center; faz num container flex?",opts:[
+        {t:"Centraliza os itens na linha",ok:true,fb:"Isso."},
+        {t:"Centraliza o texto de cada item",ok:false,fb:"Para o texto, use text-align."},
+        {t:"Empilha os itens",ok:false,fb:"Com flex eles ficam lado a lado."}]}
+    ]
+  },
+  {
+    title:"Juntando tudo",
+    goal:"Transformar uma página simples num cartão de perfil.",
+    learn:`<p>Agora junte tudo: <strong>cores, fontes, classes, caixa, cantos e flexbox</strong> num cartão de perfil.</p>
+<p>Repare que o HTML é quase igual ao do Módulo 1. Todo o visual novo veio do CSS. Esse é o treino para a prova.</p>`,
+    code:`<style>\n  body {\n    font-family: Arial, sans-serif;\n    background-color: #0a0a0c;\n  }\n  .cartao {\n    max-width: 320px;\n    margin: 20px auto;\n    padding: 24px;\n    background-color: #1a1a1d;\n    color: white;\n    border-radius: 16px;\n    border-top: 4px solid #ff2a1f;\n  }\n  .cartao h1 {\n    color: #ff2a1f;\n    margin-top: 0;\n  }\n  .tags {\n    display: flex;\n    gap: 8px;\n  }\n  .tag {\n    padding: 4px 10px;\n    background-color: #ff2a1f;\n    border-radius: 999px;\n    font-size: 13px;\n  }\n</style>\n\n<div class="cartao">\n  <h1>Seu Nome</h1>\n  <p>Aprendendo a programar do zero.</p>\n  <div class="tags">\n    <span class="tag">HTML</span>\n    <span class="tag">CSS</span>\n  </div>\n</div>`,
+    tip:"Coloque seu nome, troque as cores e adicione uma tag JS. O cartão é seu.",
+    quiz:[
+      {q:"O que o seletor .cartao h1 escolhe?",opts:[
+        {t:"Só os h1 que estão dentro de algo com a classe cartao",ok:true,fb:"Isso. O espaço significa \"dentro de\"."},
+        {t:"Todos os h1 da página",ok:false,fb:"Só os que estão dentro do .cartao."},
+        {t:"Só o elemento com a classe cartao",ok:false,fb:"Ele escolhe os h1 dentro dele."}]},
+      {q:"O que margin: 20px auto; faz com o cartão?",opts:[
+        {t:"Dá 20px em cima e embaixo e centraliza na horizontal",ok:true,fb:"Certo. auto divide o espaço dos lados igualmente."},
+        {t:"Aumenta a fonte para 20px",ok:false,fb:"Fonte é com font-size."},
+        {t:"Arredonda os cantos",ok:false,fb:"Cantos são com border-radius."}]},
+      {q:"O que deixa as tags HTML e CSS lado a lado?",opts:[
+        {t:"O display: flex na classe .tags",ok:true,fb:"Isso. O pai .tags organiza as filhas em linha."},
+        {t:"O border-radius das tags",ok:false,fb:"border-radius só arredonda."},
+        {t:"A cor de fundo vermelha",ok:false,fb:"Cor não muda a posição."}]}
+    ]
+  }
+];
+
+const CSS_PROVA = {
+  title:"Prova prática — Deixe a página com a sua cara",
+  descHTML:`<h3>Desafio final do Módulo 2</h3>
+  <p>O HTML da página já está pronto. Escreva o CSS dentro do <code>&lt;style&gt;</code> para deixar ela com a sua cara. O corretor confere se você:</p>
+  <ul>
+    <li>colocou uma cor de fundo no <code>body</code></li>
+    <li>mudou a cor do título <code>h1</code></li>
+    <li>definiu uma fonte com <code>font-family</code></li>
+    <li>estilizou a classe <code>.cartao</code> (ou outra classe que você criar e usar)</li>
+    <li>usou espaçamento com <code>padding</code> ou <code>margin</code></li>
+  </ul>
+  <p>O resultado aparece ao vivo embaixo do editor. Quando terminar, clique em <strong>Corrigir</strong>.</p>`,
+  starter:`<style>\n\n</style>\n\n<div class="cartao">\n  <h1>Seu nome</h1>\n  <p>Estou aprendendo HTML e CSS.</p>\n  <ul>\n    <li>HTML</li>\n    <li>CSS</li>\n    <li>Lógica (em breve)</li>\n  </ul>\n  <a href="https://encryptedgroup.com">Encrypted Group</a>\n</div>`,
+  checks:[
+    {label:"Cor de fundo no body",test:c=>c.rules.some(r=>c.hits(r,c.doc.body)&&(r.style.backgroundColor||r.style.background))},
+    {label:"Cor diferente no título h1",test:c=>{const h=c.doc.querySelector('h1');return !!h&&c.rules.some(r=>c.hits(r,h)&&r.style.color);}},
+    {label:"Fonte definida com font-family",test:c=>c.rules.some(r=>r.style.fontFamily)},
+    {label:"Uma classe estilizada e usada no HTML",test:c=>c.rules.some(r=>r.selectorText.indexOf('.')>=0&&r.style.length>0&&c.any(r))},
+    {label:"Espaçamento com padding ou margin",test:c=>c.rules.some(r=>['padding','margin','paddingTop','paddingRight','paddingBottom','paddingLeft','marginTop','marginRight','marginBottom','marginLeft'].some(k=>r.style[k]))}
+  ]
+};
+
+/* ---------- Conteúdo: Módulo 4 — JavaScript na página (DOM) ---------- */
+const DOM_LESSONS = [
+  {
+    title:"O que é o DOM",
+    goal:"Entender como o JavaScript enxerga a página.",
+    learn:`<p>Quando o navegador lê o seu HTML, ele monta na memória uma árvore de objetos com tudo que está na página. Essa árvore se chama <strong>DOM</strong>.</p>
+<p>O JavaScript conversa com essa árvore pelo objeto <code>document</code>. É assim que o código consegue ler e mudar a página <strong>depois</strong> que ela já apareceu na tela.</p>
+<p>O código fica dentro da tag <code>&lt;script&gt;</code>, no fim da página, depois do conteúdo. Assim os elementos já existem quando o código roda.</p>`,
+    code:`<h1>Olá!</h1>\n\n<script>\n  document.querySelector("h1").textContent = "Mudei pelo JavaScript!";\n<\/script>`,
+    tip:"Apague a linha de dentro do script e veja o título voltar ao original.",
+    quiz:[
+      {q:"O que é o DOM?",opts:[
+        {t:"A página transformada em objetos que o JavaScript consegue mexer",ok:true,fb:"Isso. É a ponte entre o HTML e o código."},
+        {t:"Um programa de edição de imagens",ok:false,fb:"Não. DOM é a representação da página na memória."},
+        {t:"Outro nome para o CSS",ok:false,fb:"CSS cuida do visual. O DOM é a estrutura que o JS manipula."}]},
+      {q:"Qual objeto representa a página inteira?",opts:[
+        {t:"document",ok:true,fb:"Certo. Tudo começa nele."},
+        {t:"page",ok:false,fb:"Esse objeto não existe. O certo é document."},
+        {t:"html",ok:false,fb:"<html> é uma tag; o objeto é document."}]},
+      {q:"Por que o <script> costuma ficar no fim da página?",opts:[
+        {t:"Para os elementos já existirem quando o código rodar",ok:true,fb:"Isso. No topo, o código procuraria algo que ainda não apareceu."},
+        {t:"Porque fica mais bonito",ok:false,fb:"É uma questão de ordem, não de estética."},
+        {t:"Porque o navegador ignora scripts no topo",ok:false,fb:"Ele não ignora; só roda antes da página existir."}]}
+    ]
+  },
+  {
+    title:"Encontrar elementos",
+    goal:"Pegar na página o elemento que você quer mudar.",
+    learn:`<p><code>document.querySelector()</code> devolve o <strong>primeiro</strong> elemento que combina com o que você pediu. E o que você pede é um <strong>seletor de CSS</strong>, igualzinho ao que você aprendeu no Módulo 2:</p>
+<ul>
+<li><code>"h1"</code> pega pela tag</li>
+<li><code>".texto"</code> pega pela classe</li>
+<li><code>"#titulo"</code> pega pelo id</li>
+</ul>
+<p><code>document.querySelectorAll()</code> devolve <strong>todos</strong> que combinam, em forma de lista, com <code>.length</code> igual ao dos arrays.</p>`,
+    code:`<h1 id="titulo">Título</h1>\n<p class="texto">Primeiro</p>\n<p class="texto">Segundo</p>\n\n<script>\n  const titulo = document.querySelector("#titulo");\n  const paragrafos = document.querySelectorAll(".texto");\n\n  titulo.textContent = "Achei " + paragrafos.length + " parágrafos";\n<\/script>`,
+    tip:"Adicione um terceiro parágrafo com class=\"texto\" e veja o número mudar sozinho.",
+    quiz:[
+      {q:"O que querySelector(\".caixa\") procura?",opts:[
+        {t:"O primeiro elemento com a classe caixa",ok:true,fb:"Isso. O ponto indica classe, igual no CSS."},
+        {t:"Todos os elementos com a classe caixa",ok:false,fb:"Para todos, use querySelectorAll."},
+        {t:"O elemento com id caixa",ok:false,fb:"Id seria \"#caixa\", com cerquilha."}]},
+      {q:"Como pegar o elemento de id \"menu\"?",opts:[
+        {t:'document.querySelector("#menu")',ok:true,fb:"Certo. A cerquilha marca o id."},
+        {t:'document.querySelector("menu")',ok:false,fb:"Sem a cerquilha, ele procura uma tag chamada menu."},
+        {t:'document.querySelector(".menu")',ok:false,fb:"O ponto procura classe, não id."}]},
+      {q:"O que querySelectorAll devolve?",opts:[
+        {t:"Uma lista com todos os elementos que combinam",ok:true,fb:"Isso, e dá para usar .length nela."},
+        {t:"Só o último elemento",ok:false,fb:"Ele devolve todos."},
+        {t:"Um número",ok:false,fb:"Devolve a lista; o número vem do .length."}]}
+    ]
+  },
+  {
+    title:"Mudar o conteúdo",
+    goal:"Trocar o texto de qualquer elemento.",
+    learn:`<p>Todo elemento tem a propriedade <code>textContent</code>, que é o texto dentro dele. Ela funciona nos dois sentidos: você pode <strong>ler</strong> o que está escrito ou <strong>escrever</strong> algo novo.</p>
+<p>Escrever é só usar o sinal de igual: <code>elemento.textContent = "novo texto"</code>. A página muda na hora, sem recarregar.</p>`,
+    code:`<h2 id="saudacao">Texto antigo</h2>\n<p id="aviso">Este também vai mudar.</p>\n\n<script>\n  const saudacao = document.querySelector("#saudacao");\n  saudacao.textContent = "Texto novo!";\n\n  document.querySelector("#aviso").textContent = "Mudei também.";\n<\/script>`,
+    tip:"Troque os textos entre aspas e veja a página se atualizar sozinha.",
+    quiz:[
+      {q:"O que textContent guarda?",opts:[
+        {t:"O texto que está dentro do elemento",ok:true,fb:"Isso, e dá para trocar por outro."},
+        {t:"A cor do elemento",ok:false,fb:"Cor é com style.color."},
+        {t:"O id do elemento",ok:false,fb:"O id fica em element.id."}]},
+      {q:"Qual linha troca o texto do título?",code:`<h1 id="t">Oi</h1>`,opts:[
+        {t:'document.querySelector("#t").textContent = "Tchau";',ok:true,fb:"Certo."},
+        {t:'document.querySelector("#t") = "Tchau";',ok:false,fb:"Falta dizer o que mudar: o textContent."},
+        {t:'document.textContent("#t") = "Tchau";',ok:false,fb:"textContent é do elemento, não do document."}]},
+      {q:"Depois de mudar o textContent, precisa recarregar a página?",opts:[
+        {t:"Não, a mudança aparece na hora",ok:true,fb:"Isso. É essa a graça do DOM."},
+        {t:"Sim, sempre",ok:false,fb:"Não precisa: o navegador redesenha sozinho."},
+        {t:"Só no celular",ok:false,fb:"Vale para qualquer navegador."}]}
+    ]
+  },
+  {
+    title:"Mudar estilo e classes",
+    goal:"Alterar o visual pelo código.",
+    learn:`<p>Dá para mexer no CSS de um elemento pelo JavaScript, com <code>elemento.style</code>: <code>alvo.style.color = "#ff2a1f"</code>.</p>
+<p>Atenção a um detalhe: propriedades com hífen viram <strong>maiúscula no meio</strong>. <code>background-color</code> vira <code>backgroundColor</code>, <code>font-size</code> vira <code>fontSize</code>.</p>
+<p>Na prática, o caminho mais organizado é criar uma classe no CSS e ligar ou desligar com <code>elemento.classList.add("ativo")</code>, <code>.remove("ativo")</code> ou <code>.toggle("ativo")</code>.</p>`,
+    code:`<style>\n  .destaque { background-color: #ff2a1f; color: white; padding: 10px; }\n<\/style>\n\n<p id="alvo">Eu vou mudar.</p>\n<p id="outro">Eu também.</p>\n\n<script>\n  const alvo = document.querySelector("#alvo");\n  alvo.style.color = "#ff2a1f";\n  alvo.style.fontSize = "24px";\n\n  document.querySelector("#outro").classList.add("destaque");\n<\/script>`,
+    tip:"Troque classList.add por classList.remove e veja o destaque sumir.",
+    quiz:[
+      {q:"Como se escreve background-color no JavaScript?",opts:[
+        {t:"backgroundColor",ok:true,fb:"Isso. O hífen some e a próxima letra vira maiúscula."},
+        {t:"background-color",ok:false,fb:"Com hífen só funciona no CSS, não no style do JS."},
+        {t:"backgroundcolor",ok:false,fb:"Falta a maiúscula: backgroundColor."}]},
+      {q:"O que classList.toggle(\"ativo\") faz?",opts:[
+        {t:"Põe a classe se não tiver, e tira se já tiver",ok:true,fb:"Isso. É um liga e desliga."},
+        {t:"Sempre adiciona a classe",ok:false,fb:"Sempre adicionar é o add."},
+        {t:"Apaga o elemento",ok:false,fb:"Apagar é com remove() no elemento, não no classList."}]},
+      {q:"Qual jeito costuma ser mais organizado?",opts:[
+        {t:"Criar uma classe no CSS e ligar com classList",ok:true,fb:"Certo: o visual fica no CSS e o código só liga e desliga."},
+        {t:"Escrever dezenas de linhas de style no JavaScript",ok:false,fb:"Funciona, mas espalha o visual pelo código."},
+        {t:"Repetir o CSS dentro de cada elemento",ok:false,fb:"Isso deixa a manutenção bem mais difícil."}]}
+    ]
+  },
+  {
+    title:"Eventos: o clique",
+    goal:"Fazer a página reagir ao usuário.",
+    learn:`<p>Um <strong>evento</strong> é algo que acontece na página: um clique, uma tecla, o mouse passando por cima.</p>
+<p>Para reagir, use <code>addEventListener</code>, que recebe duas coisas: o <strong>nome do evento</strong> e a <strong>função</strong> que roda quando ele acontece.</p>
+<p>Essa função fica guardada esperando. Ela só roda na hora do clique, quantas vezes o usuário clicar.</p>`,
+    code:`<button id="botao">Clique em mim</button>\n<p id="resposta">Ainda não clicou.</p>\n\n<script>\n  const botao = document.querySelector("#botao");\n  const resposta = document.querySelector("#resposta");\n\n  botao.addEventListener("click", function () {\n    resposta.textContent = "Você clicou!";\n  });\n<\/script>`,
+    tip:"Clique no botão aqui na pré-visualização: o código roda de verdade.",
+    quiz:[
+      {q:"O que addEventListener recebe?",opts:[
+        {t:"O nome do evento e uma função",ok:true,fb:"Isso: o quê escutar e o que fazer."},
+        {t:"Só o nome do evento",ok:false,fb:"Sem a função, nada aconteceria."},
+        {t:"Uma cor e um tamanho",ok:false,fb:"Isso seria style."}]},
+      {q:"Quando a função do clique roda?",opts:[
+        {t:"Toda vez que o usuário clicar",ok:true,fb:"Certo. Ela fica esperando o clique."},
+        {t:"Uma única vez, ao carregar a página",ok:false,fb:"Ela fica registrada e roda a cada clique."},
+        {t:"Nunca, é só documentação",ok:false,fb:"Ela roda de verdade no clique."}]},
+      {q:"Qual é o nome do evento de clique?",opts:[
+        {t:'"click"',ok:true,fb:"Isso, em inglês e entre aspas."},
+        {t:'"clique"',ok:false,fb:"Os nomes de evento são em inglês: click."},
+        {t:'"onclick"',ok:false,fb:"No addEventListener é só click."}]}
+    ]
+  },
+  {
+    title:"Ler o que o usuário digita",
+    goal:"Pegar o texto de um campo e usar no código.",
+    learn:`<p>O campo de texto é a tag <code>&lt;input&gt;</code>. O que a pessoa digitou fica na propriedade <code>.value</code>.</p>
+<p>Repare na diferença: em parágrafos e títulos você usa <code>textContent</code>; em campos de formulário, <code>value</code>.</p>
+<p>Depois de usar, <code>input.value = ""</code> limpa o campo.</p>`,
+    code:`<input id="nome" placeholder="Digite seu nome">\n<button id="ok">Enviar</button>\n<p id="saida"></p>\n\n<script>\n  document.querySelector("#ok").addEventListener("click", function () {\n    const nome = document.querySelector("#nome").value;\n    document.querySelector("#saida").textContent = "Olá, " + nome + "!";\n  });\n<\/script>`,
+    tip:"Digite seu nome na pré-visualização e clique em Enviar.",
+    quiz:[
+      {q:"O que a pessoa digitou num input fica guardado em...",opts:[
+        {t:".value",ok:true,fb:"Isso. É o valor do campo."},
+        {t:".textContent",ok:false,fb:"textContent é para texto de parágrafos e títulos."},
+        {t:".input",ok:false,fb:"Essa propriedade não existe."}]},
+      {q:"Como limpar o campo depois de usar?",opts:[
+        {t:'input.value = "";',ok:true,fb:"Certo: valor vazio limpa o campo."},
+        {t:"input.remove();",ok:false,fb:"Isso apagaria o campo inteiro da página."},
+        {t:"input.clear();",ok:false,fb:"Esse método não existe para input."}]},
+      {q:"No código da aula, quando o nome é lido?",opts:[
+        {t:"No momento do clique, dentro da função",ok:true,fb:"Isso. Por isso pega sempre o valor atual."},
+        {t:"Assim que a página carrega",ok:false,fb:"Aí o campo ainda estaria vazio."},
+        {t:"Nunca",ok:false,fb:"Ele é lido dentro da função do clique."}]}
+    ]
+  },
+  {
+    title:"Criar e remover elementos",
+    goal:"Fazer a página crescer pelo código.",
+    learn:`<p>São três passos para colocar algo novo na página:</p>
+<ul>
+<li><code>document.createElement("li")</code> cria o elemento</li>
+<li><code>elemento.textContent = "..."</code> põe o conteúdo</li>
+<li><code>lista.appendChild(elemento)</code> encaixa dentro de outro</li>
+</ul>
+<p>Para tirar, é só <code>elemento.remove()</code>.</p>`,
+    code:`<ul id="lista"></ul>\n<button id="add">Adicionar item</button>\n\n<script>\n  let contador = 0;\n\n  document.querySelector("#add").addEventListener("click", function () {\n    contador = contador + 1;\n\n    const item = document.createElement("li");\n    item.textContent = "Item " + contador;\n    document.querySelector("#lista").appendChild(item);\n  });\n<\/script>`,
+    tip:"Clique várias vezes no botão e veja a lista crescer.",
+    quiz:[
+      {q:"O que createElement faz?",opts:[
+        {t:"Cria o elemento, que ainda não aparece na página",ok:true,fb:"Isso. Ele só aparece depois do appendChild."},
+        {t:"Cria e já mostra na página",ok:false,fb:"Falta encaixar com appendChild."},
+        {t:"Apaga um elemento",ok:false,fb:"Apagar é remove()."}]},
+      {q:"O que appendChild faz?",opts:[
+        {t:"Encaixa o elemento dentro de outro",ok:true,fb:"Certo: é aí que ele aparece."},
+        {t:"Muda a cor",ok:false,fb:"Cor é style."},
+        {t:"Lê o texto",ok:false,fb:"Ler é com textContent."}]},
+      {q:"Como tirar um elemento da página?",opts:[
+        {t:"elemento.remove()",ok:true,fb:"Isso."},
+        {t:"elemento.delete()",ok:false,fb:"delete() não existe para elementos."},
+        {t:'elemento.textContent = ""',ok:false,fb:"Isso só esvazia o texto; o elemento continua lá."}]}
+    ]
+  },
+  {
+    title:"Juntando tudo",
+    goal:"Construir uma lista de tarefas de verdade.",
+    learn:`<p>Hora de juntar tudo: <strong>ler o campo, criar elemento, escutar cliques e remover</strong>.</p>
+<p>O código abaixo é uma lista de tarefas funcional. Adicione tarefas pelo botão e clique numa tarefa para riscá-la da lista.</p>
+<p>Leia com calma: cada linha usa algo das aulas anteriores. Esse é o treino para a prova do módulo.</p>`,
+    code:`<h2>Minhas tarefas</h2>\n<input id="tarefa" placeholder="O que precisa fazer?">\n<button id="add">Adicionar</button>\n<ul id="lista"></ul>\n\n<script>\n  const input = document.querySelector("#tarefa");\n  const lista = document.querySelector("#lista");\n\n  document.querySelector("#add").addEventListener("click", function () {\n    if (input.value === "") {\n      return;\n    }\n\n    const item = document.createElement("li");\n    item.textContent = input.value;\n\n    item.addEventListener("click", function () {\n      item.remove();\n    });\n\n    lista.appendChild(item);\n    input.value = "";\n  });\n<\/script>`,
+    tip:"Adicione três tarefas e clique numa delas para remover. Você acabou de fazer um app.",
+    quiz:[
+      {q:"Para que serve o if com return no começo?",opts:[
+        {t:"Para não adicionar tarefa vazia",ok:true,fb:"Isso. Se o campo está vazio, a função para ali."},
+        {t:"Para limpar a lista",ok:false,fb:"Ele só interrompe quando o campo está vazio."},
+        {t:"Para contar as tarefas",ok:false,fb:"Não há contagem nesse código."}]},
+      {q:"O que faz cada item ser removido ao ser clicado?",opts:[
+        {t:"Um addEventListener no próprio item",ok:true,fb:"Certo: cada item ganha o seu ao ser criado."},
+        {t:"O appendChild",ok:false,fb:"appendChild só encaixa o item na lista."},
+        {t:"O input.value",ok:false,fb:"Esse é o texto digitado."}]},
+      {q:"Por que input.value = \"\" aparece no fim?",opts:[
+        {t:"Para limpar o campo e já poder digitar a próxima",ok:true,fb:"Isso, é um detalhe que melhora o uso."},
+        {t:"Para apagar a tarefa recém-criada",ok:false,fb:"A tarefa já foi para a lista; isso só limpa o campo."},
+        {t:"Porque o JavaScript exige",ok:false,fb:"Não é obrigatório, é escolha de quem faz."}]}
+    ]
+  }
+];
+
+const DOM_PROVA = {
+  title:"Prova prática — Contador de cliques",
+  fn:null,
+  brief:`<p><strong>Sua missão:</strong> fazer o contador funcionar. O HTML já está pronto na página; falta o JavaScript dentro do <code>&lt;script&gt;</code>. Cada missão cumprida acende em <span class="g">verde</span>.</p>
+<p class="hint">O melhor teste é o de verdade: clique no botão na pré-visualização e veja o número subir.</p>`,
+  starter:`<h1>Contador de cliques</h1>\n<p>Você clicou <span id="contador">0</span> vezes.</p>\n<button id="botao">Clique aqui</button>\n\n<script>\n  // 1) busque o botao e o span pelo id\n  // 2) crie uma variavel para contar, comecando em zero\n  // 3) quando clicar, some 1 e mostre o numero na tela\n\n<\/script>`,
+  cheats:[
+    {name:'Botão no HTML',parts:[{t:'<button id="botao">',re:/<button(\s[^>]*)?>/i},{t:'</button>',re:/<\/button\s*>/i}]},
+    {name:'Buscar na página',parts:[{t:'document.querySelector("#botao")',re:/(querySelector|getElementById)\s*\(/}]},
+    {name:'Guardar a contagem',parts:[{t:'let cliques = 0;',re:/let\s+\w+\s*=\s*0/}]},
+    {name:'Escutar o clique',parts:[{t:'botao.addEventListener("click", function () {',re:/addEventListener\s*\(\s*["']click["']/},{t:'});',re:/\}\s*\)\s*;?/}]},
+    {name:'Somar 1',parts:[{t:'cliques = cliques + 1;',re:/(\+\+|\+=\s*1|=\s*\w+\s*\+\s*1)/}]},
+    {name:'Mostrar na tela',parts:[{t:'contador.textContent = cliques;',re:/\.textContent\s*=/}]}
+  ],
+  checks:[
+    {label:"Um botão <button> na página",test:c=>!!c.doc.querySelector('button')},
+    {label:"Um elemento com id para mostrar o número",test:c=>!!c.doc.querySelector('span[id], p[id], div[id], h1[id], h2[id]')},
+    {label:"Buscar o elemento com querySelector ou getElementById",test:c=>/(querySelector|getElementById)\s*\(/.test(c.js)},
+    {label:"Escutar o clique com addEventListener",test:c=>/addEventListener\s*\(\s*["']click["']/.test(c.js)},
+    {label:"Uma variável (let) para contar, começando em zero",test:c=>/let\s+\w+\s*=\s*0/.test(c.js)},
+    {label:"Mostrar o número na tela com textContent",test:c=>/\.textContent\s*=/.test(c.js)}
+  ]
+};
+
+/* ---------- Módulos da trilha ---------- */
+PROVA.fn = 'media';
+const MODULES = [
+  {id:'html',fase:'Fase 0',title:'HTML do zero',kind:'html',lessons:HTML_LESSONS,prova:HTML_PROVA,
+   lead:'Oito aulas curtas para entender como uma página nasce: tags, títulos, listas, links, imagens e a estrutura completa. Você escreve e vê o resultado na hora.'},
+  {id:'css',fase:'Fase 0',title:'CSS: o visual',kind:'css',lessons:CSS_LESSONS,prova:CSS_PROVA,
+   lead:'Oito aulas para deixar as páginas bonitas: cores, fontes, classes, espaçamentos, cantos arredondados e flexbox. Você muda o CSS e vê o resultado na hora.'},
+  {id:'js',fase:'Fase 1',title:'Lógica com JavaScript',kind:'js',lessons:LESSONS,prova:PROVA,
+   lead:'Oito aulas práticas com JavaScript rodando aqui no navegador: variáveis, condições, laços, funções e listas.'},
+  {id:'dom',fase:'Fase 1',title:'JavaScript na página (DOM)',kind:'dom',lessons:DOM_LESSONS,prova:DOM_PROVA,
+   lead:'Oito aulas para dar vida às páginas: encontrar elementos, mudar textos e estilos, reagir a cliques, ler o que o usuário digita e criar conteúdo na hora.'}
+];
+
+/* ---------- Estado / progresso ---------- */
+const KEY='encryptando_v2', OLD_KEY='devquest_m1_v1';
+const XP_LESSON=60, XP_PROVA=240, LEVEL_STEP=300;
+let P = load();
+
+function load(){
+  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[]};
+  MODULES.forEach(m=>{ base.mods[m.id]={done:[],prova:false}; });
+  try{
+    const s=localStorage.getItem(KEY);
+    if(s){
+      const d=JSON.parse(s);
+      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[];
+      MODULES.forEach(m=>{ if(d.mods&&d.mods[m.id]) base.mods[m.id]=Object.assign({done:[],prova:false},d.mods[m.id]); });
+      return base;
+    }
+    const o=localStorage.getItem(OLD_KEY);
+    if(o){
+      const d=JSON.parse(o);
+      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null;
+      base.mods.js={done:d.done||[],prova:!!d.prova};
+    }
+  }catch(e){}
+  return base;
+}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(P)); }catch(e){} }
+function ST(m){ return P.mods[MODULES[m].id]; }
+function isDone(m,i){ return ST(m).done.indexOf(i)>=0; }
+function modAvail(m){ return m===0 || ST(m-1).prova || ST(m).done.length>0; }
+function lessonAvail(m,i){ return modAvail(m) && (i===0 || isDone(m,i-1)); }
+function allDone(m){ return ST(m).done.length>=MODULES[m].lessons.length; }
+function provaAvail(m){ return allDone(m); }
+
+function bumpStreak(){
+  const today=new Date().toDateString();
+  if(P.lastDay!==today){
+    if(P.lastDay){
+      const diff=Math.round((new Date(today)-new Date(P.lastDay))/86400000);
+      P.streak = diff===1 ? P.streak+1 : 1;
+    } else P.streak=1;
+    P.lastDay=today;
+  } else if(P.streak===0){ P.streak=1; P.lastDay=today; }
+}
+
+/* Embaralha as posições das alternativas (Fisher–Yates) */
+function shuffled(n){
+  const a=[...Array(n).keys()];
+  for(let i=n-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+
+/* ---------- Helpers ---------- */
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function fmt(v){
+  if(typeof v==='string') return v;
+  if(typeof v==='undefined') return 'undefined';
+  if(v===null) return 'null';
+  if(typeof v==='object'){try{return JSON.stringify(v);}catch(e){return String(v);}}
+  return String(v);
+}
+function norm(s){return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim();}
+const $=(s,r=document)=>r.querySelector(s);
+
+/* ---------- Header ---------- */
+function renderHeader(){
+  const lvl=Math.floor(P.xp/LEVEL_STEP)+1;
+  const into=P.xp%LEVEL_STEP;
+  $('#lvlN').textContent=lvl;
+  $('#xpN').textContent=P.xp+' XP';
+  $('#xpFill').style.width=(into/LEVEL_STEP*100)+'%';
+  $('#streakN').textContent=P.streak;
+}
+
+/* ---------- Toast + confete ---------- */
+let toastT;
+function toast(msg,kind){
+  const el=$('#toast');
+  el.className=kind||'';
+  el.innerHTML=(kind==='gold'?IC.trophy:IC.spark)+'<span>'+esc(msg)+'</span>';
+  el.classList.add('show');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>el.classList.remove('show'),3200);
+}
+function confetti(big){
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cv=$('#fx'); cv.style.display='block';
+  const ctx=cv.getContext('2d'); const W=cv.width=innerWidth, H=cv.height=innerHeight;
+  const cols=['#ff2a1f','#ff6a5c','#ffcf5c','#ffffff','#35d98a'];
+  const N=big?150:80, parts=[];
+  for(let i=0;i<N;i++)parts.push({x:W/2+(Math.random()-.5)*W*.5,y:H*.32,vx:(Math.random()-.5)*11,vy:Math.random()*-13-4,g:.34,s:Math.random()*7+4,c:cols[i%cols.length],r:Math.random()*6,vr:(Math.random()-.5)*.4});
+  let f=0;
+  (function tick(){
+    ctx.clearRect(0,0,W,H); f++;
+    parts.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);ctx.restore();});
+    if(f<130)requestAnimationFrame(tick); else{ctx.clearRect(0,0,W,H);cv.style.display='none';}
+  })();
+}
+
+
+/* ---------- Modo revisão: as questões que ele errou voltam depois ---------- */
+const XP_REVISAO=15;
+function errKey(m,i,qi){ return m+':'+i+':'+qi; }
+function addError(m,i,qi){
+  P.errors=P.errors||[];
+  const k=errKey(m,i,qi);
+  if(P.errors.indexOf(k)<0){ P.errors.push(k); save(); }
+}
+function clearError(k){
+  P.errors=(P.errors||[]).filter(x=>x!==k);
+  save();
+}
+function errorList(){
+  return (P.errors||[]).map(k=>{
+    const [m,i,qi]=k.split(':').map(Number);
+    const mod=MODULES[m]; if(!mod) return null;
+    const l=mod.lessons[i]; if(!l||!l.quiz[qi]) return null;
+    return {k,m,i,qi,mod,l,q:l.quiz[qi]};
+  }).filter(Boolean);
+}
+function reviewCard(){
+  const n=errorList().length;
+  if(!n) return '';
+  return `<button class="revcard" id="goRev">
+    <span class="revic">${IC.again}</span>
+    <span class="revtxt"><b>Revisar meus erros</b><small>${n===1?'1 questão esperando':n+' questões esperando'} · +${XP_REVISAO} XP por acerto</small></span>
+    <span class="revgo">${IC.arrow}</span>
+  </button>`;
+}
+function openReview(){
+  const items=errorList();
+  const v=$('#view');
+  if(!items.length){ renderHome(); return; }
+  const orders=items.map(it=>shuffled(it.q.opts.length));
+  const solved=items.map(()=>false);
+  v.innerHTML=`
+    <div class="lv-top">
+      <button class="back" id="back">${IC.back} Trilha</button>
+      <span class="lv-kicker">Revisão · ${items.length} ${items.length===1?'questão':'questões'}</span>
+    </div>
+    <h1 class="lv-title">Revisar meus erros</h1>
+    <p class="lv-goal">Estas são as questões que você errou antes. Acertar aqui tira a questão da lista e vale ${XP_REVISAO} XP.</p>
+    <div class="panel">
+      ${items.map((it,n)=>`<div class="q" data-n="${n}">
+        <div class="qn">${it.mod.title} · Aula ${it.i+1}: ${esc(it.l.title)}</div>
+        <div class="qt">${esc(it.q.q)}</div>
+        ${it.q.code?`<pre class="snip"><code>${esc(it.q.code)}</code></pre>`:''}
+        <div class="opts">${orders[n].map(oi=>`<button class="opt" data-o="${oi}"><span class="mk">${IC.check}</span><span>${esc(it.q.opts[oi].t)}</span></button>`).join('')}</div>
+        <div class="fb" id="rfb-${n}"></div>
+      </div>`).join('')}
+      <div class="finish">
+        <div class="prog"><div class="lbl"><span id="rcount">0</span>/${items.length} corrigidas</div>
+          <div class="miniprog"><i id="rbar" style="width:0%"></i></div></div>
+        <button class="btn btn-primary" id="rdone">Voltar à trilha ${IC.arrow}</button>
+      </div>
+    </div>`;
+  $('#back').addEventListener('click',renderHome);
+  $('#rdone').addEventListener('click',renderHome);
+  v.querySelectorAll('.q').forEach(qEl=>{
+    const n=+qEl.dataset.n, it=items[n];
+    qEl.querySelectorAll('.opt').forEach(opt=>{
+      opt.addEventListener('click',()=>{
+        if(solved[n]) return;
+        const o=it.q.opts[+opt.dataset.o], fb=$('#rfb-'+n);
+        if(o.ok){
+          opt.classList.add('correct'); solved[n]=true;
+          qEl.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+          fb.className='fb ok show'; fb.textContent=o.fb;
+          clearError(it.k); P.xp+=XP_REVISAO; bumpStreak(); save(); renderHeader();
+          const c=solved.filter(Boolean).length;
+          $('#rcount').textContent=c; $('#rbar').style.width=(c/items.length*100)+'%';
+          if(c===items.length){ confetti(true); toast('Lista de erros zerada!','gold'); }
+          else toast('Corrigida! +'+XP_REVISAO+' XP','mint');
+        } else {
+          opt.classList.add('wrong'); opt.disabled=true;
+          fb.className='fb no show'; fb.textContent=o.fb;
+        }
+      });
+    });
+  });
+  scrollTo({top:0,behavior:'auto'});
+}
+
+/* ---------- Editor com cores, numeração e fechamento de tags ---------- */
+function esc2(s){ return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function sp(cls,txt){ return '<span class="t-'+cls+'">'+txt+'</span>'; }
+const ENT=/^&(lt|gt|amp);/;
+
+function hlJS(E){
+  const KW=/^(const|let|var|function|return|if|else|for|while|do|break|continue|new|class|this|true|false|null|undefined|typeof|of|in)\b/;
+  let out='',i=0,m;
+  while(i<E.length){
+    const r=E.slice(i);
+    if(m=r.match(ENT)){ out+=sp('punc',m[0]); i+=m[0].length; continue; }
+    if(m=r.match(/^\/\/[^\n]*/)){ out+=sp('com',m[0]); i+=m[0].length; continue; }
+    if(m=r.match(/^\/\*[\s\S]*?(\*\/|$)/)){ out+=sp('com',m[0]); i+=m[0].length; continue; }
+    if(m=r.match(/^("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`)/)){ out+=sp('str',m[0]); i+=m[0].length; continue; }
+    if(m=r.match(/^\d+(\.\d+)?/)){ out+=sp('num',m[0]); i+=m[0].length; continue; }
+    if(m=r.match(KW)){ out+=sp('kw',m[0]); i+=m[0].length; continue; }
+    if(m=r.match(/^[A-Za-z_$][\w$]*(?=\s*\()/)){ out+=sp('fn',m[0]); i+=m[0].length; continue; }
+    if(m=r.match(/^[A-Za-z_$][\w$]*/)){ out+=m[0]; i+=m[0].length; continue; }
+    if(m=r.match(/^[{}()\[\];,.=+\-*/%!|?:]+/)){ out+=sp('punc',m[0]); i+=m[0].length; continue; }
+    out+=E[i]; i++;
+  }
+  return out;
+}
+
+function hlCSS(E){
+  let out='',i=0,depth=0,m;
+  while(i<E.length){
+    const r=E.slice(i);
+    if(m=r.match(ENT)){ out+=sp('punc',m[0]); i+=m[0].length; continue; }
+    if(m=r.match(/^\/\*[\s\S]*?(\*\/|$)/)){ out+=sp('com',m[0]); i+=m[0].length; continue; }
+    if(m=r.match(/^("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*')/)){ out+=sp('str',m[0]); i+=m[0].length; continue; }
+    if(r[0]==='{'){ depth++; out+=sp('punc','{'); i++; continue; }
+    if(r[0]==='}'){ depth=Math.max(0,depth-1); out+=sp('punc','}'); i++; continue; }
+    if(m=r.match(/^#[0-9a-fA-F]{3,8}\b/)){ out+=sp('num',m[0]); i+=m[0].length; continue; }
+    if(m=r.match(/^\d+(\.\d+)?(px|%|em|rem|vh|vw|s|ms|deg|fr)?/)){ out+=sp('num',m[0]); i+=m[0].length; continue; }
+    if(depth===0){
+      if(m=r.match(/^[@.#]?[\w-]+/)){ out+=sp('sel',m[0]); i+=m[0].length; continue; }
+    } else {
+      if(m=r.match(/^[-\w]+(?=\s*:)/)){ out+=sp('prop',m[0]); i+=m[0].length; continue; }
+      if(m=r.match(/^[\w-]+/)){ out+=m[0]; i+=m[0].length; continue; }
+    }
+    if(m=r.match(/^[:;,()]+/)){ out+=sp('punc',m[0]); i+=m[0].length; continue; }
+    out+=E[i]; i++;
+  }
+  return out;
+}
+
+function hlAttrs(E){
+  return E.replace(/([\w-]+)(\s*=\s*)("[^"]*"|'[^']*')?/g,(a,n,eq,v)=>sp('attr',n)+sp('punc',eq)+(v?sp('str',v):''))
+          .replace(/(\s)([\w-]+)(?=[\s]|$)/g,(a,ws,n)=>/t-attr|span/.test(a)?a:ws+sp('attr',n));
+}
+function hlTags(E){
+  return E.replace(/&lt;!--[\s\S]*?--&gt;/g,m=>sp('com',m))
+          .replace(/(&lt;\/?)([A-Za-z][\w-]*|!DOCTYPE)((?:(?!&gt;)[\s\S])*?)(\/?&gt;)/g,
+            (all,open,name,attrs,close)=>sp('tag',open+name)+hlAttrs(attrs)+sp('tag',close));
+}
+function hlHTML(E){
+  let out='',last=0,m;
+  const re=/(&lt;(script|style)(?:(?!&gt;)[\s\S])*?&gt;)([\s\S]*?)(&lt;\/\2&gt;)/gi;
+  while((m=re.exec(E))){
+    out+=hlTags(E.slice(last,m.index))+hlTags(m[1]);
+    out+=(m[2].toLowerCase()==='script'?hlJS(m[3]):hlCSS(m[3]));
+    out+=hlTags(m[4]);
+    last=m.index+m[0].length;
+  }
+  return out+hlTags(E.slice(last));
+}
+function hlCode(code,mode){
+  const E=esc2(code);
+  return mode==='js'?hlJS(E):hlHTML(E);
+}
+
+const VOID_TAGS=['br','img','input','hr','meta','link','area','base','col','embed','source','track','wbr'];
+function editorBox(id,mode,minH){
+  return `<div class="edwrap" style="min-height:${minH||160}px">
+    <div class="gutter" id="gt-${id}">1</div>
+    <div class="edbox">
+      <pre class="hl" id="pre-${id}" aria-hidden="true"><code id="hl-${id}"></code></pre>
+      <textarea class="editor" id="${id}" spellcheck="false" wrap="off" autocapitalize="off" autocorrect="off" aria-label="Editor de código"></textarea>
+    </div>
+  </div>`;
+}
+function enhanceEditor(id,mode){
+  const ta=$('#'+id), hl=$('#hl-'+id), pre=$('#pre-'+id), gt=$('#gt-'+id);
+  function paint(){
+    hl.innerHTML=hlCode(ta.value,mode);
+    const n=ta.value.split('\n').length;
+    let g=''; for(let k=1;k<=n;k++) g+=k+'\n';
+    gt.textContent=g;
+    sync();
+  }
+  function sync(){ pre.scrollTop=ta.scrollTop; pre.scrollLeft=ta.scrollLeft; gt.scrollTop=ta.scrollTop; }
+  function put(text,back){
+    const s=ta.selectionStart, e=ta.selectionEnd;
+    ta.value=ta.value.slice(0,s)+text+ta.value.slice(e);
+    const pos=s+text.length-(back||0);
+    ta.selectionStart=ta.selectionEnd=pos;
+    ta.dispatchEvent(new Event('input'));
+  }
+  ta.addEventListener('input',paint);
+  ta.addEventListener('scroll',sync);
+  ta.addEventListener('keydown',e=>{
+    if(e.key==='Tab'){ e.preventDefault(); put('  '); return; }
+    if(e.key==='Enter'){
+      const upto=ta.value.slice(0,ta.selectionStart);
+      const line=upto.slice(upto.lastIndexOf('\n')+1);
+      const indent=(line.match(/^\s*/)||[''])[0];
+      const extra=/[{>:]\s*$/.test(line)?'  ':'';
+      e.preventDefault(); put('\n'+indent+extra); return;
+    }
+    if(e.key==='>'&&mode!=='js'){
+      const upto=ta.value.slice(0,ta.selectionStart);
+      const m=upto.match(/<([A-Za-z][\w-]*)(\s[^<>]*)?$/);
+      if(m&&VOID_TAGS.indexOf(m[1].toLowerCase())<0&&!/\/$/.test(m[2]||'')){
+        e.preventDefault(); put('></'+m[1]+'>','</'.length+m[1].length+1); return;
+      }
+    }
+  });
+  ta._paint=paint;
+  paint();
+  return paint;
+}
+function setEditor(id,value){
+  const ta=$('#'+id);
+  ta.value=value;
+  ta.dispatchEvent(new Event('input'));
+}
+
+/* ---------- Vídeo-aulas por módulo (links conferidos) ---------- */
+MODULES[0].videos=[
+  {id:'LJo0VZP_Msk',t:'Introdução: o que é HTML? (Aula 01)',ch:'Chief of Design'},
+  {id:'Ejkb_YpuHWs',t:'Começa aqui o curso de HTML5 e CSS3',ch:'Curso em Vídeo'},
+  {id:'jgQjeqGRdgA',t:'O que vamos aprender no módulo 01?',ch:'Curso em Vídeo'}
+];
+MODULES[0].playlist={id:'PLHz_AreHm4dkZ9-atkcmcBaMZdmLHft8n',t:'Curso completo e atual de HTML5 e CSS3 — Módulo 1 de 5',ch:'Curso em Vídeo',n:'41 vídeos'};
+MODULES[1].videos=[
+  {id:'vPNIAJ9B4hg',t:'O que vamos aprender no módulo 02? (CSS)',ch:'Curso em Vídeo'},
+  {id:'YeGn9nGies0',t:'Primeiros passos com Flexbox CSS',ch:'Curso em Vídeo'},
+  {id:'EM0grbJ3Lws',t:'Aprenda CSS Flexbox em 30 minutos',ch:'Matheus Battisti — Hora de Codar'}
+];
+MODULES[1].playlist={id:'PLHz_AreHm4dkZ9-atkcmcBaMZdmLHft8n',t:'Curso completo e atual de HTML5 e CSS3 — Módulo 1 de 5',ch:'Curso em Vídeo',n:'41 vídeos'};
+MODULES[2].videos=[
+  {id:'iF2MdbrTiBM',t:'Curso de Lógica de Programação completo para iniciantes',ch:'Dev Aprender'},
+  {id:'i6Oi-YtXnAU',t:'Curso de JavaScript completo + 14 mini-projetos',ch:'Dev Aprender'}
+];
+MODULES[2].playlist={id:'PLHz_AreHm4dmSj0MHol_aoNYCSGFqvfXV',t:'Curso de Algoritmos e Lógica de Programação',ch:'Curso em Vídeo',n:'17 vídeos'};
+
+MODULES[3].videos=[
+  {id:'UPD0vts-eMQ',t:'Manipulação do DOM explicada na prática',ch:'Escola DNC'},
+  {id:'wWnBB-mZIvY',t:'Eventos DOM — Curso JavaScript #10',ch:'Curso em Vídeo'},
+  {id:'UftSB4DaRU4',t:'Manipulação de DOM com JavaScript, do zero',ch:'Rocketseat'}
+];
+MODULES[3].playlist={id:'PLnex8IkmReXxZEXje06kW1uCwm5iC8M_Z',t:'Curso de JavaScript completo',ch:'Professor Edson Maia',n:'115 vídeos'};
+
+IC.again='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>';
+IC.video='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor" stroke="none"/></svg>';
+IC.list='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11M4 12h11M4 17h7"/><path d="M17 13.5v5l4-2.5z" fill="currentColor" stroke="none"/></svg>';
+
+function videosBlock(m){
+  const mod=MODULES[m];
+  if(!mod.videos) return '';
+  const pl=mod.playlist;
+  return `<div class="vid-sec">
+    <div class="vid-h">${IC.video}<h3>Aulas em vídeo</h3><span>complemento em português, de outros professores</span></div>
+    <div class="vids">
+      ${mod.videos.map(v=>`<article class="vid" id="v-${v.id}">
+        <div class="vbody">
+          <button class="vthumb" data-vid="${v.id}" aria-label="Assistir ${esc(v.t)}">${IC.play}</button>
+          <div class="vmeta"><p class="vt">${esc(v.t)}</p><p class="vc">${esc(v.ch)}</p></div>
+        </div>
+        <div class="vacts">
+          <button class="btn btn-sm btn-primary" data-vid="${v.id}">${IC.play} Assistir aqui</button>
+          <a class="btn btn-sm btn-ghost" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">YouTube</a>
+        </div>
+      </article>`).join('')}
+    </div>
+    ${pl?`<a class="playlist" href="https://www.youtube.com/playlist?list=${pl.id}" target="_blank" rel="noopener">
+      ${IC.list}<span><b>${esc(pl.t)}</b><small>${esc(pl.ch)} · ${esc(pl.n)} · abre no YouTube</small></span>${IC.arrow}</a>`:''}
+    <p class="vhint">Se o vídeo não abrir aqui dentro, clique em YouTube: alguns vídeos só tocam no site oficial.</p>
+  </div>`;
+}
+let videoPlayerBlocked=false;
+document.addEventListener('securitypolicyviolation',e=>{
+  if(/youtube/i.test(e.blockedURI||'')){
+    videoPlayerBlocked=true;
+    document.querySelectorAll('.vid.playing').forEach(c=>videoBlocked(c.id.slice(2)));
+  }
+});
+function playVideo(id){
+  const card=document.getElementById('v-'+id);
+  if(!card||card.classList.contains('playing')) return;
+  if(videoPlayerBlocked){ card.classList.add('playing'); videoBlocked(id); return; }
+  card.classList.add('playing');
+  card.querySelector('.vbody').innerHTML=`<div class="frame"><iframe id="if-${id}" src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="Vídeo-aula" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`;
+  const ifr=document.getElementById('if-'+id);
+  let ok=false;
+  ifr.addEventListener('load',()=>{ ok=true; });
+  setTimeout(()=>{ if(!ok&&document.getElementById('if-'+id)) videoBlocked(id); },6000);
+}
+function videoBlocked(id){
+  const card=document.getElementById('v-'+id);
+  if(!card) return;
+  card.classList.remove('playing');
+  card.querySelector('.vbody').innerHTML=`<div class="vfall">${IC.video}
+    <div><p><b>Este player não abre aqui.</b></p>
+    <p>Abra no YouTube pelo botão abaixo e volte depois para continuar a aula.</p></div></div>`;
+}
+
+/* ---------- Pré-visualização de HTML ---------- */
+const PREVIEW_BASE='<meta charset="utf-8"><style>body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;margin:0;padding:16px;color:#16161a;background:#fff;line-height:1.5}img{max-width:100%}</style>';
+function renderPreview(frame,code){
+  const m=code.match(/<head[^>]*>/i);
+  frame.srcdoc = m ? code.replace(m[0], m[0]+PREVIEW_BASE) : PREVIEW_BASE+code;
+}
+function previewBox(id,scripts){
+  const sb=(scripts?'allow-scripts ':'')+'allow-popups allow-popups-to-escape-sandbox';
+  return `<div class="prev-wrap"><div class="out-label">Resultado${scripts?' <span class="run-tag">o código roda de verdade</span>':''}</div>
+    <iframe class="preview" id="${id}" title="Resultado da página" sandbox="${sb}"></iframe></div>`;
+}
+function liveBind(edId,frameId){
+  const ed=$('#'+edId), fr=$('#'+frameId); let t;
+  renderPreview(fr,ed.value);
+  ed.addEventListener('input',()=>{ clearTimeout(t); t=setTimeout(()=>renderPreview(fr,ed.value),250); });
+  return ()=>renderPreview(fr,ed.value);
+}
+
+/* ---------- HOME ---------- */
+function currentModule(){
+  const c=MODULES.findIndex((_,m)=>!ST(m).prova);
+  return c<0 ? MODULES.length-1 : c;
+}
+function renderHome(){
+  const v=$('#view');
+  const cur=currentModule(), cm=MODULES[cur];
+  const fases=[
+    {n:"Fase 0",t:"Fundamentos da Web",d:"HTML para a estrutura e CSS para o visual de toda página.",m:[0,1]},
+    {n:"Fase 1",t:"Lógica & JavaScript",d:"Pensar como programador e depois dar vida às páginas.",m:[2,3]},
+    {n:"Fase 2",t:"Jornada Dev",d:"Construir e publicar aplicações de verdade.",m:[]},
+    {n:"Fase 3",t:"Marketing Digital",d:"Levar produto e público até o projeto.",m:[]}
+  ];
+  let html=`
+    <p class="eyebrow">${cm.fase} — Módulo ${cur+1}</p>
+    <h1 class="title">${cur===0?'Sua jornada começa pelo <span class="hl">HTML</span>':'Próxima parada: <span class="hl">'+cm.title+'</span>'}</h1>
+    <p class="lead">${cm.lead} Aprenda, pratique e prove, uma etapa de cada vez.</p>
+
+    ${reviewCard()}
+    <div class="sec-h"><h2>A trilha completa</h2><span class="muted">4 fases · do zero ao avançado</span></div>
+    <div class="fases">`;
+  fases.forEach(f=>{
+    let on=false, lbl='Em breve';
+    if(f.m.length){
+      if(f.m.every(x=>ST(x).prova)){ on=true; lbl='Concluída'; }
+      else if(modAvail(f.m[0])){ on=true; lbl='Em andamento'; }
+      else lbl='Próxima';
+    }
+    html+=`<div class="fase ${on?'active':'locked'}">
+      <span class="badge ${on?'on':'soon'}">${lbl}</span>
+      <div class="num">${f.n}</div><h3>${f.t}</h3><p>${f.d}</p></div>`;
+  });
+  html+=`</div>`;
+  MODULES.forEach((_,m)=>{ html+=renderModule(m); });
+  html+=`<p class="foot"><b>Encryptando</b> — protótipo de plataforma de mentoria.<br>Seu progresso fica salvo neste navegador.</p>`;
+  v.innerHTML=html;
+
+  v.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>{
+    const m=+b.dataset.m, i=+b.dataset.open;
+    if(!lessonAvail(m,i)&&!isDone(m,i)){
+      shake(m,i);
+      toast(modAvail(m)?'Conclua a aula anterior primeiro.':'Passe na prova do Módulo '+m+' para liberar.');
+      return;
+    }
+    openLesson(m,i);
+  }));
+  v.querySelectorAll('[data-openprova]').forEach(b=>b.addEventListener('click',()=>{
+    const m=+b.dataset.m;
+    if(!provaAvail(m)&&!ST(m).prova){ toast('Conclua as '+MODULES[m].lessons.length+' aulas para liberar a prova.'); return; }
+    openProva(m);
+  }));
+  v.querySelectorAll('[data-vid]').forEach(b=>b.addEventListener('click',()=>playVideo(b.dataset.vid)));
+  const rev=$('#goRev'); if(rev) rev.addEventListener('click',openReview);
+  renderHeader();
+  scrollTo({top:0,behavior:'auto'});
+}
+
+function renderModule(m){
+  const mod=MODULES[m], st=ST(m), av=modAvail(m);
+  let h=`<div class="sec-h"><h2>Módulo ${m+1} · ${mod.title}</h2><span class="muted">${st.done.length}/${mod.lessons.length} aulas</span></div>`;
+  if(!av) h+=`<div class="modlock">${IC.lock}<span>Libera quando você passar na prova do Módulo ${m}: ${MODULES[m-1].title}.</span></div>`;
+  h+=`<div class="path">`;
+  mod.lessons.forEach((l,i)=>{
+    const done=isDone(m,i), avail=lessonAvail(m,i)&&!done;
+    const cls=done?'done':(avail?'avail':'locked');
+    const disc=done?IC.check:(avail?String(i+1):IC.lock);
+    h+=`<div class="node ${cls}" data-lesson="${m}-${i}">
+      <div class="dot"><div class="disc">${disc}</div></div>
+      <button class="card-lesson" data-m="${m}" data-open="${i}" ${(!avail&&!done)?'aria-disabled="true"':''}>
+        <div class="meta">
+          <div class="kicker">Aula ${i+1}</div>
+          <h3>${l.title}</h3>
+          <p>${l.goal}</p>
+        </div>
+        <span class="go">${done?'Revisar':(avail?'Começar':'Bloqueada')} ${done?IC.check:(avail?IC.arrow:IC.lock)}</span>
+      </button>
+    </div>`;
+  });
+  const pav=provaAvail(m), pdone=st.prova;
+  const pcls=pdone?'done':(pav?'avail':'locked');
+  h+=`<div class="node prova-node ${pcls}">
+      <div class="dot"><div class="disc">${(pdone||pav)?IC.trophy:IC.lock}</div></div>
+      <button class="card-lesson" data-m="${m}" data-openprova="1" ${(!pav&&!pdone)?'aria-disabled="true"':''}>
+        <div class="meta">
+          <div class="kicker">Desafio final</div>
+          <h3>${mod.prova.title.replace('Prova prática — ','')}<span style="color:var(--gold)"> · Prova</span></h3>
+          <p>${pdone?'Concluída — módulo dominado!':(pav?'Junte tudo e prove o que aprendeu':'Conclua as '+mod.lessons.length+' aulas para liberar')}</p>
+        </div>
+        <span class="go" style="${pav||pdone?'color:var(--gold)':''}">${pdone?'Refazer':(pav?'Fazer prova':'Bloqueada')} ${pdone?IC.check:(pav?IC.arrow:IC.lock)}</span>
+      </button>
+    </div></div>`;
+  h+=videosBlock(m);
+  return h;
+}
+function shake(m,i){
+  const n=document.querySelector('.node[data-lesson="'+m+'-'+i+'"]');
+  if(n){ n.classList.add('shake'); setTimeout(()=>n.classList.remove('shake'),450); }
+}
+
+/* ---------- LESSON ---------- */
+function openLesson(m,i){
+  const mod=MODULES[m], l=mod.lessons[i];
+  const solved=l.quiz.map(()=>false);
+  const orders=l.quiz.map(q=>shuffled(q.opts.length));
+  const v=$('#view');
+  v.innerHTML=`
+    <div class="lv-top">
+      <button class="back" id="back">${IC.back} Trilha</button>
+      <span class="lv-kicker">Módulo ${m+1} · Aula ${i+1} de ${mod.lessons.length}</span>
+    </div>
+    <h1 class="lv-title">${l.title}</h1>
+    <p class="lv-goal">${l.goal}</p>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-a" aria-selected="true">${IC.book} Aprender</button>
+      <button class="tab" role="tab" id="tab-q" aria-selected="false">${IC.quiz} Praticar <span class="chk" id="qchk" hidden>${IC.check}</span></button>
+    </div>
+    <div id="tabpanel"></div>`;
+
+  $('#back').addEventListener('click',renderHome);
+  const panel=$('#tabpanel');
+
+  function showLearn(){
+    $('#tab-a').setAttribute('aria-selected','true');
+    $('#tab-q').setAttribute('aria-selected','false');
+    const isHtml=mod.kind==='html'||mod.kind==='css'||mod.kind==='dom';
+    panel.innerHTML=`
+      <div class="panel">
+        <div class="prose">${l.learn}</div>
+        <div class="play">
+          <div class="play-h"><span class="dots"><i></i><i></i><i></i></span><span class="fn">${isHtml?'index.html':'exemplo.js'}</span>
+            <button class="btn btn-run run" id="run">${IC.play} ${isHtml?'Ver resultado':'Rodar'}</button></div>
+          ${editorBox('ed',mod.kind==='js'?'js':'html',170)}
+          ${isHtml?previewBox('pv',mod.kind==='dom'):'<div class="out" id="out"><div class="out-label">Saída</div><div class="out-body" id="outb"><span style="color:var(--faint)">Clique em Rodar para ver o resultado.</span></div></div>'}
+        </div>
+        <div class="tip">${IC.bulb}<div>${esc(l.tip)}</div></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:18px">
+          <button class="btn btn-primary" id="toq">Ir para as questões ${IC.arrow}</button>
+        </div>
+      </div>`;
+    enhanceEditor('ed',mod.kind==='js'?'js':'html');
+    setEditor('ed',l.code);
+    if(isHtml){
+      const refresh=liveBind('ed','pv');
+      $('#run').addEventListener('click',refresh);
+    } else {
+      $('#run').addEventListener('click',()=>runPlayground($('#ed').value,$('#outb'),$('#out')));
+    }
+    $('#toq').addEventListener('click',showQuiz);
+  }
+
+  function showQuiz(){
+    $('#tab-a').setAttribute('aria-selected','false');
+    $('#tab-q').setAttribute('aria-selected','true');
+    let h=`<div class="panel">`;
+    l.quiz.forEach((qq,qi)=>{
+      h+=`<div class="q" data-q="${qi}">
+        <div class="qn">Questão ${qi+1}</div>
+        <div class="qt">${esc(qq.q)}</div>
+        ${qq.code?`<pre class="snip"><code>${esc(qq.code)}</code></pre>`:''}
+        <div class="opts">`;
+      orders[qi].forEach(oi=>{
+        const o=qq.opts[oi];
+        const cls=solved[qi]&&o.ok?' correct':'';
+        h+=`<button class="opt${cls}" data-o="${oi}" ${solved[qi]?'disabled':''}><span class="mk">${IC.check}</span><span>${esc(o.t)}</span></button>`;
+      });
+      const okFb=qq.opts.find(o=>o.ok).fb;
+      h+=`</div><div class="fb${solved[qi]?' ok show':''}" id="fb-${qi}">${solved[qi]?esc(okFb):''}</div></div>`;
+    });
+    h+=`<div class="finish">
+      <div class="prog"><div class="lbl"><span id="pcount">0</span>/${l.quiz.length} questões corretas</div>
+        <div class="miniprog"><i id="pbar" style="width:0%"></i></div></div>
+      <button class="btn btn-primary" id="done" disabled>Concluir aula ${IC.check}</button>
+    </div></div>`;
+    panel.innerHTML=h;
+
+    panel.querySelectorAll('.q').forEach(qEl=>{
+      const qi=+qEl.dataset.q;
+      qEl.querySelectorAll('.opt').forEach(opt=>{
+        opt.addEventListener('click',()=>{
+          if(solved[qi]) return;
+          const oi=+opt.dataset.o, o=l.quiz[qi].opts[oi], fb=$('#fb-'+qi);
+          if(o.ok){
+            opt.classList.add('correct'); solved[qi]=true;
+            qEl.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+            fb.className='fb ok show'; fb.textContent=o.fb;
+            updateProg();
+          } else {
+            opt.classList.add('wrong'); opt.disabled=true;
+            fb.className='fb no show'; fb.textContent=o.fb;
+            addError(m,i,qi);
+          }
+        });
+      });
+    });
+    function updateProg(){
+      const c=solved.filter(Boolean).length;
+      $('#pcount').textContent=c;
+      $('#pbar').style.width=(c/l.quiz.length*100)+'%';
+      if(c===l.quiz.length){ $('#done').disabled=false; $('#qchk').hidden=false; }
+    }
+    $('#done').addEventListener('click',()=>completeLesson(m,i));
+    updateProg();
+  }
+
+  $('#tab-a').addEventListener('click',showLearn);
+  $('#tab-q').addEventListener('click',showQuiz);
+  showLearn();
+  scrollTo({top:0,behavior:'auto'});
+}
+
+function runPlayground(code,bodyEl,box){
+  const logs=[];
+  const fakeC={log:(...a)=>logs.push(a.map(fmt).join(' ')),error:(...a)=>logs.push(a.map(fmt).join(' ')),warn:(...a)=>logs.push(a.map(fmt).join(' '))};
+  box.classList.remove('out-error');
+  try{
+    new Function('console',code)(fakeC);
+    if(!logs.length){ bodyEl.innerHTML='<span style="color:var(--faint)">(nada foi impresso — use console.log para ver algo)</span>'; return; }
+    bodyEl.innerHTML=logs.map(x=>'<div class="out-line">'+esc(x)+'</div>').join('');
+  }catch(e){
+    box.classList.add('out-error');
+    bodyEl.innerHTML='<div class="out-line">Erro: '+esc(e.message)+'</div>';
+  }
+}
+
+function completeLesson(m,i){
+  const first=!isDone(m,i);
+  if(first){ ST(m).done.push(i); P.xp+=XP_LESSON; bumpStreak(); save(); }
+  renderHeader();
+  if(first){
+    confetti(false);
+    toast(allDone(m)?'Módulo concluído! A prova está liberada.':'Aula concluída! +'+XP_LESSON+' XP','mint');
+  } else toast('Aula revisada.','mint');
+  setTimeout(renderHome,700);
+}
+
+/* ---------- PROVA: modo desafio ---------- */
+IC.clock='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 2h6"/></svg>';
+
+/* Textos de missão e colas de cada prova */
+const tagPair=(name,tag)=>({name,parts:[
+  {t:'<'+tag+'>',re:new RegExp('<'+tag+'(\\s[^>]*)?>','i')},
+  {t:'</'+tag+'>',re:new RegExp('</'+tag+'\\s*>','i')}]});
+HTML_PROVA.brief=`<p><strong>Sua missão:</strong> montar uma página se apresentando. Cada missão cumprida acende em <span class="g">verde</span> e deixa sua página mais forte. Chegou em <strong>Perfeita</strong>, é só entregar.</p>
+<p class="hint">Travou? A cola do lado mostra como cada tag abre e fecha, e cada peça acende quando aparece no seu código.</p>`;
+HTML_PROVA.cheats=[
+  tagPair('Título principal','h1'),
+  tagPair('Parágrafo','p'),
+  tagPair('Lista com bolinhas','ul'),
+  tagPair('Item da lista','li'),
+  {name:'Link',parts:[{t:'<a href="...">',re:/<a\s[^>]*href\s*=/i},{t:'</a>',re:/<\/a\s*>/i}]},
+  {name:'Imagem',note:'não fecha',parts:[{t:'<img src="..." alt="...">',re:/<img\s[^>]*alt\s*=\s*["'][^"']+["']/i}]}
+];
+CSS_PROVA.brief=`<p><strong>Sua missão:</strong> o HTML já está pronto. Escreva o CSS dentro do <code>&lt;style&gt;</code> para deixar a página com a sua cara. Cada missão cumprida acende em <span class="g">verde</span>.</p>
+<p class="hint">A cola do lado mostra o formato das regras e as propriedades que você vai usar.</p>`;
+CSS_PROVA.cheats=[
+  {name:'Bloco de estilo',parts:[{t:'<style>',re:/<style(\s[^>]*)?>/i},{t:'</style>',re:/<\/style\s*>/i}]},
+  {name:'Formato de toda regra',parts:[{t:'seletor {',re:/[\w.#-]\s*\{/},{t:'}',re:/\{[^}]*\}/}]},
+  {name:'Fundo da página',parts:[{t:'body {',re:/(^|[\s,}>])body\s*\{/},{t:'background-color:',re:/background(-color)?\s*:/}]},
+  {name:'Cor do título',parts:[{t:'h1 {',re:/h1\s*\{/},{t:'color:',re:/(^|[^-\w])color\s*:/}]},
+  {name:'Fonte',parts:[{t:'font-family:',re:/font-family\s*:/}]},
+  {name:'Classe',parts:[{t:'.cartao {',re:/\.[a-zA-Z_][\w-]*\s*\{/}]},
+  {name:'Espaçamento',parts:[{t:'padding:',re:/padding(-\w+)?\s*:/},{t:'margin:',re:/margin(-\w+)?\s*:/}]}
+];
+PROVA.brief=`<p><strong>Sua missão:</strong> escrever <code>media(notas)</code>, que recebe uma lista de notas e devolve o resultado pela média:</p>
+<ul><li><code>"Aprovado"</code> se a média for 6 ou mais</li><li><code>"Recuperacao"</code> se ficar entre 4 e 6 (4 até menos de 6)</li><li><code>"Reprovado"</code> se for menor que 4</li></ul>
+<p class="hint">Rode os testes: cada teste que passa acende em verde. A cola do lado mostra as peças que você vai precisar.</p>`;
+PROVA.cheats=[
+  {name:'Criar a função',parts:[{t:'function media(notas) {',re:/function\s+media\s*\(\s*\w+\s*\)\s*\{/},{t:'}',re:/function[\s\S]*\{[\s\S]*\}/}]},
+  {name:'Guardar a soma',parts:[{t:'let soma = 0;',re:/let\s+\w+\s*=\s*0/}]},
+  {name:'Percorrer a lista',parts:[{t:'for (let i = 0; i < notas.length; i++) {',re:/for\s*\(/},{t:'}',re:/for\s*\([^)]*\)\s*\{[\s\S]*?\}/}]},
+  {name:'Somar cada nota',parts:[{t:'soma = soma + notas[i];',re:/(\+=|=\s*\w+\s*\+)\s*\w+\s*\[\s*\w+\s*\]/}]},
+  {name:'Calcular a média',parts:[{t:'soma / notas.length',re:/\/\s*\w+\.length/}]},
+  {name:'Decidir o resultado',parts:[{t:'if (media >= 6) {',re:/if\s*\(/},{t:'} else {',re:/else/}]},
+  {name:'Devolver a resposta',parts:[{t:'return "Aprovado";',re:/return\s+["'`]/}]}
+];
+
+/* Força da página, como medidor de senha */
+const LEVELS=[
+  {max:0,name:'Vazia',c:'#ff4d5e'},
+  {max:.39,name:'Fraca',c:'#ff4d5e'},
+  {max:.79,name:'Média',c:'#ff9f43'},
+  {max:.99,name:'Forte',c:'#c8f542'},
+  {max:1,name:'Perfeita',c:'#39ff88'}
+];
+function levelFor(r){ return LEVELS.find(l=>r<=l.max)||LEVELS[LEVELS.length-1]; }
+function fmtTime(s){ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+function sparkle(el){
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const r=el.getBoundingClientRect();
+  for(let i=0;i<16;i++){
+    const s=document.createElement('span'); s.className='spark';
+    const a=Math.random()*Math.PI*2, d=40+Math.random()*70;
+    s.style.left=(r.left+r.width*Math.random())+'px'; s.style.top=(r.top+r.height*.6)+'px';
+    s.style.setProperty('--dx',Math.cos(a)*d+'px'); s.style.setProperty('--dy',Math.sin(a)*d+'px');
+    document.body.appendChild(s); setTimeout(()=>s.remove(),750);
+  }
+}
+
+/* Correções */
+function evalHTML(pv,code){
+  const doc=new DOMParser().parseFromString(code,'text/html');
+  return pv.checks.map(c=>{ try{ return !!c.test(doc); }catch(e){ return false; } });
+}
+function evalCSS(pv,code){
+  const doc=new DOMParser().parseFromString(code,'text/html');
+  const rules=[];
+  doc.querySelectorAll('style').forEach(st=>{
+    try{ const sh=new CSSStyleSheet(); sh.replaceSync(st.textContent); [...sh.cssRules].forEach(r=>{ if(r.selectorText&&r.style) rules.push(r); }); }catch(e){}
+  });
+  const hits=(r,el)=>{ try{ return !!el&&el.matches(r.selectorText); }catch(e){ return false; } };
+  const any=r=>{ try{ return !!doc.querySelector(r.selectorText); }catch(e){ return false; } };
+  const ctx={doc,rules,hits,any};
+  return pv.checks.map(c=>{ try{ return !!c.test(ctx); }catch(e){ return false; } });
+}
+function evalDOM(pv,code){
+  const doc=new DOMParser().parseFromString(code,'text/html');
+  let js='';
+  doc.querySelectorAll('script').forEach(s=>{ js+='\n'+s.textContent; });
+  const ctx={doc,js};
+  return pv.checks.map(c=>{ try{ return !!c.test(ctx); }catch(e){ return false; } });
+}
+function testJS(pv,code){
+  let fn=null;
+  try{ fn=new Function(code+'\n;return typeof '+pv.fn+'==="function"?'+pv.fn+':null;')(); }
+  catch(e){ return {err:'Seu código tem um erro: '+esc(e.message)}; }
+  if(!fn) return {err:'Não encontrei a função <code>'+pv.fn+'(notas)</code>. Confira se o nome está certo.'};
+  const states=[], detail=[];
+  pv.cases.forEach(c=>{
+    let got, ok=false;
+    try{ got=fn(...c.args); ok=norm(got)===norm(c.exp); }catch(e){ got='Erro: '+e.message; }
+    states.push(ok); detail.push(ok?'':'recebeu: '+fmt(got));
+  });
+  return {states,detail};
+}
+
+function openProva(m){
+  const mod=MODULES[m], pv=mod.prova, kind=mod.kind, live=kind!=='js';
+  const labels = live ? pv.checks.map(c=>c.label) : pv.cases.map(c=>pv.fn+'(['+c.args[0].join(', ')+']) → "'+c.exp+'"');
+  const total=labels.length, best=(P.best||{})[mod.id];
+  const v=$('#view');
+  v.innerHTML=`
+    <div class="lv-top">
+      <button class="back" id="back">${IC.back} Trilha</button>
+      <span class="lv-kicker" style="color:var(--gold)">Desafio final · Módulo ${m+1}</span>
+    </div>
+    <h1 class="lv-title">${pv.title}</h1>
+    <div class="hud">
+      <span class="chip-timer">${IC.clock}<span id="ptime">0:00</span>${best?`<span class="best">recorde ${fmtTime(best)}</span>`:''}</span>
+      <button class="btn btn-submit" id="submit" disabled>${IC.trophy} Entregar prova</button>
+    </div>
+    <div class="arena">
+      <div class="arena-main">
+        <div class="brief">${pv.brief}</div>
+        <div class="meter" id="meter">
+          <div class="meter-top"><span class="meter-title">Força da sua ${kind==='js'?'solução':'página'}</span><span class="meter-level" id="mLevel">Vazia</span><span class="meter-count" id="mCount">0/${total}</span></div>
+          <div class="meter-bars">${'<i></i>'.repeat(total)}</div>
+        </div>
+        <div class="missions">${labels.map((l,i)=>`<div class="mission" id="ms-${i}"><span class="mi">${i+1}</span><span class="ml">${esc(l)}<small class="mx" id="mx-${i}"></small></span><span class="ms">Falta</span></div>`).join('')}</div>
+        <div class="play">
+          <div class="play-h"><span class="dots"><i></i><i></i><i></i></span><span class="fn">${kind==='css'?'estilo.html':(kind==='html'?'apresentacao.html':(kind==='dom'?'pagina.html':'prova.js'))}</span>
+            ${live?'<span class="live-tag"><i></i>correção ao vivo</span>':`<button class="btn btn-run run" id="runp">${IC.play} Rodar testes</button>`}</div>
+          ${editorBox('edp',kind==='js'?'js':'html',240)}
+          ${live?previewBox('pvp',kind==='dom'):''}
+        </div>
+        <div id="perr"></div>
+        <div class="prova-foot">
+          <button class="btn btn-ghost" id="reset">Recomeçar do zero</button>
+          <span id="pstatus" class="pstatus"></span>
+        </div>
+      </div>
+      <aside class="cola" aria-label="Cola de sintaxe">
+        <h3>${kind==='html'?'Cola das tags':(kind==='css'?'Cola do CSS':'Cola do JavaScript')}</h3>
+        <p class="sub">${kind==='html'?'Toda tag abre e fecha (menos a imagem). Cada peça acende em verde quando aparece no seu código.':'Cada peça acende em verde quando aparece no seu código.'}</p>
+        <div class="cola-legend"><span><i class="dotk" style="background:#39ff88"></i>já usou</span><span><i class="dotk" style="background:#ff4d5e"></i>ainda não</span></div>
+        ${pv.cheats.map((c,ci)=>`<div class="cheat"><div class="cn"><span>${esc(c.name)}</span>${c.note?`<span class="note">${esc(c.note)}</span>`:''}</div>
+          <div class="parts">${c.parts.map((p,pi)=>(pi?'<span class="arrow">…</span>':'')+`<span class="tagchip" id="ch-${ci}-${pi}">${esc(p.t)}</span>`).join('')}</div></div>`).join('')}
+      </aside>
+    </div>`;
+
+  const ed=$('#edp');
+  enhanceEditor('edp',kind==='js'?'js':'html');
+  setEditor('edp',pv.starter);
+  const t0=Date.now(); let done=false, ran=false, prev=labels.map(()=>false), high=0;
+  const elapsed=()=>Math.floor((Date.now()-t0)/1000);
+  const tick=setInterval(()=>{ const el=$('#ptime'); if(!el){ clearInterval(tick); return; } if(!done) el.textContent=fmtTime(elapsed()); },1000);
+
+  function paint(states,detail){
+    let n=0;
+    states.forEach((ok,i)=>{
+      const el=$('#ms-'+i); if(ok) n++;
+      el.classList.toggle('ok',ok);
+      el.querySelector('.ms').textContent=ok?'Feito':'Falta';
+      if(ok&&!prev[i]){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+      $('#mx-'+i).textContent=(detail&&detail[i])?detail[i]:'';
+    });
+    prev=states.slice();
+    const lv=levelFor(n/total), meter=$('#meter');
+    meter.style.setProperty('--lv',lv.c);
+    const lvEl=$('#mLevel');
+    if(lvEl.textContent!==lv.name){ lvEl.textContent=lv.name; lvEl.classList.remove('pop'); void lvEl.offsetWidth; lvEl.classList.add('pop'); }
+    $('#mCount').textContent=n+'/'+total;
+    meter.querySelectorAll('.meter-bars i').forEach((b,i)=>b.classList.toggle('on',i<n));
+    if(n>high){ high=n; sparkle(meter); }
+    const all=n===total, sub=$('#submit');
+    sub.disabled=!all; sub.classList.toggle('btn-win',all);
+    const st=$('#pstatus');
+    if(done) return;
+    if(all) st.innerHTML='<span style="color:#39ff88">Tudo verde! Clique em Entregar prova.</span>';
+    else if(live) st.textContent=(total-n===1?'Falta 1 missão.':'Faltam '+(total-n)+' missões.')+' Continue!';
+    else st.textContent=ran?n+' de '+total+' testes passaram. Ajuste e rode de novo.':'Escreva a função e rode os testes.';
+  }
+  function paintCheats(code){
+    pv.cheats.forEach((c,ci)=>c.parts.forEach((p,pi)=>{
+      const el=$('#ch-'+ci+'-'+pi), ok=p.re.test(code);
+      if(ok&&!el.classList.contains('ok')){ el.classList.add('ok','pop'); setTimeout(()=>el.classList.remove('pop'),500); }
+      else if(!ok) el.classList.remove('ok');
+    }));
+  }
+
+  const refreshPreview = live ? liveBind('edp','pvp') : null;
+  const evaluate = kind==='css' ? evalCSS : (kind==='dom' ? evalDOM : evalHTML);
+  function check(){ const code=ed.value; paintCheats(code); if(live) paint(evaluate(pv,code)); }
+  let tmr; ed.addEventListener('input',()=>{ clearTimeout(tmr); tmr=setTimeout(check,180); });
+  if(!live){
+    paint(labels.map(()=>false));
+    $('#runp').addEventListener('click',()=>{
+      ran=true;
+      const r=testJS(pv,ed.value);
+      if(r.err){ $('#perr').innerHTML=errBox(r.err); paint(labels.map(()=>false)); return; }
+      $('#perr').innerHTML=''; paint(r.states,r.detail);
+    });
+  }
+  check();
+
+  $('#submit').addEventListener('click',()=>{
+    if(done||$('#submit').disabled) return;
+    done=true;
+    finishProva(m,$('#pstatus'),elapsed());
+  });
+  $('#reset').addEventListener('click',()=>{
+    setEditor('edp',pv.starter); ran=false; $('#perr').innerHTML='';
+    if(live) refreshPreview(); else paint(labels.map(()=>false));
+    check();
+  });
+  $('#back').addEventListener('click',renderHome);
+  scrollTo({top:0,behavior:'auto'});
+}
+
+function finishProva(m,status,secs){
+  const mod=MODULES[m], first=!ST(m).prova, next=MODULES[m+1];
+  P.best=P.best||{};
+  const prevBest=P.best[mod.id], record=!prevBest||secs<prevBest;
+  if(record) P.best[mod.id]=secs;
+  if(first){ ST(m).prova=true; P.xp+=XP_PROVA; bumpStreak(); }
+  save(); renderHeader(); confetti(true);
+  status.innerHTML='<span style="color:#39ff88">Prova entregue!</span>';
+  showWin({title:first?'Módulo '+(m+1)+' dominado!':'Prova concluída de novo!',time:secs,record:record&&!!prevBest,xp:first?XP_PROVA:0,next:first&&next?next.title:null});
+}
+function showWin(o){
+  let w=$('#win');
+  if(!w){ w=document.createElement('div'); w.id='win'; document.body.appendChild(w); }
+  w.innerHTML=`<div class="win-card" role="dialog" aria-modal="true" aria-labelledby="winT">
+    <div class="win-ic">${IC.trophy}</div>
+    <h2 id="winT">${esc(o.title)}</h2>
+    <div class="win-stats">
+      <div><b style="color:#39ff88">Perfeita</b><span>força</span></div>
+      <div><b>${fmtTime(o.time)}</b><span>${o.record?'novo recorde!':'tempo'}</span></div>
+      <div><b style="color:var(--gold)">${o.xp?'+'+o.xp:'0'}</b><span>XP</span></div>
+    </div>
+    ${o.next?`<p class="win-next">${IC.spark}<span>${esc(o.next)} liberado!</span></p>`:''}
+    <div class="win-actions"><button class="btn btn-ghost" id="winStay">Ficar aqui</button><button class="btn btn-primary" id="winGo">Voltar à trilha ${IC.arrow}</button></div>
+  </div>`;
+  w.hidden=false;
+  const close=()=>{ w.hidden=true; };
+  $('#winStay').onclick=close;
+  $('#winGo').onclick=()=>{ close(); renderHome(); };
+  w.onkeydown=e=>{ if(e.key==='Escape') close(); };
+  $('#winGo').focus();
+}
+
+function errBox(msg){ return '<div class="tests" style="padding:14px 16px;color:var(--danger);font-size:14px;font-family:var(--body)">'+msg+'</div>'; }
+
+/* ---------- Boot ---------- */
+renderHome();
+</script>
