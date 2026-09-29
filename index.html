@@ -315,6 +315,58 @@
   .gt-logica{background:rgba(57,255,136,.12);color:#74efb3}
   .gt-dom{background:rgba(143,216,255,.14);color:#8fd8ff}
   .gt-git{background:rgba(255,138,60,.14);color:#ffae6b}
+  /* Perfil e conta */
+  .perfil-topo{display:flex;align-items:center;gap:18px;margin:6px 0 22px}
+  .avatar{width:74px;height:74px;flex:none;border-radius:50%;display:grid;place-items:center;font:800 26px/1 var(--head);
+    color:#fff;background:linear-gradient(145deg,var(--red),#8b1109);border:2px solid rgba(255,255,255,.14);box-shadow:0 8px 24px rgba(255,42,31,.28)}
+  .perfil-id{min-width:0}
+  .perfil-nome{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;margin-bottom:14px}
+  .perfil-nome label{display:block;font-size:13px;color:var(--faint);margin-bottom:8px}
+  .conta-box{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+    background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;margin-bottom:20px}
+  .conta-box.ok{border-color:rgba(57,255,136,.3);background:linear-gradient(180deg,rgba(57,255,136,.06),var(--card))}
+  .conta-box b{display:block;font:700 15px/1.3 var(--head)}
+  .conta-box small{display:block;color:var(--faint);font-size:13px;margin-top:3px}
+  .conta-acoes{display:flex;gap:8px;flex-wrap:wrap}
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-bottom:26px}
+  .statcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 16px 14px;min-width:0}
+  .statcard .sv{display:block;font:800 26px/1.1 var(--head);color:var(--gold)}
+  .statcard .sk{display:block;font-size:14px;font-weight:600;margin-top:6px}
+  .statcard small{display:block;color:var(--faint);font-size:12px;margin-top:3px}
+  .medalhas{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-bottom:26px}
+  .medalha{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--border);
+    border-radius:14px;padding:14px 15px;opacity:.5;min-width:0}
+  .medalha.on{opacity:1;border-color:rgba(255,207,92,.34);background:linear-gradient(180deg,rgba(255,207,92,.07),var(--card))}
+  .medalha .mic{flex:none;width:34px;height:34px;display:grid;place-items:center;border-radius:10px;
+    background:rgba(255,255,255,.05);color:var(--faint)}
+  .medalha .mic svg{width:18px;height:18px}
+  .medalha.on .mic{background:rgba(255,207,92,.16);color:var(--gold)}
+  .medalha .mtx{min-width:0}
+  .medalha b{display:block;font:700 14px/1.3 var(--head)}
+  .medalha small{display:block;color:var(--faint);font-size:12.5px;margin-top:3px;line-height:1.45}
+  .form-conta{max-width:430px;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px}
+  .form-conta label{display:block;font-size:13px;color:var(--faint);margin:14px 0 6px}
+  .form-conta label:first-child{margin-top:0}
+  .form-conta .cinput{width:100%}
+  .btn-largo{width:100%;justify-content:center;margin-top:20px}
+  .fmsg{min-height:20px;margin:12px 0 0;font-size:13.5px;color:var(--danger)}
+  .ftroca{margin-top:10px;font-size:13.5px;color:var(--faint);text-align:center}
+  .linkbtn{background:none;border:0;color:var(--red);font:inherit;font-weight:700;cursor:pointer;padding:0;text-decoration:underline}
+  .linkbtn:hover{color:#ff6a5c}
+  .hbtn{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.05);border:1px solid var(--border);
+    color:var(--text);border-radius:999px;padding:6px 12px 6px 6px;cursor:pointer;font:600 13px/1 var(--body)}
+  .hbtn:hover{border-color:var(--border-strong);background:rgba(255,255,255,.08)}
+  .hbtn .av{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:800 11px/1 var(--head);
+    color:#fff;background:linear-gradient(145deg,var(--red),#8b1109)}
+  .hbtn .nuvem{width:7px;height:7px;border-radius:50%;background:#39ff88;flex:none}
+  .hbtn .nuvem.off{background:var(--faint)}
+  .hbtn .nuvem.erro{background:var(--danger)}
+  @media (max-width:640px){
+    .perfil-topo{gap:14px}
+    .avatar{width:58px;height:58px;font-size:20px}
+    .hbtn span.rot{display:none}
+  }
+
   .gt-apis{background:rgba(196,153,255,.16);color:#c9a6ff}
   .gitem p{margin:0 0 9px;font-size:13.5px;color:var(--muted);line-height:1.5}
   .gitem .snip{margin:0}
@@ -496,6 +548,7 @@
         <div class="lvlrow"><span>Nível <b id="lvlN">1</b></span><span id="xpN">0 XP</span></div>
         <div class="xpbar"><div class="xpfill" id="xpFill" style="width:0%"></div></div>
       </div>
+      <button class="hbtn" id="perfilBtn" title="Meu perfil"><span class="av" id="perfilAv">?</span><span class="rot" id="perfilNome">Perfil</span><i class="nuvem off" id="perfilNuvem"></i></button>
     </div>
   </div>
 </header>
@@ -2514,13 +2567,13 @@ const XP_LESSON=60, XP_PROVA=240, LEVEL_STEP=300;
 let P = load();
 
 function load(){
-  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{}};
+  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{},criado:null};
   MODULES.forEach(m=>{ base.mods[m.id]={done:[],prova:false,project:false}; });
   try{
     const s=localStorage.getItem(KEY);
     if(s){
       const d=JSON.parse(s);
-      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||''; base.certs=d.certs||{};
+      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||''; base.certs=d.certs||{}; base.criado=d.criado||null;
       MODULES.forEach(m=>{ if(d.mods&&d.mods[m.id]) base.mods[m.id]=Object.assign({done:[],prova:false,project:false},d.mods[m.id]); });
       return base;
     }
@@ -2533,7 +2586,7 @@ function load(){
   }catch(e){}
   return base;
 }
-function save(){ try{ localStorage.setItem(KEY,JSON.stringify(P)); }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(P)); }catch(e){} if(typeof agendarSync==='function') agendarSync(); }
 function ST(m){ return P.mods[MODULES[m].id]; }
 function isDone(m,i){ return ST(m).done.indexOf(i)>=0; }
 function modAvail(m){ return m===0 || ST(m-1).prova || ST(m).done.length>0; }
@@ -2580,6 +2633,15 @@ function renderHeader(){
   $('#xpN').textContent=P.xp+' XP';
   $('#xpFill').style.width=(into/LEVEL_STEP*100)+'%';
   $('#streakN').textContent=P.streak;
+  const av=$('#perfilAv');
+  if(av){
+    const nome=(typeof contaNome==='function'?contaNome():P.nome)||'';
+    av.textContent=nome?iniciais(nome):'?';
+    const rot=$('#perfilNome');
+    if(rot) rot.textContent=nome?nome.trim().split(/\s+/)[0]:'Perfil';
+    const nv=$('#perfilNuvem');
+    if(nv) nv.className='nuvem'+(!nuvemLigada()||!sessaoValida()?' off':(syncEstado==='erro'?' erro':''));
+  }
 }
 
 /* ---------- Toast + confete ---------- */
@@ -3487,12 +3549,326 @@ function showWin(o){
 
 function errBox(msg){ return '<div class="tests" style="padding:14px 16px;color:var(--danger);font-size:14px;font-family:var(--body)">'+msg+'</div>'; }
 
+/* ---------- Conta do aluno: login real (Supabase) + perfil ---------- */
+/* Para ligar a nuvem, preencha as duas linhas abaixo com os dados do seu
+   projeto Supabase (Project Settings > API). Com elas vazias o site roda
+   exatamente como antes, salvando tudo só neste navegador. */
+const SUPA = { url:'', key:'' };
+
+const SESS_KEY='encryptando_sessao';
+let SESSAO=null, syncT=null, syncEstado='';
+
+function nuvemLigada(){ return !!(SUPA.url && SUPA.key); }
+function sessaoValida(){ return !!(SESSAO && SESSAO.access_token); }
+function contaNome(){ return (SESSAO && SESSAO.nome) || P.nome || ''; }
+function contaEmail(){ return (SESSAO && SESSAO.email) || ''; }
+
+function sessaoLer(){
+  try{ const s=localStorage.getItem(SESS_KEY); if(s) SESSAO=JSON.parse(s); }catch(e){ SESSAO=null; }
+}
+function sessaoGravar(){
+  try{ SESSAO ? localStorage.setItem(SESS_KEY,JSON.stringify(SESSAO)) : localStorage.removeItem(SESS_KEY); }catch(e){}
+}
+
+async function supaFetch(caminho,opcoes){
+  const o=Object.assign({headers:{}},opcoes||{});
+  o.headers=Object.assign({
+    'apikey':SUPA.key,
+    'Content-Type':'application/json',
+    'Authorization':'Bearer '+((SESSAO&&SESSAO.access_token)||SUPA.key)
+  },o.headers||{});
+  const r=await fetch(SUPA.url.replace(/\/+$/,'')+caminho,o);
+  let corpo=null;
+  const texto=await r.text();
+  if(texto){ try{ corpo=JSON.parse(texto); }catch(e){ corpo=texto; } }
+  if(!r.ok){
+    const msg=(corpo&&(corpo.error_description||corpo.msg||corpo.message||corpo.error))||('erro '+r.status);
+    throw new Error(msg);
+  }
+  return corpo;
+}
+
+function guardarSessao(d,nome){
+  SESSAO={
+    access_token:d.access_token, refresh_token:d.refresh_token,
+    uid:(d.user&&d.user.id)||(SESSAO&&SESSAO.uid),
+    email:(d.user&&d.user.email)||(SESSAO&&SESSAO.email),
+    nome:nome||(d.user&&d.user.user_metadata&&d.user.user_metadata.nome)||(SESSAO&&SESSAO.nome)||'',
+    expira: Date.now()+((d.expires_in||3600)*1000)
+  };
+  sessaoGravar();
+}
+
+async function contaEntrar(email,senha){
+  const d=await supaFetch('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email:email,password:senha})});
+  guardarSessao(d);
+  return SESSAO;
+}
+async function contaCriar(email,senha,nome){
+  const d=await supaFetch('/auth/v1/signup',{method:'POST',body:JSON.stringify({email:email,password:senha,data:{nome:nome}})});
+  if(d&&d.access_token){ guardarSessao(d,nome); return SESSAO; }
+  return await contaEntrar(email,senha);
+}
+async function contaRenovar(){
+  if(!SESSAO||!SESSAO.refresh_token) throw new Error('sem sessão');
+  const d=await supaFetch('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:SESSAO.refresh_token})});
+  guardarSessao(d);
+}
+function contaSair(){
+  SESSAO=null; sessaoGravar();
+  syncEstado='';
+  renderHeader();
+}
+
+/* Junta o que veio da nuvem com o que está aqui, sem perder nada dos dois lados */
+function fundirProgresso(nuvem){
+  if(!nuvem||!nuvem.mods) return false;
+  let mudou=false;
+  MODULES.forEach(mod=>{
+    const aqui=P.mods[mod.id]||{done:[],prova:false,project:false};
+    const la=nuvem.mods[mod.id]; if(!la) return;
+    const uniao=[...new Set([...(aqui.done||[]),...(la.done||[])])].sort((a,b)=>a-b);
+    if(uniao.length!==(aqui.done||[]).length) mudou=true;
+    aqui.done=uniao;
+    if(la.prova&&!aqui.prova){ aqui.prova=true; mudou=true; }
+    if(la.project&&!aqui.project){ aqui.project=true; mudou=true; }
+    P.mods[mod.id]=aqui;
+  });
+  if((nuvem.xp||0)>P.xp){ P.xp=nuvem.xp; mudou=true; }
+  if((nuvem.streak||0)>P.streak){ P.streak=nuvem.streak; P.lastDay=nuvem.lastDay||P.lastDay; mudou=true; }
+  P.best=P.best||{};
+  Object.keys(nuvem.best||{}).forEach(k=>{
+    if(P.best[k]===undefined||nuvem.best[k]<P.best[k]){ P.best[k]=nuvem.best[k]; mudou=true; }
+  });
+  P.notes=Object.assign({},nuvem.notes||{},P.notes||{});
+  P.certs=Object.assign({},nuvem.certs||{},P.certs||{});
+  P.hist=P.hist||{};
+  Object.keys(nuvem.hist||{}).forEach(k=>{ P.hist[k]=Math.max(P.hist[k]||0,nuvem.hist[k]); });
+  const errosLa=(nuvem.errors||[]).filter(e=>!(P.errors||[]).some(x=>x.m===e.m&&x.i===e.i&&x.q===e.q));
+  if(errosLa.length){ P.errors=(P.errors||[]).concat(errosLa); mudou=true; }
+  if(!P.nome&&nuvem.nome){ P.nome=nuvem.nome; mudou=true; }
+  if(nuvem.criado&&(!P.criado||nuvem.criado<P.criado)){ P.criado=nuvem.criado; mudou=true; }
+  return mudou;
+}
+
+async function nuvemPuxar(){
+  const linhas=await supaFetch('/rest/v1/progresso?id=eq.'+SESSAO.uid+'&select=dados,nome');
+  if(linhas&&linhas.length){
+    const mudou=fundirProgresso(linhas[0].dados||{});
+    if(linhas[0].nome&&!P.nome){ P.nome=linhas[0].nome; }
+    if(mudou){ save(); renderHeader(); }
+    return mudou;
+  }
+  return false;
+}
+async function nuvemEmpurrar(){
+  await supaFetch('/rest/v1/progresso',{
+    method:'POST',
+    headers:{'Prefer':'resolution=merge-duplicates,return=minimal'},
+    body:JSON.stringify({id:SESSAO.uid,nome:P.nome||contaNome(),dados:P,atualizado_em:new Date().toISOString()})
+  });
+}
+
+async function sincronizar(silencioso){
+  if(!nuvemLigada()||!sessaoValida()) return;
+  try{
+    if(SESSAO.expira && Date.now()>SESSAO.expira-60000) await contaRenovar();
+    await nuvemPuxar();
+    await nuvemEmpurrar();
+    syncEstado='ok';
+    if(!silencioso) toast('Progresso sincronizado.','mint');
+  }catch(e){
+    syncEstado='erro';
+    if(!silencioso) toast('Não consegui sincronizar: '+e.message);
+  }
+  renderHeader();
+}
+function agendarSync(){
+  if(!nuvemLigada()||!sessaoValida()) return;
+  clearTimeout(syncT);
+  syncT=setTimeout(()=>sincronizar(true),2500);
+}
+
+/* ---------- Medalhas ---------- */
+const MEDALHAS=[
+  {id:'inicio', n:'Primeira linha', d:'Concluiu a primeira aula.', ok:()=>aulasFeitas()>=1},
+  {id:'prova1', n:'Pé na porta', d:'Passou na primeira prova prática.', ok:()=>provasFeitas()>=1},
+  {id:'html', n:'Estruturista', d:'Fechou o módulo de HTML.', ok:()=>modOk('html')},
+  {id:'css', n:'Estilista', d:'Fechou o módulo de CSS.', ok:()=>modOk('css')},
+  {id:'js', n:'Pensador', d:'Fechou o módulo de lógica.', ok:()=>modOk('js')},
+  {id:'dom', n:'Manipulador', d:'Fechou o módulo de DOM.', ok:()=>modOk('dom')},
+  {id:'git', n:'Versionador', d:'Fechou o módulo de Git.', ok:()=>modOk('git')},
+  {id:'api', n:'Conectado', d:'Fechou o módulo de APIs.', ok:()=>modOk('api')},
+  {id:'proj', n:'Construtor', d:'Entregou um projeto de fase.', ok:()=>projetosFeitos()>=1},
+  {id:'relampago', n:'Relâmpago', d:'Passou numa prova em menos de 3 minutos.', ok:()=>melhorTempo()!==null&&melhorTempo()<180},
+  {id:'semana', n:'Semana cheia', d:'Bateu a meta de aulas da semana.', ok:()=>semanaAtual()>=(P.meta||META_PADRAO)},
+  {id:'ofensiva7', n:'Maratona', d:'Sete dias seguidos de estudo.', ok:()=>P.streak>=7},
+  {id:'caderno', n:'Caderno cheio', d:'Escreveu dez anotações nas aulas.', ok:()=>Object.keys(P.notes||{}).filter(k=>(P.notes[k]||'').trim()).length>=10},
+  {id:'nivel10', n:'Nível 10', d:'Chegou a 2700 XP.', ok:()=>P.xp>=LEVEL_STEP*9},
+  {id:'trilha', n:'Trilha completa', d:'Fechou todos os módulos, provas e projetos.', ok:()=>trilhaCompleta()}
+];
+function aulasFeitas(){ return MODULES.reduce((n,_,m)=>n+ST(m).done.length,0); }
+function provasFeitas(){ return MODULES.reduce((n,_,m)=>n+(ST(m).prova?1:0),0); }
+function projetosFeitos(){ return MODULES.reduce((n,mod,m)=>n+((mod.project&&ST(m).project)?1:0),0); }
+function modOk(id){ const m=MODULES.findIndex(x=>x.id===id); return m>=0&&ST(m).prova; }
+function melhorTempo(){
+  const v=Object.values(P.best||{}); return v.length?Math.min(...v):null;
+}
+function tempoSomado(){ return Object.values(P.best||{}).reduce((a,b)=>a+b,0); }
+function medalhasGanhas(){ return MEDALHAS.filter(m=>{ try{ return !!m.ok(); }catch(e){ return false; } }); }
+function diasEstudados(){ return Object.keys(P.hist||{}).length; }
+
+/* ---------- Tela de perfil ---------- */
+function plural(n,um,varios){ return n+' '+(n===1?um:varios); }
+function iniciais(nome){
+  const p=(nome||'').trim().split(/\s+/).filter(Boolean);
+  if(!p.length) return '?';
+  return (p[0][0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase();
+}
+function openPerfil(){
+  const v=$('#view');
+  const nome=contaNome()||'Aluno';
+  const totalAulas=MODULES.reduce((n,mod)=>n+mod.lessons.length,0);
+  const feitas=aulasFeitas(), ganhas=medalhasGanhas().map(m=>m.id);
+  const lvl=Math.floor(P.xp/LEVEL_STEP)+1;
+  const mt=melhorTempo();
+  const stats=[
+    {k:'XP acumulado', v:P.xp, s:'nível '+lvl},
+    {k:'Aulas concluídas', v:feitas+'/'+totalAulas, s:Math.round(feitas/totalAulas*100)+'% da trilha'},
+    {k:'Provas passadas', v:provasFeitas()+'/'+MODULES.length, s:plural(projetosFeitos(),'projeto entregue','projetos entregues')},
+    {k:'Ofensiva', v:P.streak+(P.streak===1?' dia':' dias'), s:plural(diasEstudados(),'dia de estudo no total','dias de estudo no total')},
+    {k:'Aulas nesta semana', v:semanaAtual()+'/'+(P.meta||META_PADRAO), s:'meta da semana'},
+    {k:'Melhor tempo de prova', v:mt!==null?fmtTime(mt):'—', s:mt!==null?('somando os recordes: '+fmtTime(tempoSomado())):'nenhuma prova ainda'},
+    {k:'Medalhas', v:ganhas.length+'/'+MEDALHAS.length, s:'conquistas desbloqueadas'},
+    {k:'Anotações', v:Object.keys(P.notes||{}).filter(k=>(P.notes[k]||'').trim()).length, s:plural((P.errors||[]).length,'questão para revisar','questões para revisar')}
+  ];
+  const conta = nuvemLigada()
+    ? (sessaoValida()
+        ? `<div class="conta-box ok"><div><b>${esc(contaEmail())}</b><small>progresso salvo na nuvem${syncEstado==='erro'?' · a última sincronização falhou':''}</small></div>
+           <div class="conta-acoes"><button class="btn btn-ghost" id="csync">Sincronizar agora</button><button class="btn btn-ghost" id="csair">Sair</button></div></div>`
+        : `<div class="conta-box"><div><b>Você não entrou na sua conta</b><small>o progresso está salvo só neste navegador</small></div>
+           <div class="conta-acoes"><button class="btn btn-primary" id="centrar">Entrar ou criar conta</button></div></div>`)
+    : `<div class="conta-box"><div><b>Modo local</b><small>o progresso fica salvo neste navegador. Use o código do progresso para levar para outro aparelho.</small></div>
+       <div class="conta-acoes"><button class="btn btn-ghost" id="cprog">Código do progresso</button></div></div>`;
+  v.innerHTML=`
+    <div class="lv-top">
+      <button class="back" id="back">${IC.back} Trilha</button>
+      <span class="lv-kicker">Perfil</span>
+    </div>
+    <div class="perfil-topo">
+      <div class="avatar">${esc(iniciais(nome))}</div>
+      <div class="perfil-id">
+        <h1 class="lv-title" style="margin:0">${esc(nome)}</h1>
+        <p class="lv-goal" style="margin:6px 0 0">Nível ${lvl} · ${P.xp} XP${P.criado?' · estudando desde '+esc(dataBonita(P.criado)):''}</p>
+      </div>
+    </div>
+    <div class="perfil-nome">
+      <label for="pnome">Nome que aparece aqui e nos certificados</label>
+      <div class="certrow">
+        <input id="pnome" class="cinput" value="${esc(P.nome||'')}" placeholder="Digite seu nome completo">
+        <button class="btn btn-primary" id="psalvar">Salvar</button>
+      </div>
+    </div>
+    ${conta}
+    <div class="sec-h"><h2>Números</h2><span class="muted">tudo que você já fez</span></div>
+    <div class="stats-grid">${stats.map(s=>`<div class="statcard"><span class="sv">${esc(String(s.v))}</span><span class="sk">${esc(s.k)}</span><small>${esc(s.s)}</small></div>`).join('')}</div>
+    <div class="sec-h"><h2>Medalhas</h2><span class="muted">${ganhas.length} de ${MEDALHAS.length}</span></div>
+    <div class="medalhas">${MEDALHAS.map(m=>{
+      const on=ganhas.indexOf(m.id)>=0;
+      return `<div class="medalha ${on?'on':''}"><span class="mic">${on?IC.trophy:IC.lock}</span>
+        <span class="mtx"><b>${esc(m.n)}</b><small>${esc(m.d)}</small></span></div>`;
+    }).join('')}</div>`;
+  $('#back').addEventListener('click',renderHome);
+  $('#psalvar').addEventListener('click',()=>{
+    P.nome=($('#pnome').value||'').trim(); save(); agendarSync();
+    renderHeader(); toast('Nome salvo.','mint'); openPerfil();
+  });
+  const bs=$('#csync'); if(bs) bs.addEventListener('click',()=>sincronizar(false).then(openPerfil));
+  const bo=$('#csair'); if(bo) bo.addEventListener('click',()=>{ contaSair(); toast('Você saiu da conta.'); openPerfil(); });
+  const be=$('#centrar'); if(be) be.addEventListener('click',openEntrar);
+  const bp=$('#cprog'); if(bp) bp.addEventListener('click',openProgress);
+  scrollTo({top:0,behavior:'auto'});
+}
+function dataBonita(iso){
+  const p=String(iso).split('-'); if(p.length<3) return iso;
+  const meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  return +p[2]+' de '+meses[+p[1]-1]+' de '+p[0];
+}
+
+/* ---------- Tela de entrar / criar conta ---------- */
+function openEntrar(modo){
+  if(!nuvemLigada()){ openPerfil(); return; }
+  const criar = modo==='criar';
+  const v=$('#view');
+  v.innerHTML=`
+    <div class="lv-top">
+      <button class="back" id="back">${IC.back} Trilha</button>
+      <span class="lv-kicker">Conta</span>
+    </div>
+    <h1 class="lv-title">${criar?'Criar minha conta':'Entrar na minha conta'}</h1>
+    <p class="lv-goal">${criar?'Com uma conta o seu progresso acompanha você no celular, no computador da casa e em qualquer navegador.':'Entre para continuar de onde parou, em qualquer aparelho.'}</p>
+    <div class="form-conta">
+      ${criar?`<label for="fnome">Seu nome</label><input id="fnome" class="cinput" placeholder="Nome completo" value="${esc(P.nome||'')}">`:''}
+      <label for="femail">Email</label>
+      <input id="femail" class="cinput" type="email" autocomplete="email" placeholder="voce@email.com">
+      <label for="fsenha">Senha</label>
+      <input id="fsenha" class="cinput" type="password" autocomplete="${criar?'new-password':'current-password'}" placeholder="${criar?'Pelo menos 6 caracteres':'Sua senha'}">
+      <button class="btn btn-primary btn-largo" id="fok">${criar?'Criar conta':'Entrar'}</button>
+      <p class="fmsg" id="fmsg"></p>
+      <div class="ftroca">
+        ${criar?'Já tem conta? <button class="linkbtn" id="ftroca">Entrar</button>':'Ainda não tem conta? <button class="linkbtn" id="ftroca">Criar agora</button>'}
+      </div>
+      <div class="ftroca"><button class="linkbtn" id="fpular">Continuar sem conta, só neste navegador</button></div>
+    </div>`;
+  $('#back').addEventListener('click',renderHome);
+  $('#ftroca').addEventListener('click',()=>openEntrar(criar?'entrar':'criar'));
+  $('#fpular').addEventListener('click',renderHome);
+  const enviar=async()=>{
+    const email=($('#femail').value||'').trim();
+    const senha=$('#fsenha').value||'';
+    const nome=criar?(($('#fnome').value||'').trim()):'';
+    const msg=$('#fmsg');
+    if(!email||!senha){ msg.textContent='Preencha o email e a senha.'; return; }
+    if(criar&&senha.length<6){ msg.textContent='A senha precisa de pelo menos 6 caracteres.'; return; }
+    $('#fok').disabled=true; msg.textContent='Conversando com o servidor...';
+    try{
+      if(criar){ await contaCriar(email,senha,nome); if(nome){ P.nome=nome; } }
+      else { await contaEntrar(email,senha); }
+      if(!P.criado){ P.criado=new Date().toISOString().slice(0,10); }
+      save();
+      msg.innerHTML='<span style="color:#39ff88">Tudo certo! Trazendo o seu progresso...</span>';
+      await sincronizar(true);
+      renderHeader();
+      toast('Bem-vindo de volta!','gold');
+      setTimeout(openPerfil,600);
+    }catch(e){
+      $('#fok').disabled=false;
+      msg.textContent=traduzErro(e.message);
+    }
+  };
+  $('#fok').addEventListener('click',enviar);
+  v.querySelectorAll('#femail,#fsenha').forEach(i=>i.addEventListener('keydown',e=>{ if(e.key==='Enter') enviar(); }));
+  scrollTo({top:0,behavior:'auto'});
+}
+function traduzErro(m){
+  const s=String(m||'').toLowerCase();
+  if(s.indexOf('invalid login')>=0) return 'Email ou senha errados.';
+  if(s.indexOf('already registered')>=0||s.indexOf('already exists')>=0) return 'Esse email já tem conta. Use a opção de entrar.';
+  if(s.indexOf('password')>=0&&s.indexOf('6')>=0) return 'A senha precisa de pelo menos 6 caracteres.';
+  if(s.indexOf('email')>=0&&s.indexOf('confirm')>=0) return 'Confirme o email na sua caixa de entrada e tente entrar de novo.';
+  if(s.indexOf('failed to fetch')>=0) return 'Sem conexão com o servidor. Confira a internet e tente de novo.';
+  return 'Não consegui: '+m;
+}
+
 /* ---------- Rotas por endereço (#) ---------- */
 function rota(){
   const h=(location.hash||'').replace(/^#/,'').trim().toLowerCase();
   if(!h){ renderHome(); return; }
   if(h==='glossario'||h==='glossário'){ openGloss(); return; }
   if(h==='progresso'){ openProgress(); return; }
+  if(h==='perfil'){ openPerfil(); return; }
+  if(h==='entrar'||h==='conta'){ openEntrar(); return; }
+  if(h==='criar-conta'){ openEntrar('criar'); return; }
   if(h==='revisao'||h==='revisão'){ openReview(); return; }
   if(h==='certificado'||h==='certificados'){
     const cs=certList();
@@ -3516,5 +3892,12 @@ function rota(){
 addEventListener('hashchange',rota);
 
 /* ---------- Boot ---------- */
+sessaoLer();
+if(!P.criado){ P.criado=new Date().toISOString().slice(0,10); save(); }
+document.getElementById('perfilBtn').addEventListener('click',()=>{
+  if(nuvemLigada()&&!sessaoValida()) openEntrar(); else openPerfil();
+});
 rota();
+renderHeader();
+if(nuvemLigada()&&sessaoValida()) sincronizar(true);
 </script>
