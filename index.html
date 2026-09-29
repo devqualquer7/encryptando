@@ -3009,7 +3009,7 @@ function renderHome(){
 
 function renderModule(m){
   const mod=MODULES[m], st=ST(m), av=modAvail(m);
-  let h=`<div class="sec-h"><h2>Módulo ${m+1} · ${mod.title}</h2><span class="muted">${st.done.length}/${mod.lessons.length} aulas</span></div>`;
+  let h=`<div class="sec-h" id="modulo-${m+1}"><h2>Módulo ${m+1} · ${mod.title}</h2><span class="muted">${st.done.length}/${mod.lessons.length} aulas</span></div>`;
   if(!av) h+=`<div class="modlock">${IC.lock}<span>Libera quando você passar na prova do Módulo ${m}: ${MODULES[m-1].title}.</span></div>`;
   h+=`<div class="path">`;
   mod.lessons.forEach((l,i)=>{
@@ -3487,6 +3487,34 @@ function showWin(o){
 
 function errBox(msg){ return '<div class="tests" style="padding:14px 16px;color:var(--danger);font-size:14px;font-family:var(--body)">'+msg+'</div>'; }
 
+/* ---------- Rotas por endereço (#) ---------- */
+function rota(){
+  const h=(location.hash||'').replace(/^#/,'').trim().toLowerCase();
+  if(!h){ renderHome(); return; }
+  if(h==='glossario'||h==='glossário'){ openGloss(); return; }
+  if(h==='progresso'){ openProgress(); return; }
+  if(h==='revisao'||h==='revisão'){ openReview(); return; }
+  if(h==='certificado'||h==='certificados'){
+    const cs=certList();
+    if(cs.length){ openCert(cs[0].id); return; }
+    openCert('final'); return;
+  }
+  const c=h.match(/^certificado[-=](.+)$/);
+  if(c){ openCert(c[1]); return; }
+  const m=h.match(/^modulo[-=](\d+)$/);
+  if(m){
+    const i=+m[1]-1;
+    if(i>=0&&i<MODULES.length){
+      renderHome();
+      const alvo=document.getElementById('modulo-'+(i+1));
+      if(alvo) alvo.scrollIntoView({behavior:'auto',block:'start'});
+      return;
+    }
+  }
+  renderHome();
+}
+addEventListener('hashchange',rota);
+
 /* ---------- Boot ---------- */
-renderHome();
+rota();
 </script>
