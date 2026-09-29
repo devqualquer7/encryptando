@@ -368,6 +368,32 @@
   }
 
   .gt-apis{background:rgba(196,153,255,.16);color:#c9a6ff}
+  .gt-ia{background:rgba(143,107,255,.16);color:#b49bff}
+  .gt-editor{background:rgba(110,231,255,.14);color:#7fe0f5}
+  /* Chat de treino com IA */
+  .chat{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:18px 0}
+  .chat-h{display:flex;align-items:center;gap:9px;padding:11px 15px;background:rgba(255,255,255,.03);
+    border-bottom:1px solid var(--border);font:600 13px/1 var(--body)}
+  .chat-h .bolha{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;
+    background:linear-gradient(145deg,#8f6bff,#5b3bd6);color:#fff;font:800 10px/1 var(--head)}
+  .chat-h small{margin-left:auto;color:var(--faint);font-weight:500;font-size:12px}
+  .chat-body{padding:16px;max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+  .msg{max-width:86%;padding:11px 14px;border-radius:14px;font-size:14.5px;line-height:1.58}
+  .msg.ia{align-self:flex-start;background:rgba(143,107,255,.1);border:1px solid rgba(143,107,255,.22);border-bottom-left-radius:5px}
+  .msg.eu{align-self:flex-end;background:rgba(255,42,31,.12);border:1px solid rgba(255,42,31,.26);border-bottom-right-radius:5px}
+  .msg code{background:rgba(0,0,0,.35);padding:1px 5px;border-radius:5px;font-family:var(--mono);font-size:13px}
+  .msg .snip{margin:9px 0 2px;max-height:none}
+  .msg.pensando{color:var(--faint);font-style:italic}
+  .chat-f{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--border);background:rgba(0,0,0,.18)}
+  .chat-f input{flex:1;min-width:0;background:var(--bg);border:1px solid var(--border);color:var(--text);
+    border-radius:10px;padding:10px 13px;font:400 14px/1.3 var(--body)}
+  .chat-f input:focus{outline:none;border-color:var(--border-strong)}
+  .chat-sug{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 13px}
+  .chat-sug button{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--faint);
+    border-radius:999px;padding:6px 11px;font:500 12.5px/1 var(--body);cursor:pointer}
+  .chat-sug button:hover{border-color:var(--border-strong);color:var(--text)}
+  .chat-aviso{padding:9px 15px;background:rgba(255,207,92,.07);border-top:1px solid var(--border);
+    color:var(--faint);font-size:12.5px;line-height:1.5}
   .gitem p{margin:0 0 9px;font-size:13.5px;color:var(--muted);line-height:1.5}
   .gitem .snip{margin:0}
   .gitem .snip code{font-size:12px}
@@ -1982,7 +2008,30 @@ const GLOSS=[
   {t:'APIs',k:'await',d:'Espera a resposta chegar antes de seguir para a próxima linha.',e:'await fetch(url)'},
   {t:'APIs',k:'try / catch',d:'Tenta rodar o código e, se der erro, cai no catch em vez de quebrar a página.',e:'try { } catch (e) { }'},
   {t:'APIs',k:'innerHTML',d:'Troca todo o conteúdo de um elemento por HTML novo.',e:'lista.innerHTML = html;'},
-  {t:'APIs',k:'.join("")',d:'Cola os itens de uma lista num texto só. Fecha o combo com o map.',e:'itens.map(f).join("")'}
+  {t:'APIs',k:'.join("")',d:'Cola os itens de uma lista num texto só. Fecha o combo com o map.',e:'itens.map(f).join("")'},
+  {t:'Editor',k:'VS Code',d:'Editor de código gratuito onde você escreve os arquivos do projeto, no seu computador.',e:'code.visualstudio.com'},
+  {t:'Editor',k:'paleta de comandos',d:'Caixa onde você digita em palavras o que quer que o editor faça.',e:'Ctrl+Shift+P'},
+  {t:'Editor',k:'Ctrl+P',d:'Busca um arquivo do projeto pelo nome.',e:'Ctrl+P → index'},
+  {t:'Editor',k:'explorador',d:'A coluna da esquerda, onde ficam os arquivos e pastas do projeto.',e:'Ctrl+Shift+E'},
+  {t:'Editor',k:'multi-cursor',d:'Vários pontos de digitação ao mesmo tempo. Você digita uma vez e muda em todos.',e:'Ctrl+D (repetido)'},
+  {t:'Editor',k:'duplicar linha',d:'Copia a linha atual para baixo, sem recortar e colar.',e:'Shift+Alt+↓'},
+  {t:'Editor',k:'mover linha',d:'Sobe ou desce a linha inteira de lugar.',e:'Alt+↑ / Alt+↓'},
+  {t:'Editor',k:'comentar',d:'Desliga a linha sem apagar. O navegador passa direto por ela.',e:'Ctrl+/'},
+  {t:'Editor',k:'Emmet',d:'Abreviações que viram HTML completo ao apertar Tab. Já vem no VS Code.',e:'ul>li*3 + Tab'},
+  {t:'Editor',k:'extensão',d:'Programinha que acrescenta uma função ao editor.',e:'Live Server, Prettier'},
+  {t:'Editor',k:'Live Server',d:'Extensão que abre a página no navegador e recarrega sozinha quando você salva.',e:'botão direito → Open with Live Server'},
+  {t:'Editor',k:'Prettier',d:'Extensão que arruma indentação e espaçamento do arquivo inteiro.',e:'Shift+Alt+F'},
+  {t:'Editor',k:'terminal embutido',d:'A linha de comando dentro do editor, já apontando para a pasta do projeto.',e:"Ctrl+'"},
+  {t:'Editor',k:'caminho relativo',d:'Endereço de um arquivo a partir de onde você está. Dois pontos sobem uma pasta.',e:'../css/estilo.css'},
+  {t:'IA',k:'prompt',d:'O pedido que você escreve para a IA. Quanto mais informação, melhor a resposta.',e:'contexto + tarefa + formato'},
+  {t:'IA',k:'contexto',d:'Tudo que a IA enxerga na conversa. Ela não conhece o seu projeto fora disso.',e:'o código que você colou'},
+  {t:'IA',k:'alucinação',d:'Quando a IA inventa algo que não existe — função, biblioteca, parâmetro — com cara de verdade.',e:'array.sortByName()'},
+  {t:'IA',k:'vibe coding',d:'Construir descrevendo o que quer e aceitando o que a IA escreve, sem parar em cada linha.',e:'ótimo para protótipo'},
+  {t:'IA',k:'caso de borda',d:'A situação incomum que quebra o código: lista vazia, número negativo, campo em branco.',e:'if (lista.length === 0)'},
+  {t:'IA',k:'iterar',d:'Pedir uma peça por vez e testar entre uma e outra, em vez de encomendar tudo.',e:'"agora mude só a cor"'},
+  {t:'IA',k:'autocompletar por IA',d:'Sugestão em cinza claro dentro do editor. Tab aceita.',e:'Copilot, Continue'},
+  {t:'IA',k:'modo agente',d:'A IA mexe em vários arquivos sozinha a partir de uma tarefa descrita. Revise sempre.',e:'revisar antes de aceitar'},
+  {t:'IA',k:'chave de API',d:'Senha que dá acesso a um serviço. Nunca cole num chat e nunca deixe no código do navegador.',e:'sk-... (nunca compartilhe)'}
 ];
 function openGloss(){
   const v=$('#view');
@@ -1993,8 +2042,8 @@ function openGloss(){
     </div>
     <h1 class="lv-title">Glossário</h1>
     <p class="lv-goal">Esqueceu o que uma palavra significa? Procure aqui. Tudo que aparece nas aulas está nesta lista.</p>
-    <input id="gq" class="cinput" style="width:100%;margin-bottom:14px" placeholder="Buscar termo, por exemplo: classe, array, commit, fetch...">
-    <div class="gfilters">${['Tudo','HTML','CSS','Lógica','DOM','Git','APIs'].map((f,i)=>`<button class="gf ${i===0?'on':''}" data-f="${f}">${f}</button>`).join('')}</div>
+    <input id="gq" class="cinput" style="width:100%;margin-bottom:14px" placeholder="Buscar termo, por exemplo: classe, array, commit, Emmet, prompt...">
+    <div class="gfilters">${['Tudo','HTML','CSS','Lógica','DOM','Git','APIs','Editor','IA'].map((f,i)=>`<button class="gf ${i===0?'on':''}" data-f="${f}">${f}</button>`).join('')}</div>
     <div id="glist" class="glist"></div>`;
   $('#back').addEventListener('click',renderHome);
   let filtro='Tudo';
@@ -2544,6 +2593,630 @@ const API_PROVA = {
   ]
 };
 
+/* ---------- Conteúdo: VS Code — seu editor de verdade ---------- */
+const VSC_LESSONS = [
+  {
+    title:"Por que sair daqui",
+    goal:"Entender o que muda quando o código vira arquivo no seu computador.",
+    learn:`<p>Até agora você escreveu código dentro deste site. Foi de propósito: nada pra instalar, nada pra configurar, resultado na hora. Mas todo site de verdade é um <strong>conjunto de arquivos numa pasta do computador</strong>.</p>
+<p>O <strong>VS Code</strong> é o programa onde a maior parte do mundo escreve esses arquivos. É gratuito, funciona em Windows, Mac e Linux, e é o mesmo que gente que trabalha com isso usa o dia inteiro.</p>
+<p>O que ele te dá que este site não dá: vários arquivos abertos ao mesmo tempo, busca em todo o projeto, terminal embutido, extensões, e o código salvo no seu disco — seu, pra sempre.</p>
+<p><strong>Baixe em <code>code.visualstudio.com</code></strong>. Instale com as opções que já vêm marcadas. Enquanto instala, siga as aulas.</p>`,
+    code:`<h1>Meu primeiro arquivo</h1>\n<p>Daqui a pouco este texto vai estar salvo em index.html no seu computador.</p>`,
+    tip:"Enquanto o VS Code baixa, continue lendo. Você vai precisar dele de verdade só na aula 3.",
+    quiz:[
+      {q:"O que é o VS Code?",opts:[
+        {t:"Um editor de código, gratuito, onde você escreve os arquivos do projeto",ok:true,fb:"Isso. É onde o código mora de verdade."},
+        {t:"Um site que hospeda páginas",ok:false,fb:"Hospedar é outra coisa. O VS Code é onde você escreve."},
+        {t:"Uma linguagem de programação",ok:false,fb:"Ele é o programa, não a linguagem."}]},
+      {q:"Por que sair do editor deste site?",opts:[
+        {t:"Porque um projeto real tem vários arquivos numa pasta do computador",ok:true,fb:"Exato. Um site de verdade não cabe numa caixa de texto."},
+        {t:"Porque o editor daqui está errado",ok:false,fb:"Ele está certo. Só é pequeno demais pra um projeto inteiro."},
+        {t:"Porque o navegador não lê HTML",ok:false,fb:"Lê, sim. É justamente o que ele faz."}]},
+      {q:"Quanto custa o VS Code?",opts:[
+        {t:"Nada, é gratuito",ok:true,fb:"Certo. Gratuito e de código aberto."},
+        {t:"Uma mensalidade",ok:false,fb:"Não. É gratuito."},
+        {t:"Só é gratuito por 30 dias",ok:false,fb:"Não tem prazo. É gratuito."}]}
+    ]
+  },
+  {
+    title:"A pasta do projeto",
+    goal:"Abrir uma pasta e criar o primeiro arquivo.",
+    learn:`<p>O VS Code não trabalha com arquivo solto: ele trabalha com <strong>pasta</strong>. Essa pasta é o seu projeto.</p>
+<p>Crie uma pasta chamada <code>meu-site</code> na Área de Trabalho. No VS Code, vá em <strong>Arquivo → Abrir Pasta</strong> e escolha ela.</p>
+<p>A coluna da esquerda é o <strong>Explorador</strong> (atalho <code>Ctrl+Shift+E</code>). É ali que aparecem os arquivos. Passe o mouse no nome da pasta e clique no ícone de <strong>folha com um +</strong> pra criar um arquivo.</p>
+<p>Crie <code>index.html</code>. O nome importa: <strong>index</strong> é o arquivo que o navegador abre por padrão, e <strong>.html</strong> diz ao VS Code que aquilo é HTML — é o que liga as cores e o autocompletar.</p>
+<p class="hint">Salvar é <code>Ctrl+S</code>. Uma bolinha branca na aba significa que tem coisa não salva.</p>`,
+    code:`<h1>meu-site</h1>\n<p>Uma pasta, um arquivo index.html dentro. É assim que todo projeto começa.</p>`,
+    tip:"Crie a pasta e o arquivo agora, de verdade. As próximas aulas assumem que eles existem.",
+    quiz:[
+      {q:"O VS Code trabalha com o quê?",opts:[
+        {t:"Uma pasta inteira, que é o projeto",ok:true,fb:"Isso. Abrir pasta, não abrir arquivo."},
+        {t:"Um arquivo por vez, sem pasta",ok:false,fb:"Dá pra abrir um arquivo solto, mas você perde busca, terminal e tudo mais."},
+        {t:"Um site na internet",ok:false,fb:"Ele roda no seu computador, com os seus arquivos."}]},
+      {q:"Por que o arquivo se chama index.html?",opts:[
+        {t:"Porque index é o arquivo que o navegador abre por padrão",ok:true,fb:"Certo. É a porta de entrada do site."},
+        {t:"Porque é o único nome que o VS Code aceita",ok:false,fb:"Aceita qualquer nome. Index é convenção."},
+        {t:"Porque index quer dizer bonito",ok:false,fb:"Quer dizer índice, no sentido de ponto de partida."}]},
+      {q:"O que significa a bolinha branca na aba do arquivo?",opts:[
+        {t:"Tem alteração não salva",ok:true,fb:"Isso. Ctrl+S e ela vira um X de novo."},
+        {t:"O arquivo tem erro",ok:false,fb:"Erro aparece sublinhado em vermelho no código."},
+        {t:"O arquivo está travado",ok:false,fb:"Não. É só o aviso de não salvo."}]}
+    ]
+  },
+  {
+    title:"A paleta de comandos",
+    goal:"Aprender o atalho que substitui todos os menus.",
+    learn:`<p>Se você decorar um atalho só, decore este: <strong><code>Ctrl+Shift+P</code></strong>. Abre a <strong>paleta de comandos</strong> — uma caixa onde você digita o que quer fazer, em palavras.</p>
+<p>Não lembra onde fica a opção de trocar o tema? <code>Ctrl+Shift+P</code>, digite "theme". Quer formatar o arquivo? Digite "format". Quer abrir o terminal? Digite "terminal".</p>
+<p>Ela serve pra tudo que o VS Code faz — inclusive o que as extensões acrescentam. É mais rápido que caçar em menu e não exige decorar nada.</p>
+<p>Irmã dela: <code>Ctrl+P</code> (sem Shift) abre a busca de <strong>arquivos</strong>. Digite parte do nome e Enter. Num projeto com cinquenta arquivos, isso vira o seu jeito normal de navegar.</p>`,
+    code:`<h1>Ctrl+Shift+P</h1>\n<p>Comandos. E Ctrl+P sozinho: arquivos.</p>`,
+    tip:"Abra o VS Code, aperte Ctrl+Shift+P e digite 'color theme'. Escolha um tema escuro e veja mudar na hora.",
+    quiz:[
+      {q:"O que Ctrl+Shift+P faz?",opts:[
+        {t:"Abre a paleta de comandos, onde você digita o que quer fazer",ok:true,fb:"Isso. O atalho que vale por todos."},
+        {t:"Imprime o arquivo",ok:false,fb:"Imprimir é Ctrl+P no navegador, não aqui."},
+        {t:"Fecha o programa",ok:false,fb:"Fechar é Alt+F4. A paleta só abre uma caixa de busca."}]},
+      {q:"E Ctrl+P sozinho?",opts:[
+        {t:"Busca arquivos do projeto pelo nome",ok:true,fb:"Certo. Digite parte do nome e Enter."},
+        {t:"Abre a paleta de comandos",ok:false,fb:"Essa é com Shift no meio."},
+        {t:"Salva tudo",ok:false,fb:"Salvar tudo é Ctrl+K depois S."}]},
+      {q:"Por que a paleta é útil pra quem está começando?",opts:[
+        {t:"Porque você descreve o que quer em palavras, sem decorar menus",ok:true,fb:"Exato. Ela é a memória que você ainda não tem."},
+        {t:"Porque ela escreve o código sozinha",ok:false,fb:"Isso é outra coisa — e vem no módulo de IA."},
+        {t:"Porque ela corrige seus erros",ok:false,fb:"Ela executa comandos. Corrigir é com você."}]}
+    ]
+  },
+  {
+    title:"Atalhos que economizam horas",
+    goal:"Editar texto na velocidade de quem faz isso todo dia.",
+    learn:`<p>Estes cinco valem mais que qualquer outro. Pratique um de cada vez, no seu <code>index.html</code>:</p>
+<ul>
+<li><code>Alt+↑</code> / <code>Alt+↓</code> — <strong>move a linha</strong> inteira pra cima ou pra baixo. Sem recortar e colar.</li>
+<li><code>Shift+Alt+↓</code> — <strong>duplica a linha</strong> embaixo. Serve pra repetir um item de lista dez vezes em dois segundos.</li>
+<li><code>Ctrl+/</code> — <strong>comenta</strong> ou descomenta a linha. Ótimo pra desligar um pedaço sem apagar.</li>
+<li><code>Ctrl+D</code> — seleciona a <strong>próxima ocorrência</strong> da mesma palavra. Aperte de novo e vai marcando outra, e outra. Aí você digita uma vez e troca todas.</li>
+<li><code>Ctrl+Shift+K</code> — <strong>apaga a linha</strong> inteira.</li>
+</ul>
+<p>O <code>Ctrl+D</code> repetido é o que o pessoal chama de <strong>multi-cursor</strong>: vários pontos de digitação ao mesmo tempo. Parece mágica na primeira vez.</p>`,
+    code:`<ul>\n  <li>Item</li>\n</ul>\n\n<!-- Ctrl+/ transformou esta linha em comentário -->`,
+    tip:"No VS Code, escreva um <li> e aperte Shift+Alt+↓ cinco vezes. Você acabou de fazer uma lista de seis itens.",
+    quiz:[
+      {q:"Qual atalho duplica a linha atual?",opts:[
+        {t:"Shift+Alt+↓",ok:true,fb:"Isso. E Shift+Alt+↑ duplica pra cima."},
+        {t:"Ctrl+C",ok:false,fb:"Copia, mas você ainda precisa colar e posicionar."},
+        {t:"Ctrl+Shift+K",ok:false,fb:"Esse apaga a linha inteira."}]},
+      {q:"O que Ctrl+D faz quando você aperta várias vezes?",opts:[
+        {t:"Seleciona as próximas ocorrências da mesma palavra, criando vários cursores",ok:true,fb:"Certo. Digite uma vez e troca todas de uma vez."},
+        {t:"Apaga várias linhas",ok:false,fb:"Apagar linha é Ctrl+Shift+K."},
+        {t:"Desfaz várias vezes",ok:false,fb:"Desfazer é Ctrl+Z."}]},
+      {q:"Para desligar um trecho de código sem apagar, você usa...",opts:[
+        {t:"Ctrl+/ para comentar",ok:true,fb:"Isso. O código fica lá, mas o navegador ignora."},
+        {t:"Ctrl+X para recortar",ok:false,fb:"Recortar tira do arquivo. Comentar mantém."},
+        {t:"Ctrl+S para salvar",ok:false,fb:"Salvar não desliga nada."}]}
+    ]
+  },
+  {
+    title:"Emmet: HTML na velocidade do pensamento",
+    goal:"Escrever estruturas inteiras com uma linha de abreviação.",
+    learn:`<p>O VS Code já vem com o <strong>Emmet</strong>: você digita uma abreviação, aperta <strong>Tab</strong>, e ela vira HTML completo. Ninguém que trabalha com isso digita <code>&lt;/li&gt;</code> na mão.</p>
+<p>As regras que resolvem quase tudo:</p>
+<ul>
+<li><code>tag</code> → a tag. <code>p</code> + Tab vira <code>&lt;p&gt;&lt;/p&gt;</code></li>
+<li><code>.nome</code> → classe. <code>div.cartao</code> vira <code>&lt;div class="cartao"&gt;</code></li>
+<li><code>#nome</code> → id. <code>header#topo</code> vira <code>&lt;header id="topo"&gt;</code></li>
+<li><code>&gt;</code> → <strong>dentro</strong>. <code>ul&gt;li</code> põe o li dentro do ul</li>
+<li><code>+</code> → <strong>ao lado</strong>. <code>h1+p</code> põe os dois lado a lado</li>
+<li><code>*3</code> → <strong>repete</strong>. <code>li*3</code> faz três li</li>
+<li><code>[attr=valor]</code> → atributo. <code>a[href=#fim]</code></li>
+<li><code>{texto}</code> → conteúdo. <code>h1{Meu site}</code></li>
+</ul>
+<p>Juntando tudo: <code>nav&gt;ul&gt;li*3&gt;a[href=#]{Link}</code> + Tab monta um menu inteiro. E <code>!</code> + Tab escreve a estrutura completa de uma página, do DOCTYPE ao body.</p>`,
+    code:`<!-- nav>ul>li*3 vira isto: -->\n<nav>\n  <ul>\n    <li></li>\n    <li></li>\n    <li></li>\n  </ul>\n</nav>`,
+    tip:"No VS Code, digite ! e aperte Tab. Aparece a página inteira pronta. Depois tente ul>li*5.",
+    quiz:[
+      {q:"O que o sinal > faz numa abreviação Emmet?",opts:[
+        {t:"Coloca a tag seguinte dentro da anterior",ok:true,fb:"Isso. ul>li põe o li dentro do ul."},
+        {t:"Coloca as tags lado a lado",ok:false,fb:"Lado a lado é o sinal +."},
+        {t:"Repete a tag",ok:false,fb:"Repetir é o asterisco: li*3."}]},
+      {q:"O que div.cartao vira?",opts:[
+        {t:'<div class="cartao"></div>',ok:true,fb:"Certo. Ponto é classe."},
+        {t:'<div id="cartao"></div>',ok:false,fb:"Id é com cerquilha: div#cartao."},
+        {t:"<div>cartao</div>",ok:false,fb:"Texto é entre chaves: div{cartao}."}]},
+      {q:"Qual abreviação faz três itens de lista dentro de um ul?",opts:[
+        {t:"ul>li*3",ok:true,fb:"Isso. Dentro, repetido três vezes."},
+        {t:"ul+li+3",ok:false,fb:"O + é lado a lado, e o 3 sozinho não repete nada."},
+        {t:"ul.li.3",ok:false,fb:"Ponto é classe, não estrutura."}]}
+    ]
+  },
+  {
+    title:"Extensões que valem a pena",
+    goal:"Deixar o editor trabalhando a seu favor.",
+    learn:`<p>Extensões são programinhas que acrescentam funções ao VS Code. O ícone fica na barra lateral (<code>Ctrl+Shift+X</code>). Há milhares — e quase todas você não precisa. Estas três, sim:</p>
+<ul>
+<li><strong>Live Server</strong> — clique com o botão direito no <code>index.html</code> e escolha "Open with Live Server". Ele abre a página no navegador e <strong>recarrega sozinho</strong> toda vez que você salva. É o que faz o editor deste site parecer instantâneo, só que no seu computador.</li>
+<li><strong>Prettier</strong> — arruma a indentação e o espaçamento do arquivo inteiro com <code>Shift+Alt+F</code>. Código torto vira código alinhado.</li>
+<li><strong>Portuguese (Brazil) Language Pack</strong> — deixa os menus em português. Opcional, mas tira um obstáculo no começo.</li>
+</ul>
+<p class="hint">Cuidado com extensão demais: cada uma deixa o programa um pouco mais lento. Instale quando doer a falta, não antes.</p>`,
+    code:`<h1>Live Server</h1>\n<p>Salvou, recarregou. Sem apertar F5.</p>`,
+    tip:"Instale o Live Server e abra seu index.html com ele. Mude o texto, salve, e veja o navegador atualizar sozinho.",
+    quiz:[
+      {q:"O que o Live Server faz?",opts:[
+        {t:"Abre a página no navegador e recarrega sozinho quando você salva",ok:true,fb:"Isso. Você escreve, salva, e a página já mudou."},
+        {t:"Hospeda seu site na internet",ok:false,fb:"Ele serve só no seu computador. Hospedar é o GitHub Pages."},
+        {t:"Corrige erros do código",ok:false,fb:"Ele só serve e recarrega."}]},
+      {q:"Para que serve o Prettier?",opts:[
+        {t:"Formatar o arquivo: indentação e espaçamento arrumados",ok:true,fb:"Certo. Shift+Alt+F e o arquivo fica alinhado."},
+        {t:"Deixar o tema mais bonito",ok:false,fb:"Tema é outra coisa. Ele mexe no código, não nas cores."},
+        {t:"Traduzir o código",ok:false,fb:"Ele só arruma a forma, não o conteúdo."}]},
+      {q:"Qual o problema de instalar muita extensão?",opts:[
+        {t:"O VS Code fica mais lento",ok:true,fb:"Isso. Instale quando sentir falta, não por precaução."},
+        {t:"Elas custam caro",ok:false,fb:"Quase todas são gratuitas."},
+        {t:"Elas apagam seus arquivos",ok:false,fb:"Não fazem isso. O problema é peso, não risco."}]}
+    ]
+  },
+  {
+    title:"O terminal embutido",
+    goal:"Rodar comandos sem sair do editor.",
+    learn:`<p><code>Ctrl+'</code> (a tecla da crase, ao lado do 1) abre um <strong>terminal</strong> na parte de baixo do VS Code. É a mesma linha de comando do sistema, só que dentro do editor e já apontando pra pasta do projeto.</p>
+<p>Por que isso importa: no próximo módulo você vai usar o <strong>Git</strong>, e Git se usa por comando. Com o terminal embutido, você escreve o código em cima e versiona embaixo, sem trocar de janela.</p>
+<p>Três comandos que servem em qualquer sistema:</p>
+<ul>
+<li><code>pwd</code> (ou <code>cd</code> sozinho no Windows) — mostra em que pasta você está</li>
+<li><code>ls</code> (ou <code>dir</code> no Windows) — lista os arquivos da pasta</li>
+<li><code>cd nome-da-pasta</code> — entra numa pasta. <code>cd ..</code> volta uma</li>
+</ul>
+<p class="hint">Se o terminal abrir num lugar estranho, feche e abra de novo com a pasta do projeto aberta.</p>`,
+    code:`<h1>Ctrl + '</h1>\n<p>O terminal abre embaixo, já dentro da pasta do projeto.</p>`,
+    tip:"Abra o terminal e digite ls (ou dir). Você deve ver o index.html que criou.",
+    quiz:[
+      {q:"Qual atalho abre o terminal embutido?",opts:[
+        {t:"Ctrl+' (tecla da crase)",ok:true,fb:"Isso. Mesma tecla fecha."},
+        {t:"Ctrl+T",ok:false,fb:"Esse busca símbolos no projeto."},
+        {t:"Ctrl+Shift+E",ok:false,fb:"Esse abre o explorador de arquivos."}]},
+      {q:"Qual comando lista os arquivos da pasta?",opts:[
+        {t:"ls (ou dir no Windows)",ok:true,fb:"Certo. É como você confere o que tem ali."},
+        {t:"cd",ok:false,fb:"cd serve pra trocar de pasta."},
+        {t:"open",ok:false,fb:"Não é um comando padrão pra isso."}]},
+      {q:"Por que o terminal embutido vai importar no próximo módulo?",opts:[
+        {t:"Porque o Git se usa por comando, e assim você não troca de janela",ok:true,fb:"Exato. Código em cima, versão embaixo."},
+        {t:"Porque ele compila o HTML",ok:false,fb:"HTML não precisa compilar."},
+        {t:"Porque ele publica o site",ok:false,fb:"Publicar vem depois, com Git e GitHub."}]}
+    ]
+  },
+  {
+    title:"Organizando o projeto",
+    goal:"Montar uma estrutura de pastas que não vira bagunça.",
+    learn:`<p>Um projeto com três arquivos cabe solto. Um com trinta, não. A estrutura que quase todo site pequeno usa:</p>
+<pre class="snip"><code>meu-site/
+  index.html
+  sobre.html
+  css/
+    estilo.css
+  js/
+    script.js
+  img/
+    logo.png</code></pre>
+<p>HTML na raiz, e uma pasta pra cada tipo de coisa. Pra ligar o CSS no HTML, o caminho é relativo à posição do arquivo: <code>&lt;link rel="stylesheet" href="css/estilo.css"&gt;</code>.</p>
+<p>Duas regras que evitam dor de cabeça mais tarde: <strong>nomes sem acento, sem espaço e sempre em minúsculo</strong> (<code>sobre-nos.html</code>, nunca <code>Sobre Nós.html</code>), e <code>..</code> quer dizer "sobe uma pasta" (<code>../index.html</code>).</p>
+<p>Agora leve pro VS Code a página que você fez na prova do Módulo 1. Ela é o começo do seu projeto de verdade.</p>`,
+    code:`<!DOCTYPE html>\n<html lang="pt-br">\n<head>\n  <meta charset="UTF-8">\n  <title>Meu site</title>\n  <link rel="stylesheet" href="css/estilo.css">\n</head>\n<body>\n  <h1>Meu site</h1>\n  <script src="js/script.js"><\/script>\n</body>\n</html>`,
+    tip:"Crie as pastas css, js e img no seu projeto. Elas vão se encher sozinhas nos próximos módulos.",
+    quiz:[
+      {q:"Onde fica o arquivo index.html numa estrutura organizada?",opts:[
+        {t:"Na raiz da pasta do projeto",ok:true,fb:"Isso. HTML na raiz, o resto em subpastas."},
+        {t:"Dentro da pasta css",ok:false,fb:"A pasta css é só pros arquivos de estilo."},
+        {t:"Dentro da pasta img",ok:false,fb:"Essa é só pras imagens."}]},
+      {q:"Como nomear os arquivos?",opts:[
+        {t:"Minúsculo, sem acento e sem espaço",ok:true,fb:"Certo. Acento e espaço quebram links quando o site vai pro ar."},
+        {t:"Do jeito que for mais bonito",ok:false,fb:"Beleza não ajuda quando o servidor não acha o arquivo."},
+        {t:"Sempre com a primeira letra maiúscula",ok:false,fb:"Servidor de verdade diferencia maiúscula de minúscula. Melhor tudo minúsculo."}]},
+      {q:"O que significa .. num caminho?",opts:[
+        {t:"Subir uma pasta",ok:true,fb:"Isso. ../index.html é o index da pasta de cima."},
+        {t:"A pasta atual",ok:false,fb:"A pasta atual é um ponto só."},
+        {t:"Todos os arquivos",ok:false,fb:"Isso seria o asterisco."}]}
+    ]
+  }
+];
+
+const VSC_PROVA = {
+  title:"Prova prática — Emmet na mão",
+  brief:`<p><strong>Sua missão:</strong> escrever o HTML que cada abreviação Emmet produziria. É assim que você prova que entendeu a estrutura — e é exatamente o que o Tab faz por você no VS Code.</p>
+  <p class="hint">Escreva tudo num arquivo só, uma estrutura embaixo da outra. A cola ao lado mostra as seis abreviações.</p>`,
+  starter:`<!-- 1) header#topo -->\n\n\n<!-- 2) nav>ul>li*3 -->\n\n\n<!-- 3) section.cartao*2 -->\n\n\n<!-- 4) h1{Meu site}+p{Bem-vindo} -->\n\n\n<!-- 5) a[href=#contato]{Fale comigo} -->\n\n\n<!-- 6) img.foto[alt=Logo] -->\n\n`,
+  cheats:[
+    {name:'1 · header#topo',note:'id',parts:[{t:'<header id="topo">',re:/<header[^>]+id\s*=\s*["']topo["']/i},{t:'</header>',re:/<\/header>/i}]},
+    {name:'2 · nav>ul>li*3',note:'dentro, 3x',parts:[{t:'<nav><ul>',re:/<nav[^>]*>[\s\S]*<ul/i},{t:'3 × <li>',re:/(<li[^>]*>[\s\S]*?<\/li>[\s\S]*?){3}/i}]},
+    {name:'3 · section.cartao*2',note:'classe, 2x',parts:[{t:'class="cartao"',re:/class\s*=\s*["']cartao["']/i},{t:'2 × <section>',re:/(<section[\s\S]*?<\/section>[\s\S]*?){2}/i}]},
+    {name:'4 · h1{...}+p{...}',note:'ao lado',parts:[{t:'<h1>Meu site</h1>',re:/<h1[^>]*>\s*Meu site\s*<\/h1>/i},{t:'<p>Bem-vindo</p>',re:/<p[^>]*>\s*Bem-vindo\s*<\/p>/i}]},
+    {name:'5 · a[href=#contato]{...}',note:'atributo + texto',parts:[{t:'href="#contato"',re:/href\s*=\s*["']#contato["']/i},{t:'Fale comigo',re:/>\s*Fale comigo\s*</i}]},
+    {name:'6 · img.foto[alt=Logo]',note:'classe + alt',parts:[{t:'class="foto"',re:/<img[^>]+class\s*=\s*["']foto["']/i},{t:'alt="Logo"',re:/<img[^>]+alt\s*=\s*["']Logo["']/i}]}
+  ],
+  checks:[
+    {label:'header com id="topo"',test:d=>!!d.querySelector('header#topo')},
+    {label:'nav com ul dentro e exatamente 3 li',test:d=>{const u=d.querySelector('nav > ul'); return !!u && u.querySelectorAll(':scope > li').length===3;}},
+    {label:'duas section com class="cartao"',test:d=>d.querySelectorAll('section.cartao').length>=2},
+    {label:'h1 "Meu site" e, ao lado, p "Bem-vindo"',test:d=>{
+      const h=[...d.querySelectorAll('h1')].find(x=>x.textContent.trim()==='Meu site');
+      if(!h) return false;
+      let n=h.nextElementSibling;
+      return !!(n && n.tagName==='P' && n.textContent.trim()==='Bem-vindo');
+    }},
+    {label:'link com href="#contato" e texto "Fale comigo"',test:d=>{
+      const a=d.querySelector('a[href="#contato"]');
+      return !!(a && a.textContent.trim()==='Fale comigo');
+    }},
+    {label:'img com class="foto" e alt="Logo"',test:d=>{
+      const i=d.querySelector('img.foto');
+      return !!(i && (i.getAttribute('alt')||'').trim()==='Logo');
+    }}
+  ]
+};
+
+/* ---------- Chat de treino: uma IA simulada, com respostas escritas ---------- */
+function chatBox(id,sugestoes){
+  return `<div class="chat">
+    <div class="chat-h"><span class="bolha">IA</span><span>IA de treino do Encryptando</span><small>simulada, roda offline</small></div>
+    <div class="chat-body" id="cb-${id}"></div>
+    ${(sugestoes&&sugestoes.length)?`<div class="chat-sug">${sugestoes.map(s=>`<button data-sug="${esc(s)}">${esc(s)}</button>`).join('')}</div>`:''}
+    <form class="chat-f" id="cf-${id}" autocomplete="off">
+      <input id="ci-${id}" placeholder="Escreva o seu pedido e aperte Enter">
+      <button class="btn btn-primary" type="submit">Enviar</button>
+    </form>
+    <div class="chat-aviso">As respostas desta IA foram escritas por nós, de propósito: assim ela sempre reage do mesmo jeito e dá para treinar. Uma IA de verdade varia a cada resposta.</div>
+  </div>`;
+}
+function respostaIA(cfg,texto){
+  const t=String(texto||'');
+  for(const regra of (cfg.regras||[])){
+    try{ if(regra.re.test(t)) return regra.r; }catch(e){}
+  }
+  return cfg.padrao||'Não entendi bem. Pode reescrever com mais detalhe?';
+}
+function bindChat(id,cfg){
+  const corpo=$('#cb-'+id), form=$('#cf-'+id), inp=$('#ci-'+id);
+  if(!corpo) return;
+  const por=(quem,html)=>{
+    const d=document.createElement('div');
+    d.className='msg '+quem;
+    d.innerHTML=html;
+    corpo.appendChild(d);
+    corpo.scrollTop=corpo.scrollHeight;
+    return d;
+  };
+  por('ia',esc(cfg.abertura||'Pode perguntar.'));
+  const enviar=(txt)=>{
+    const t=(txt||'').trim();
+    if(!t) return;
+    por('eu',esc(t));
+    inp.value='';
+    const p=por('ia','digitando...');
+    p.classList.add('pensando');
+    setTimeout(()=>{
+      p.classList.remove('pensando');
+      p.innerHTML=respostaIA(cfg,t);
+      corpo.scrollTop=corpo.scrollHeight;
+    },520);
+  };
+  form.addEventListener('submit',e=>{ e.preventDefault(); enviar(inp.value); });
+  const sug=form.parentElement.querySelector('.chat-sug');
+  if(sug) sug.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>enviar(b.dataset.sug)));
+}
+
+/* ---------- Conteúdo: IA e vibe coding ---------- */
+const IA_LESSONS = [
+  {
+    title:"O que é uma IA de código",
+    goal:"Entender com o que você está falando, sem enrolação.",
+    learn:`<p>Uma IA de código é um programa que leu uma quantidade absurda de texto e de código e aprendeu a <strong>prever o que vem depois</strong>. Você escreve um pedido, ela completa com o que parece ser a melhor continuação.</p>
+<p>Duas consequências disso, e são as duas mais importantes do módulo:</p>
+<ul>
+<li>Ela é <strong>ótima no que é comum</strong>. Um formulário de login, um loop, um CSS de cartão — coisas que existem milhares de vezes por aí — ela acerta quase sempre.</li>
+<li>Ela <strong>não sabe o que não sabe</strong>. Quando não tem a resposta, não fica em silêncio: inventa, com o mesmo tom confiante de quando está certa.</li>
+</ul>
+<p>Ela também só enxerga o que você mostra. Não conhece o seu projeto, não viu seus arquivos, não sabe o que você tentou ontem. Esse pedaço que você mostra chama-se <strong>contexto</strong>, e é quase tudo que separa uma resposta útil de uma inútil.</p>
+<p>Converse com a IA de treino aqui embaixo. Ela responde igual às de verdade: muda conforme o que você escreve.</p>`,
+    chat:{
+      abertura:"Oi! Sou a IA de treino do Encryptando. Me pergunte alguma coisa — repare em como a resposta muda conforme o jeito que você pergunta.",
+      sugestoes:["o que você é?","você erra?","me ajuda com código"],
+      regras:[
+        {re:/quem (é|e) voc|o que voc(e|ê) (é|e)/i, r:"Sou um modelo de linguagem: leio o que você escreve e prevejo a continuação mais provável. Não tenho memória entre conversas e não vejo seus arquivos — só o que está nesta janela."},
+        {re:/(voc(e|ê) )?sabe (tudo|de tudo)|voc(e|ê) (erra|acerta)/i, r:"Erro, sim. E o pior: erro com a mesma confiança de quando acerto. Por isso a regra é sempre ler o que eu escrevo antes de usar."},
+        {re:/ajuda|me ajud/i, r:"Posso. Quanto mais específico o pedido, melhor a resposta. Tente me dizer: o que você está fazendo, o que precisa, e em que formato quer a resposta."},
+        {re:/html|css|javascript|c(ó|o)digo/i, r:"Posso escrever código, sim. Mas escreva para mim o contexto (o que é o projeto), a tarefa (o que exatamente você quer) e o formato (arquivo único? só a função?). Sem isso eu chuto."}
+      ],
+      padrao:"Entendi a pergunta, mas ela está ampla demais para eu dar algo útil. Me diga o contexto e o que exatamente você quer que eu faça."
+    },
+    tip:"Pergunte 'você erra?' e repare na resposta. Essa é a característica mais importante de qualquer IA.",
+    quiz:[
+      {q:"Como uma IA de código funciona, na prática?",opts:[
+        {t:"Ela prevê a continuação mais provável do que você escreveu",ok:true,fb:"Isso. É previsão de texto, treinada em muito código."},
+        {t:"Ela consulta a internet a cada pergunta",ok:false,fb:"Algumas buscam, mas a base é a previsão do que aprendeu."},
+        {t:"Ela executa o código para conferir",ok:false,fb:"Na maioria das vezes não executa nada. Ela escreve e você testa."}]},
+      {q:"O que acontece quando a IA não sabe a resposta?",opts:[
+        {t:"Ela costuma inventar, com o mesmo tom de quando está certa",ok:true,fb:"Exato. É por isso que você sempre lê antes de usar."},
+        {t:"Ela avisa que não sabe e para",ok:false,fb:"Às vezes avisa. Muitas vezes não."},
+        {t:"Ela dá erro",ok:false,fb:"Ela quase sempre responde alguma coisa."}]},
+      {q:"O que é o contexto?",opts:[
+        {t:"O que você mostra para a IA: o problema, o código, o objetivo",ok:true,fb:"Certo. Ela só enxerga o que está na conversa."},
+        {t:"A linguagem de programação que você usa",ok:false,fb:"A linguagem é parte do contexto, mas contexto é mais amplo."},
+        {t:"O histórico de todas as suas conversas anteriores",ok:false,fb:"Em geral cada conversa começa do zero."}]}
+    ]
+  },
+  {
+    title:"O primeiro prompt",
+    goal:"Pedir de um jeito que devolva algo aproveitável.",
+    learn:`<p>Prompt é o pedido que você escreve. A diferença entre um pedido ruim e um bom não é educação nem tamanho — é <strong>informação</strong>.</p>
+<p>Um prompt que funciona tem três partes:</p>
+<ul>
+<li><strong>Contexto</strong> — o que é isso. "Estou fazendo uma página de portfólio em HTML e CSS puro, sem framework."</li>
+<li><strong>Tarefa</strong> — o que exatamente você quer. "Preciso de um cabeçalho com logo à esquerda e três links à direita."</li>
+<li><strong>Formato e limites</strong> — como quer receber. "Devolva só o HTML e o CSS, em um arquivo, sem explicação."</li>
+</ul>
+<p>Compare os dois na IA aqui embaixo. Escreva primeiro <em>"faz um menu"</em>. Depois escreva o pedido completo com as três partes e veja a diferença.</p>
+<p class="hint">Dica que quase ninguém usa: diga o que você <strong>não</strong> quer. "Sem bibliotecas externas", "sem JavaScript", "sem comentários". Limite é informação.</p>`,
+    chat:{
+      abertura:"Me peça alguma coisa. Tente primeiro do jeito curto, depois do jeito completo.",
+      sugestoes:["faz um menu","Estou fazendo uma página de portfólio em HTML e CSS puro. Preciso de um cabeçalho com logo à esquerda e três links à direita. Devolva só o HTML, em um arquivo, sem bibliotecas."],
+      regras:[
+        {re:/^.{0,25}$/, r:"Pedido curto demais. Vou ter que chutar: qual linguagem? faz parte de qual página? quer com JavaScript? Me dê contexto, tarefa e formato e eu devolvo algo que você pode usar direto."},
+        {re:/(contexto|estou fazendo|meu projeto|p(á|a)gina de).{0,400}(menu|cabe(ç|c)alho|header|nav)/is, r:"Agora sim. Como você me deu o contexto e o formato, vou devolver HTML e CSS num arquivo só, sem bibliotecas:<pre class=\"snip\"><code>&lt;header class=\"topo\"&gt;\n  &lt;img src=\"logo.png\" alt=\"Logo\" class=\"logo\"&gt;\n  &lt;nav&gt;\n    &lt;a href=\"#sobre\"&gt;Sobre&lt;/a&gt;\n    &lt;a href=\"#projetos\"&gt;Projetos&lt;/a&gt;\n    &lt;a href=\"#contato\"&gt;Contato&lt;/a&gt;\n  &lt;/nav&gt;\n&lt;/header&gt;</code></pre>Leia antes de colar: confira se o caminho da logo bate com o seu arquivo."},
+        {re:/(menu|cabe(ç|c)alho|header|nav)/i, r:"Posso fazer, mas do jeito que você pediu eu vou chutar o estilo, a linguagem e a estrutura. Me diga: é HTML puro ou algum framework? Menu horizontal ou lateral? Quantos links? Quer o CSS junto?"},
+        {re:/(sem|n(ã|a)o use|nada de) (biblioteca|framework|javascript|jquery|bootstrap)/i, r:"Boa — limite é informação. Com essa restrição eu já descarto metade das respostas possíveis e entrego o que serve pro seu caso."}
+      ],
+      padrao:"Consigo responder melhor se você incluir as três partes: contexto (o que é o projeto), tarefa (o que você quer exatamente) e formato (como quer receber)."
+    },
+    tip:"Escreva 'faz um menu' e depois um pedido com contexto, tarefa e formato. A diferença na resposta é o módulo inteiro em uma aula.",
+    quiz:[
+      {q:"Quais são as três partes de um bom prompt?",opts:[
+        {t:"Contexto, tarefa e formato",ok:true,fb:"Isso. Informação, não educação."},
+        {t:"Saudação, pedido e agradecimento",ok:false,fb:"Educação não muda a qualidade da resposta."},
+        {t:"Linguagem, versão e sistema operacional",ok:false,fb:"Isso é parte do contexto, mas falta o resto."}]},
+      {q:"Por que dizer o que você NÃO quer ajuda?",opts:[
+        {t:"Porque limite é informação: descarta respostas que não servem",ok:true,fb:"Certo. 'Sem bibliotecas' já elimina metade das opções."},
+        {t:"Porque a IA obedece melhor quando é contrariada",ok:false,fb:"Não é psicologia, é informação."},
+        {t:"Porque deixa o prompt mais educado",ok:false,fb:"Educação não é o ponto."}]},
+      {q:"O que acontece com um prompt vago?",opts:[
+        {t:"A IA chuta as partes que faltam e costuma errar o alvo",ok:true,fb:"Exato. Ela preenche as lacunas com o mais comum."},
+        {t:"A IA pede desculpas e não responde",ok:false,fb:"Ela quase sempre responde alguma coisa."},
+        {t:"A IA devolve sempre a mesma resposta",ok:false,fb:"Varia — e isso é parte do problema."}]}
+    ]
+  },
+  {
+    title:"Conversar, não encomendar",
+    goal:"Construir em passos, corrigindo o rumo.",
+    learn:`<p>O erro mais comum de quem começa é pedir o projeto inteiro numa mensagem só: <em>"faz um site de barbearia com agendamento, login e painel"</em>. O que volta é grande, genérico e impossível de conferir.</p>
+<p>O jeito que funciona é o mesmo de qualquer construção: <strong>uma peça de cada vez, testando entre uma e outra</strong>.</p>
+<ol>
+<li>Peça a estrutura básica. Teste.</li>
+<li>Peça o estilo. Teste.</li>
+<li>Peça o comportamento. Teste.</li>
+<li>Peça os casos que dão errado: campo vazio, número negativo, internet caindo.</li>
+</ol>
+<p>E quando algo quebra, não recomece: <strong>mostre o erro</strong>. Cole a mensagem exata e diga o que esperava. "Deu <code>Cannot read properties of null</code> na linha 12; eu esperava que aparecesse o nome na tela."</p>
+<p>A conversa tem memória. Você pode dizer "agora mude só a cor do botão" e ela sabe do que você está falando.</p>`,
+    chat:{
+      abertura:"Vamos construir junto. Peça uma peça por vez e teste entre uma e outra.",
+      sugestoes:["faz um site completo de barbearia com login e pagamento","quero a estrutura básica da página","deu erro: Cannot read properties of null na linha 12"],
+      regras:[
+        {re:/(site|sistema|app|aplicativo) (completo|inteiro|de .{3,})(.{0,200})(login|pagamento|painel|agendamento|banco)/is, r:"Esse pedido é grande demais para uma resposta só — e o que eu devolver vai ser genérico e difícil de conferir. Vamos quebrar: quer começar pela estrutura da página, pelo visual, ou pela parte que guarda os dados?"},
+        {re:/(erro|deu|apareceu).{0,200}(cannot read|undefined|null|is not a function|syntaxerror)/is, r:"Esse erro quase sempre quer dizer que o <code>querySelector</code> não encontrou o elemento e devolveu <code>null</code>. Três causas prováveis: o id no HTML está diferente do que está no JS; o <code>&lt;script&gt;</code> roda antes do HTML existir (mova para o fim do body); ou o elemento é criado depois. Me mostre o HTML e o JS que eu aponto qual é."},
+        {re:/(agora|s(ó|o)) (mud|troc|ajust|deix)/i, r:"Feito — mantive o resto igual e mexi só nisso. Teste antes de pedir a próxima mudança; assim, se quebrar, você sabe exatamente o que quebrou."},
+        {re:/(estrutura|html) (b(á|a)sic|inicial|da p(á|a)gina)/i, r:"Começo certo. Aqui está o esqueleto:<pre class=\"snip\"><code>&lt;main&gt;\n  &lt;h1&gt;Título&lt;/h1&gt;\n  &lt;section id=\"conteudo\"&gt;&lt;/section&gt;\n&lt;/main&gt;</code></pre>Abra no navegador e confirme que aparece. Depois peça o estilo."}
+      ],
+      padrao:"Me diga qual peça você quer agora — e, se alguma coisa quebrou, cole a mensagem de erro exata em vez de recomeçar do zero."
+    },
+    tip:"Peça um 'site completo de barbearia com login e pagamento' e veja o que a IA responde. Depois peça só a estrutura da página.",
+    quiz:[
+      {q:"Qual é o jeito certo de construir com IA?",opts:[
+        {t:"Uma peça por vez, testando entre uma e outra",ok:true,fb:"Isso. Assim você sabe onde quebrou."},
+        {t:"Pedir o projeto inteiro de uma vez e depois arrumar",ok:false,fb:"Volta grande, genérico e impossível de conferir."},
+        {t:"Pedir três versões e escolher a melhor",ok:false,fb:"Você acaba com três coisas que não entende."}]},
+      {q:"O código quebrou. O que você faz?",opts:[
+        {t:"Cola a mensagem de erro exata e diz o que esperava",ok:true,fb:"Certo. A mensagem de erro é a informação mais valiosa que você tem."},
+        {t:"Pede tudo de novo, do zero",ok:false,fb:"Você perde o que já estava funcionando."},
+        {t:"Escreve 'não funcionou'",ok:false,fb:"Sem o erro, ela vai chutar de novo."}]},
+      {q:"A conversa lembra do que veio antes?",opts:[
+        {t:"Sim, dentro da mesma conversa — por isso dá para dizer 'agora mude só a cor'",ok:true,fb:"Isso. Dentro da conversa há memória; entre conversas, não."},
+        {t:"Não, cada mensagem é isolada",ok:false,fb:"Dentro da mesma conversa ela enxerga o histórico."},
+        {t:"Sim, e ela lembra para sempre, de todas as conversas",ok:false,fb:"Entre conversas diferentes, em geral, não."}]}
+    ]
+  },
+  {
+    title:"Ler antes de colar",
+    goal:"Conferir o que a IA escreveu em vez de confiar.",
+    learn:`<p>Esta é a aula que separa quem usa IA de quem é usado por ela. <strong>Código que você não leu é código que você não pode consertar.</strong></p>
+<p>A IA erra de jeitos específicos, e eles se repetem:</p>
+<ul>
+<li><strong>Inventa o que não existe</strong> — uma função, um método, uma biblioteca com nome plausível que nunca foi criada. Isso tem nome: <em>alucinação</em>.</li>
+<li><strong>Mistura versões</strong> — junta a sintaxe antiga com a nova, e o resultado não roda em nenhuma das duas.</li>
+<li><strong>Ignora o caso da borda</strong> — funciona com a lista cheia e quebra com a lista vazia.</li>
+<li><strong>Resolve o problema errado</strong> — entrega exatamente o que você pediu, quando você pediu a coisa errada.</li>
+</ul>
+<p>O código abaixo foi "gerado por uma IA" e tem <strong>três problemas</strong>. Rode do jeito que está e veja o que acontece. Depois conserte — a dica está no rodapé.</p>`,
+    code:`<h2>Média das notas</h2>\n<p id="saida">calculando...</p>\n\n<script>\n  const notas = [8, 6, 10, 7];\n\n  function media(lista) {\n    let soma = 0;\n    for (let i = 0; i <= lista.length; i++) {\n      soma += lista[i];\n    }\n    return soma / lista.length;\n  }\n\n  document.querySelector("#resultado").textContent = "Média: " + media(notas);\n<\/script>`,
+    tip:"Os três: o laço usa <= e passa do fim da lista; o seletor procura #resultado mas o id é #saida; e a função quebra se a lista vier vazia. Conserte os três e a página funciona.",
+    quiz:[
+      {q:"O que é uma alucinação de IA?",opts:[
+        {t:"Quando ela inventa algo que não existe, com aparência de verdade",ok:true,fb:"Isso. Nome de função, biblioteca, parâmetro — tudo plausível e falso."},
+        {t:"Quando ela trava e para de responder",ok:false,fb:"Isso é falha técnica, não alucinação."},
+        {t:"Quando ela responde em outro idioma",ok:false,fb:"Isso é só erro de idioma."}]},
+      {q:"Por que ler o código gerado antes de usar?",opts:[
+        {t:"Porque código que você não leu é código que você não sabe consertar",ok:true,fb:"Exato. Quando quebrar, o problema é seu."},
+        {t:"Porque a IA pede para você ler",ok:false,fb:"Ela raramente pede. A responsabilidade é sua."},
+        {t:"Porque ler deixa o código mais rápido",ok:false,fb:"Velocidade não tem a ver. Entendimento tem."}]},
+      {q:"No código da aula, por que o laço com <= está errado?",opts:[
+        {t:"Porque passa um índice além do fim da lista e pega undefined",ok:true,fb:"Certo. A última posição é length - 1."},
+        {t:"Porque <= é mais lento que <",ok:false,fb:"Velocidade não é o problema. Correção é."},
+        {t:"Porque laços sempre usam <",ok:false,fb:"Nem sempre — mas aqui o limite está errado."}]}
+    ]
+  },
+  {
+    title:"O que nunca colar num chat",
+    goal:"Usar IA sem entregar o que não deve.",
+    learn:`<p>Tudo que você cola numa IA sai do seu computador e vai para o servidor de outra empresa. Em muitos serviços, o que você escreve pode ser guardado e, dependendo do plano, usado para treinar o modelo.</p>
+<p><strong>Nunca cole:</strong></p>
+<ul>
+<li><strong>Chave de API, token ou senha.</strong> Se colou, considere vazada: apague a chave no painel do serviço e gere outra. Sempre.</li>
+<li><strong>Dado de cliente</strong> — nome, CPF, email, endereço, telefone, número de pedido. Troque por inventado: "Fulano", "111.111.111-11".</li>
+<li><strong>Arquivo de configuração inteiro</strong> (<code>.env</code>, credenciais do banco, string de conexão).</li>
+<li><strong>Código proprietário</strong> que não é seu para distribuir.</li>
+</ul>
+<p>O jeito certo é <strong>reduzir antes de colar</strong>: mande só as vinte linhas onde está o problema, com nomes e valores trocados por exemplos. A IA não precisa da sua chave real para explicar por que a chamada falhou.</p>
+<p>Tente colar uma chave na IA aqui embaixo e veja o que ela responde.</p>`,
+    chat:{
+      abertura:"Me mostre o trecho onde está o problema. Antes de colar, tire o que for de verdade.",
+      sugestoes:["minha chave é sk-abc123xyz","o cliente joao@gmail.com não consegue entrar","como guardar minha chave com segurança?"],
+      regras:[
+        {re:/(sk-|api[_-]?key|token|senha|password|secret|bearer\s|service_role)/i, r:"Pare aí. Isso parece uma credencial de verdade. Se você já colou em algum chat, considere vazada: vá no painel do serviço, revogue e gere outra. Para eu te ajudar, troque o valor por <code>SUA_CHAVE_AQUI</code> e me mande só o trecho da chamada."},
+        {re:/(\d{3}\.?\d{3}\.?\d{3}-?\d{2})|(@gmail|@hotmail|@outlook|@yahoo)/i, r:"Isso parece dado pessoal de verdade. Troque por um exemplo inventado — <code>fulano@exemplo.com</code>, <code>111.111.111-11</code> — que eu consigo ajudar igual."},
+        {re:/(\.env|DATABASE_URL|postgres:\/\/|mysql:\/\/)/i, r:"Arquivo de configuração e string de conexão não devem sair do seu computador. Me diga só qual linha está falhando e qual a mensagem de erro."},
+        {re:/(como|posso).{0,40}(esconder|proteger|guardar).{0,30}(chave|senha|token)/i, r:"No servidor, em variável de ambiente — nunca no código que vai pro navegador. E atenção: tudo que está num arquivo HTML publicado é público, por definição. Chave secreta em front-end é chave vazada."}
+      ],
+      padrao:"Pode mandar o trecho. Só confirme antes que não tem chave, senha nem dado de cliente de verdade no meio."
+    },
+    tip:"Cole algo como 'minha chave é sk-abc123' e veja a resposta. Na vida real, a IA não te avisa.",
+    quiz:[
+      {q:"Você colou uma chave de API num chat por engano. O que fazer?",opts:[
+        {t:"Revogar a chave no painel do serviço e gerar outra",ok:true,fb:"Isso, e imediatamente. Chave que saiu do seu controle é chave morta."},
+        {t:"Apagar a mensagem e seguir",ok:false,fb:"Apagar a mensagem não desfaz o envio."},
+        {t:"Nada, chave de API não é sensível",ok:false,fb:"A chave secreta é exatamente o que dá acesso à sua conta."}]},
+      {q:"Como pedir ajuda sem expor dado de cliente?",opts:[
+        {t:"Trocando por valores inventados e mandando só o trecho do problema",ok:true,fb:"Certo. A IA não precisa do dado real para explicar o erro."},
+        {t:"Mandando tudo, mas pedindo sigilo",ok:false,fb:"Pedir sigilo não muda o que acontece com o dado."},
+        {t:"Mandando só metade do CPF",ok:false,fb:"Metade ainda é dado pessoal."}]},
+      {q:"Onde uma chave secreta pode ficar?",opts:[
+        {t:"No servidor, em variável de ambiente",ok:true,fb:"Isso. Nunca no código que chega ao navegador."},
+        {t:"No arquivo HTML, se estiver no fim",ok:false,fb:"Tudo que vai pro navegador é público, esteja onde estiver."},
+        {t:"No JavaScript, se estiver dentro de uma função",ok:false,fb:"Função não esconde nada: é só apertar F12."}]}
+    ]
+  },
+  {
+    title:"Vibe coding, de verdade",
+    goal:"Construir conversando — e saber onde isso para de funcionar.",
+    learn:`<p><strong>Vibe coding</strong> é construir descrevendo o que você quer e deixando a IA escrever, sem parar para entender cada linha. O termo virou moda em 2025 e a ideia é real: dá para sair do zero a algo funcionando muito rápido.</p>
+<p>Onde funciona bem: protótipo, rascunho, coisa pequena que você vai jogar fora, script que roda uma vez, ideia que você quer ver na tela antes de decidir se vale a pena.</p>
+<p>Onde cobra a conta: qualquer coisa que outra pessoa vai usar, que guarda dado, que lida com dinheiro, ou que você vai precisar manter daqui a três meses. Aí o código que você não entende vira uma dívida — e ela vence sempre na pior hora.</p>
+<p>O método que junta as duas coisas:</p>
+<ol>
+<li><strong>Vibe até ver funcionar.</strong> Descreva, aceite, rode, ajuste. Velocidade.</li>
+<li><strong>Pare e leia.</strong> Passe por cada bloco e pergunte à IA o que você não entendeu — "explique esta linha como se eu tivesse começado ontem".</li>
+<li><strong>Quebre de propósito.</strong> Apague uma linha e veja o que para. Se você consegue prever o que vai quebrar, você entendeu.</li>
+<li><strong>Só então mantenha.</strong> A partir daqui o código é seu.</li>
+</ol>
+<p class="hint">A frase que resume o módulo: a IA acelera quem sabe e esconde o buraco de quem não sabe. Os dois andam rápido — só um dos dois chega.</p>`,
+    chat:{
+      abertura:"Descreva o que você quer construir. Depois me peça para explicar o que eu escrevi — é essa segunda parte que faz a diferença.",
+      sugestoes:["quero criar uma lista de tarefas","explique a linha 3","não preciso entender, só quero que funcione","isso vai para produção"],
+      regras:[
+        {re:/explic|o que (faz|significa|(é|e))|n(ã|a)o entend/i, r:"Boa — essa é a pergunta certa. Quando eu explico e você acompanha, o código passa a ser seu. Quando você aceita sem ler, ele continua meu, e eu não vou estar lá às duas da manhã quando quebrar."},
+        {re:/(quero|preciso|faz|fazer|cria|criar) (um|uma) /i, r:"Certo. Vou escrever a primeira versão — e faça o seguinte: rode, depois volte e me peça para explicar qualquer trecho que você não entendeu. Melhor ainda, apague uma linha de propósito e veja o que para de funcionar."},
+        {re:/(vibe cod|sem ler|n(ã|a)o preciso entender|tanto faz)/i, r:"Funciona para protótipo e rascunho. Não funciona para o que outra pessoa vai usar, o que guarda dado, o que mexe com dinheiro, ou o que você vai manter daqui a três meses. Nesses casos, o tempo que você economizou agora volta multiplicado depois."},
+        {re:/(produ(ç|c)(ã|a)o|cliente|vender|publicar)/i, r:"Se vai para produção, a régua muda: você precisa entender cada parte, testar os casos de borda e saber o que acontece quando dá errado. Vibe coding te leva até a porta; daí em diante é conhecimento."}
+      ],
+      padrao:"Me diga o que quer construir. E depois me peça para explicar — é a parte que quase todo mundo pula."
+    },
+    tip:"Peça algo, e depois escreva 'explique a linha 3'. Fazer essa segunda pergunta é o hábito que você quer criar.",
+    quiz:[
+      {q:"Onde o vibe coding funciona bem?",opts:[
+        {t:"Protótipo, rascunho e coisas pequenas que você vai jogar fora",ok:true,fb:"Isso. Velocidade onde o erro é barato."},
+        {t:"Sistema de pagamento em produção",ok:false,fb:"Aí o erro custa dinheiro de verdade."},
+        {t:"Qualquer coisa, sempre",ok:false,fb:"A conta chega em tudo que precisa ser mantido."}]},
+      {q:"Qual é o segundo passo depois de ver funcionar?",opts:[
+        {t:"Parar e ler, pedindo explicação do que não entendeu",ok:true,fb:"Certo. É aí que o código passa a ser seu."},
+        {t:"Publicar imediatamente",ok:false,fb:"Publicar o que você não entende é assumir uma dívida."},
+        {t:"Pedir mais funcionalidades",ok:false,fb:"Mais código que você não entende só aumenta o buraco."}]},
+      {q:"Como saber se você realmente entendeu o código?",opts:[
+        {t:"Apagando uma linha e conseguindo prever o que vai quebrar",ok:true,fb:"Isso. Previsão é a prova de entendimento."},
+        {t:"Se ele roda sem erro",ok:false,fb:"Rodar não quer dizer que você entendeu."},
+        {t:"Se a IA disse que está certo",ok:false,fb:"Ela diz isso com frequência, inclusive quando não está."}]}
+    ]
+  },
+  {
+    title:"IA dentro do VS Code",
+    goal:"Trazer a IA para onde o código mora.",
+    learn:`<p>Conversar numa aba do navegador e ficar copiando e colando funciona, mas é lento. As ferramentas de IA que vivem <strong>dentro do editor</strong> enxergam os seus arquivos — e isso muda a qualidade da resposta, porque o contexto passa a ser o projeto inteiro.</p>
+<p>O que existe hoje, em ordem de simplicidade:</p>
+<ul>
+<li><strong>Autocompletar</strong> — a IA sugere o resto da linha ou do bloco em cinza claro; você aperta Tab para aceitar. Ótimo para coisa repetitiva, e é onde ela mais acerta.</li>
+<li><strong>Chat lateral com acesso aos arquivos</strong> — você pergunta sobre o seu código, não sobre código em geral. "Por que esta função quebra quando a lista vem vazia?"</li>
+<li><strong>Edição por instrução</strong> — você seleciona um trecho, descreve a mudança, e ela reescreve ali mesmo, mostrando o antes e o depois.</li>
+<li><strong>Agente</strong> — você descreve uma tarefa e ela mexe em vários arquivos sozinha. Poderoso e perigoso na mesma medida: sempre revise cada mudança antes de aceitar.</li>
+</ul>
+<p>Duas regras que valem para todas: <strong>revise antes de aceitar</strong>, sempre, e <strong>use Git</strong> — com o histórico salvo, aceitar uma sugestão ruim custa um comando para desfazer em vez de uma noite perdida. É exatamente para isso que o próximo módulo serve.</p>`,
+    code:`<h2>Antes de aceitar qualquer sugestão</h2>\n<ul>\n  <li>Eu entendi o que esta linha faz?</li>\n  <li>Testei o caso vazio e o caso errado?</li>\n  <li>Está salvo no Git, para eu poder desfazer?</li>\n</ul>`,
+    tip:"Se ainda não instalou o VS Code, volte ao módulo anterior. A IA no editor só faz sentido com o editor no lugar.",
+    quiz:[
+      {q:"Por que a IA dentro do editor responde melhor?",opts:[
+        {t:"Porque ela enxerga os arquivos do projeto — o contexto é maior",ok:true,fb:"Isso. Ela responde sobre o seu código, não sobre código em geral."},
+        {t:"Porque é um modelo mais inteligente",ok:false,fb:"Costuma ser o mesmo modelo. Muda o contexto."},
+        {t:"Porque roda no seu computador",ok:false,fb:"Quase sempre roda no servidor, igual ao chat."}]},
+      {q:"O que é o modo agente?",opts:[
+        {t:"A IA mexe em vários arquivos sozinha a partir de uma tarefa descrita",ok:true,fb:"Certo. Poderoso, e por isso mesmo exige revisão."},
+        {t:"Um plano pago do editor",ok:false,fb:"É um modo de trabalho, não um plano."},
+        {t:"Um corretor de erros automático",ok:false,fb:"Ele faz mudanças amplas, não só correções."}]},
+      {q:"Por que usar Git junto com IA?",opts:[
+        {t:"Porque desfazer uma sugestão ruim vira um comando em vez de um desastre",ok:true,fb:"Exato. O histórico é a sua rede de segurança."},
+        {t:"Porque o Git melhora as respostas da IA",ok:false,fb:"Não melhora as respostas. Protege de aceitar a errada."},
+        {t:"Porque a IA exige Git para funcionar",ok:false,fb:"Não exige. Mas você vai querer."}]}
+    ]
+  },
+  {
+    title:"O limite",
+    goal:"Saber o que continua sendo seu trabalho.",
+    learn:`<p>Depois de sete aulas usando IA, a pergunta honesta: <strong>ainda vale a pena aprender a programar?</strong></p>
+<p>Vale, e o motivo é simples: a IA escreve o código, mas ela não decide. Continua sendo seu:</p>
+<ul>
+<li><strong>Saber o que pedir.</strong> Quem não conhece o problema pede a solução errada e recebe exatamente ela, bem escrita.</li>
+<li><strong>Julgar o que voltou.</strong> Se você não sabe o que é um laço, não tem como perceber que aquele laço está errado.</li>
+<li><strong>Consertar quando quebra.</strong> E vai quebrar — em produção, no fim de semana, com alguém esperando.</li>
+<li><strong>Decidir o que é certo fazer.</strong> Guardar esse dado? Cobrar assim? Publicar isso? A IA não assume responsabilidade nenhuma. Você assume.</li>
+</ul>
+<p>O que mudou de verdade não foi a necessidade de saber — foi o tempo até conseguir fazer. O que levava um mês de tutorial leva uma tarde de conversa bem feita. <strong>Isso vale para quem entende o que está lendo.</strong></p>
+<p>Você chegou aqui tendo escrito HTML, CSS, lógica, DOM, tendo usado um editor de verdade e uma API de verdade. Quando a IA te entregar código agora, você vai <em>ler</em>. É essa a diferença.</p>`,
+    code:`<h2>O que continua sendo seu</h2>\n<ol>\n  <li>Saber o que pedir</li>\n  <li>Julgar o que voltou</li>\n  <li>Consertar quando quebra</li>\n  <li>Decidir o que é certo fazer</li>\n</ol>`,
+    tip:"Esta é a última aula do módulo. Na prova você vai consertar um código que a IA escreveu — exatamente o que vai fazer pelo resto da carreira.",
+    quiz:[
+      {q:"O que a IA não faz por você?",opts:[
+        {t:"Decidir o que pedir, julgar o resultado e assumir a responsabilidade",ok:true,fb:"Isso. Ela escreve; quem decide é você."},
+        {t:"Escrever código",ok:false,fb:"Escrever ela escreve, e bem."},
+        {t:"Explicar conceitos",ok:false,fb:"Explicar também é algo que ela faz bem."}]},
+      {q:"Por que ainda vale aprender a programar?",opts:[
+        {t:"Porque sem entender você não percebe quando o código gerado está errado",ok:true,fb:"Exato. Julgamento exige conhecimento."},
+        {t:"Porque a IA vai deixar de existir",ok:false,fb:"Não vai. Ela vira ferramenta, e ferramenta exige quem saiba usar."},
+        {t:"Porque escrever na mão é mais rápido",ok:false,fb:"Quase nunca é. Velocidade não é o argumento."}]},
+      {q:"O que mudou com a chegada da IA?",opts:[
+        {t:"O tempo até conseguir fazer — para quem entende o que está lendo",ok:true,fb:"Certo. Ela acelera quem sabe."},
+        {t:"A necessidade de entender o código",ok:false,fb:"Essa aumentou, se alguma coisa."},
+        {t:"Nada, é só moda",ok:false,fb:"Mudou de verdade. Só não mudou o que é seu trabalho."}]}
+    ]
+  }
+];
+
+const IA_PROVA = {
+  kind:'ia',
+  title:"Prova prática — Conserte o que a IA escreveu",
+  brief:`<p><strong>Sua missão:</strong> o código no editor foi gerado por uma IA a partir do pedido <em>"faça uma página que mostra a lista de alunos aprovados"</em>. Ele parece certo, tem boa aparência e <strong>não funciona</strong>.</p>
+  <p>São <strong>quatro problemas</strong>. Rode do jeito que está, veja a tela vazia, e conserte. A cola ao lado descreve cada defeito sem dar a resposta.</p>
+  <p class="hint">Aprovado é nota 6 ou mais. A lista vazia não pode quebrar a página: tem que aparecer um aviso.</p>`,
+  starter:`<h2>Alunos aprovados</h2>\n<ul id="lista"></ul>\n\n<script>\n  const alunos = [\n    { nome: "Ana",   nota: 9.5 },\n    { nome: "Bruno", nota: 4.0 },\n    { nome: "Carla", nota: 6.0 },\n    { nome: "Diego", nota: 8.2 }\n  ];\n\n  function aprovados(lista) {\n    const fora = [];\n    for (let i = 0; i <= lista.length; i++) {\n      if (lista[i].nota > 6) {\n        fora.push(lista[i]);\n      }\n    }\n    return fora;\n  }\n\n  const certos = aprovados(alunos);\n  document.querySelector("#alunos").innerHTML =\n    certos.map(function (a) { return "<li>" + a.nome + "</li>"; }).join("");\n<\/script>`,
+  cheats:[
+    {name:'1 · o laço passa do fim',note:'undefined',parts:[{t:'i < lista.length',re:/i\s*<\s*[A-Za-z_$][\w$]*\.length/}]},
+    {name:'2 · o seletor não existe',note:'#alunos ≠ #lista',parts:[{t:'querySelector("#lista")',re:/querySelector\s*\(\s*["']#lista["']\s*\)/}]},
+    {name:'3 · nota 6 é aprovado',note:'"mais de 6" ≠ "6 ou mais"',parts:[{t:'nota >= 6',re:/\.nota\s*>=\s*6/}]},
+    {name:'4 · lista vazia quebra a tela',note:'caso de borda',parts:[{t:'if (certos.length === 0)',re:/(length\s*===?\s*0)|(!\s*[A-Za-z_$][\w$]*\.length)/},{t:'mostrar um aviso',re:/(nenhum|vazi|ningu(é|e)m|sem alunos)/i}]}
+  ],
+  checks:[
+    {label:'O laço para no fim da lista (i < length)',test:c=>/i\s*<\s*[A-Za-z_$][\w$]*\.length/.test(c.js) && !/<=\s*[A-Za-z_$][\w$]*\.length/.test(c.js)},
+    {label:'O seletor aponta para o id que existe na página',test:c=>/querySelector\s*\(\s*["']#lista["']\s*\)/.test(c.js) && !/["']#alunos["']/.test(c.js)},
+    {label:'Nota 6 conta como aprovado (>= 6)',test:c=>/\.nota\s*>=\s*6/.test(c.js)},
+    {label:'A lista vazia mostra um aviso em vez de tela em branco',test:c=>/(length\s*===?\s*0)|(!\s*[A-Za-z_$][\w$]*\.length)/.test(c.js) && /(nenhum|vazi|ningu[ée]m|sem alunos)/i.test(c.js)},
+    {label:'A página continua com o <ul id="lista">',test:c=>!!c.doc.querySelector('ul#lista, ol#lista')}
+  ]
+};
+
 /* ---------- Módulos da trilha ---------- */
 PROVA.fn = 'media';
 const MODULES = [
@@ -2555,10 +3228,14 @@ const MODULES = [
    lead:'Oito aulas práticas com JavaScript rodando aqui no navegador: variáveis, condições, laços, funções e listas.'},
   {id:'dom',fase:'Fase 1',title:'JavaScript na página (DOM)',kind:'dom',lessons:DOM_LESSONS,prova:DOM_PROVA,
    lead:'Oito aulas para dar vida às páginas: encontrar elementos, mudar textos e estilos, reagir a cliques, ler o que o usuário digita e criar conteúdo na hora.'},
+  {id:'vscode',fase:'Fase 2',title:'VS Code: seu editor de verdade',kind:'html',lessons:VSC_LESSONS,prova:VSC_PROVA,
+   lead:'Oito aulas para sair do editor deste site e trabalhar como quem faz isso todo dia: pasta do projeto, paleta de comandos, atalhos, Emmet, extensões e o terminal embutido.'},
   {id:'git',fase:'Fase 2',title:'Git e GitHub',kind:'term',lessons:GIT_LESSONS,prova:GIT_PROVA,
    lead:'Oito aulas sobre versionar e publicar código, num terminal simulado dentro do site: você digita os comandos de verdade e vê a resposta do Git.'},
   {id:'api',fase:'Fase 2',title:'JavaScript moderno e APIs',kind:'api',lessons:API_LESSONS,prova:API_PROVA,
-   lead:'Oito aulas para sair do básico: const/let, arrow, map e filter, objetos e JSON, e o fetch buscando dados de uma API de verdade para montar a tela.'}
+   lead:'Oito aulas para sair do básico: const/let, arrow, map e filter, objetos e JSON, e o fetch buscando dados de uma API de verdade para montar a tela.'},
+  {id:'ia',fase:'Fase 2',title:'IA e vibe coding',kind:'ia',lessons:IA_LESSONS,prova:IA_PROVA,
+   lead:'Oito aulas para usar inteligência artificial sem ser usado por ela: escrever o pedido certo, conversar em passos, ler antes de colar, proteger o que é seu e saber onde o atalho acaba.'}
 ];
 
 /* ---------- Estado / progresso ---------- */
@@ -2900,19 +3577,26 @@ MODULES[2].videos=[
 ];
 MODULES[2].playlist={id:'PLHz_AreHm4dmSj0MHol_aoNYCSGFqvfXV',t:'Curso de Algoritmos e Lógica de Programação',ch:'Curso em Vídeo',n:'17 vídeos'};
 
-MODULES[4].videos=[
+MODULES[5].videos=[
   {id:'ts-H3W1uLMM',t:'Git: minicurso para sair do zero em 45 minutos',ch:'Código Fonte TV'},
   {id:'_hZf1teRFNg',t:'Git e GitHub: introdução prática para iniciantes',ch:'DevSuperior'},
   {id:'kB5e-gTAl_s',t:'Curso de Git e GitHub completo para iniciantes',ch:'Dev Aprender'}
 ];
-MODULES[4].playlist={id:'PLbEOwbQR9lqzK14I7OOeREEIE4k6rjgIj',t:'Git e GitHub — Curso prático',ch:'Professor José de Assis',n:'21 vídeos'};
+MODULES[5].playlist={id:'PLbEOwbQR9lqzK14I7OOeREEIE4k6rjgIj',t:'Git e GitHub — Curso prático',ch:'Professor José de Assis',n:'21 vídeos'};
 
-MODULES[5].videos=[
+MODULES[6].videos=[
   {id:'mLjrUc5oMGw',t:'O que é uma API? Entenda de uma vez por todas',ch:'Senhor Programador'},
   {id:'qIGYM4S8x50',t:'Fetch API e async/await na prática',ch:'Matheus Battisti — Hora de Codar'},
   {id:'NJzNc8-KqQI',t:'Consumindo API com JavaScript do zero',ch:'Gustavo Caetano'}
 ];
-MODULES[5].playlist={id:'PLnex8IkmReXxZEXje06kW1uCwm5iC8M_Z',t:'Curso de JavaScript completo',ch:'Professor Edson Maia',n:'115 vídeos'};
+MODULES[6].playlist={id:'PLnex8IkmReXxZEXje06kW1uCwm5iC8M_Z',t:'Curso de JavaScript completo',ch:'Professor Edson Maia',n:'115 vídeos'};
+
+MODULES[4].videos=[
+  {id:'NXgsXiu4LtA',t:'VS Code para Iniciantes',ch:'Refatorando'},
+  {id:'tdXITJlB6dM',t:'Tutorial VS Code: o que todo programador iniciante precisa saber',ch:'Dev em Dobro'},
+  {id:'tZnBfIdTTaU',t:'VS Code descomplicado: programador iniciante mais eficiente',ch:'Dev em Dobro'}
+];
+MODULES[4].playlist={id:'PLQyxir6TzMSVaH7Ua8Myfx9SUOwjfINrS',t:'Curso Introdução ao VS Code',ch:'playlist no YouTube',n:'curso completo'};
 
 MODULES[1].project=PROJETO_FASE0;
 MODULES[3].project=PROJETO_FASE1;
@@ -3008,7 +3692,7 @@ function renderHome(){
   const fases=[
     {n:"Fase 0",t:"Fundamentos da Web",d:"HTML para a estrutura e CSS para o visual de toda página.",m:[0,1]},
     {n:"Fase 1",t:"Lógica & JavaScript",d:"Pensar como programador e depois dar vida às páginas.",m:[2,3]},
-    {n:"Fase 2",t:"Jornada Dev",d:"Versionar, publicar e construir aplicações de verdade.",m:[4,5]},
+    {n:"Fase 2",t:"Jornada Dev",d:"Ferramentas de verdade, versionamento, aplicações conectadas e IA.",m:[4,5,6,7]},
     {n:"Fase 3",t:"Marketing Digital",d:"Levar produto e público até o projeto.",m:[]}
   ];
   let html=`
@@ -3152,10 +3836,13 @@ function openLesson(m,i){
     $('#tab-a').setAttribute('aria-selected','true');
     $('#tab-q').setAttribute('aria-selected','false');
     const isTerm=mod.kind==='term';
-    const isHtml=mod.kind==='html'||mod.kind==='css'||mod.kind==='dom'||mod.kind==='api';
-    const runsJs=mod.kind==='dom'||mod.kind==='api';
+    const isHtml=mod.kind==='html'||mod.kind==='css'||mod.kind==='dom'||mod.kind==='api'||mod.kind==='ia';
+    const runsJs=mod.kind==='dom'||mod.kind==='api'||mod.kind==='ia';
     const mock=mod.kind==='api'?API_MOCK:'';
-    const playHTML = isTerm
+    const temChat = !!l.chat;
+    const playHTML = temChat
+      ? chatBox('aula',l.chat.sugestoes)
+      : isTerm
       ? termBox('aula')+`<div class="cmds"><span class="cmds-t">Para experimentar:</span>${(l.cmds||[]).map(c=>`<button class="cmdchip" data-cmd="${esc(c)}">${esc(c)}</button>`).join('')}</div>`
       : `<div class="play">
           <div class="play-h"><span class="dots"><i></i><i></i><i></i></span><span class="fn">${isHtml?'index.html':'exemplo.js'}</span>
@@ -3173,6 +3860,12 @@ function openLesson(m,i){
           <button class="btn btn-primary" id="toq">Ir para as questões ${IC.arrow}</button>
         </div>
       </div>`;
+    if(temChat){
+      bindChat('aula',l.chat);
+      bindNotes(m,i);
+      $('#toq').addEventListener('click',showQuiz);
+      return;
+    }
     if(isTerm){
       bindTerm('aula',newTerm());
       panel.querySelectorAll('.cmdchip').forEach(b=>b.addEventListener('click',()=>{
@@ -3407,10 +4100,10 @@ function openProva(m,proj){
         </div>
         <div class="missions">${labels.map((l,i)=>`<div class="mission" id="ms-${i}"><span class="mi">${i+1}</span><span class="ml">${esc(l)}<small class="mx" id="mx-${i}"></small></span><span class="ms">Falta</span></div>`).join('')}</div>
         ${isTerm?`<div id="termwrap">${termBox('prova')}</div>`:`<div class="play">
-          <div class="play-h"><span class="dots"><i></i><i></i><i></i></span><span class="fn">${kind==='css'?'estilo.html':(kind==='html'?'apresentacao.html':(kind==='dom'?'pagina.html':(kind==='api'?'catalogo.html':'prova.js')))}</span>
+          <div class="play-h"><span class="dots"><i></i><i></i><i></i></span><span class="fn">${kind==='css'?'estilo.html':(kind==='html'?'apresentacao.html':(kind==='dom'?'pagina.html':(kind==='api'?'catalogo.html':(kind==='ia'?'alunos.html':'prova.js'))))}</span>
             ${live?'<span class="live-tag"><i></i>correção ao vivo</span>':`<button class="btn btn-run run" id="runp">${IC.play} Rodar testes</button>`}</div>
           ${editorBox('edp',kind==='js'?'js':'html',240)}
-          ${live?previewBox('pvp',kind==='dom'||kind==='api'):''}
+          ${live?previewBox('pvp',kind==='dom'||kind==='api'||kind==='ia'):''}
         </div>`}
         <div id="perr"></div>
         <div class="prova-foot">
@@ -3419,8 +4112,8 @@ function openProva(m,proj){
         </div>
       </div>
       <aside class="cola" aria-label="Cola de sintaxe">
-        <h3>${kind==='html'?'Cola das tags':(kind==='css'?'Cola do CSS':(isTerm?'Cola dos comandos':'Cola do JavaScript'))}</h3>
-        <p class="sub">${isTerm?'Cada comando acende em verde quando você o usa no terminal.':(kind==='html'?'Toda tag abre e fecha (menos a imagem). Cada peça acende em verde quando aparece no seu código.':'Cada peça acende em verde quando aparece no seu código.')}</p>
+        <h3>${kind==='html'?'Cola das tags':(kind==='css'?'Cola do CSS':(isTerm?'Cola dos comandos':(kind==='ia'?'Os quatro defeitos':'Cola do JavaScript')))}</h3>
+        <p class="sub">${isTerm?'Cada comando acende em verde quando você o usa no terminal.':(kind==='ia'?'Cada defeito acende em verde quando o seu conserto aparece no código.':(kind==='html'?'Toda tag abre e fecha (menos a imagem). Cada peça acende em verde quando aparece no seu código.':'Cada peça acende em verde quando aparece no seu código.'))}</p>
         <div class="cola-legend"><span><i class="dotk" style="background:#39ff88"></i>já usou</span><span><i class="dotk" style="background:#ff4d5e"></i>ainda não</span></div>
         ${pv.cheats.map((c,ci)=>`<div class="cheat"><div class="cn"><span>${esc(c.name)}</span>${c.note?`<span class="note">${esc(c.note)}</span>`:''}</div>
           <div class="parts">${c.parts.map((p,pi)=>(pi?'<span class="arrow">…</span>':'')+`<span class="tagchip" id="ch-${ci}-${pi}">${esc(p.t)}</span>`).join('')}</div></div>`).join('')}
@@ -3471,7 +4164,7 @@ function openProva(m,proj){
   }
 
   const refreshPreview = (live&&!isTerm) ? liveBind('edp','pvp',kind==='api'?API_MOCK:'') : null;
-  const evaluate = kind==='css' ? evalCSS : ((kind==='dom'||kind==='api') ? evalDOM : evalHTML);
+  const evaluate = kind==='css' ? evalCSS : ((kind==='dom'||kind==='api'||kind==='ia') ? evalDOM : evalHTML);
   function check(){
     if(isTerm){ paintCheats(termState.hist.join('\n')); paint(evalTERM(pv,termState)); return; }
     const code=ed.value; paintCheats(code); if(live) paint(evaluate(pv,code));
@@ -3697,8 +4390,10 @@ const MEDALHAS=[
   {id:'css', n:'Estilista', d:'Fechou o módulo de CSS.', ok:()=>modOk('css')},
   {id:'js', n:'Pensador', d:'Fechou o módulo de lógica.', ok:()=>modOk('js')},
   {id:'dom', n:'Manipulador', d:'Fechou o módulo de DOM.', ok:()=>modOk('dom')},
+  {id:'vscode', n:'Ferramenteiro', d:'Fechou o módulo de VS Code.', ok:()=>modOk('vscode')},
   {id:'git', n:'Versionador', d:'Fechou o módulo de Git.', ok:()=>modOk('git')},
   {id:'api', n:'Conectado', d:'Fechou o módulo de APIs.', ok:()=>modOk('api')},
+  {id:'ia', n:'Piloto, não passageiro', d:'Fechou o módulo de IA e vibe coding.', ok:()=>modOk('ia')},
   {id:'proj', n:'Construtor', d:'Entregou um projeto de fase.', ok:()=>projetosFeitos()>=1},
   {id:'relampago', n:'Relâmpago', d:'Passou numa prova em menos de 3 minutos.', ok:()=>melhorTempo()!==null&&melhorTempo()<180},
   {id:'semana', n:'Semana cheia', d:'Bateu a meta de aulas da semana.', ok:()=>semanaAtual()>=(P.meta||META_PADRAO)},
