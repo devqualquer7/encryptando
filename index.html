@@ -3553,7 +3553,7 @@ function errBox(msg){ return '<div class="tests" style="padding:14px 16px;color:
 /* Para ligar a nuvem, preencha as duas linhas abaixo com os dados do seu
    projeto Supabase (Project Settings > API). Com elas vazias o site roda
    exatamente como antes, salvando tudo só neste navegador. */
-const SUPA = { url:'', key:'' };
+const SUPA = { url:'https://jlpfykeorpzlejqbczzi.supabase.co', key:'sb_publishable_CaXEFxjijJgdC8jzhz_tAw_gajVJeI7' };
 
 const SESS_KEY='encryptando_sessao';
 let SESSAO=null, syncT=null, syncEstado='';
@@ -3607,7 +3607,7 @@ async function contaEntrar(email,senha){
 async function contaCriar(email,senha,nome){
   const d=await supaFetch('/auth/v1/signup',{method:'POST',body:JSON.stringify({email:email,password:senha,data:{nome:nome}})});
   if(d&&d.access_token){ guardarSessao(d,nome); return SESSAO; }
-  return await contaEntrar(email,senha);
+  const e=new Error('CONFIRMAR_EMAIL'); e.confirmar=true; e.email=email; throw e;
 }
 async function contaRenovar(){
   if(!SESSAO||!SESSAO.refresh_token) throw new Error('sem sessão');
@@ -3843,6 +3843,10 @@ function openEntrar(modo){
       setTimeout(openPerfil,600);
     }catch(e){
       $('#fok').disabled=false;
+      if(e.confirmar){
+        msg.innerHTML='<span style="color:#ffcf5c">Conta criada! Abra o email que mandamos para <b>'+esc(e.email)+'</b>, clique no link de confirmação e depois volte aqui para entrar.</span>';
+        return;
+      }
       msg.textContent=traduzErro(e.message);
     }
   };
