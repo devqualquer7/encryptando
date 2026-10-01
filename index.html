@@ -451,8 +451,9 @@
   .tab-mod th{text-align:left;color:var(--faint);font:700 11px/1 var(--head);letter-spacing:.07em;
     text-transform:uppercase;padding:0 8px 8px}
   .tab-mod th:nth-child(2),.tab-mod th:nth-child(3){text-align:center;width:86px}
+  .tab-mod th:nth-child(4),.tab-mod td:nth-child(4){text-align:center;width:74px}
   .tab-mod td{padding:8px;border-top:1px solid rgba(255,255,255,.05)}
-  .tab-mod td:nth-child(2),.tab-mod td:nth-child(3){text-align:center;font-family:var(--mono);font-size:12px;color:var(--faint)}
+  .tab-mod td:nth-child(2),.tab-mod td:nth-child(3),.tab-mod td:nth-child(4){text-align:center;font-family:var(--mono);font-size:12px;color:var(--faint)}
   .tab-mod tr.ok td{color:#7fe3a8}
   .tab-mod tr.ok td:nth-child(3){color:#39ff88;font-weight:700}
   @media (max-width:640px){
@@ -460,6 +461,46 @@
     .aluno-av{width:34px;height:34px;font-size:12px}
     .aluno-pct b{font-size:16px}
     .tab-mod{font-size:12px}
+  }
+  /* Entregas: prova/projeto que o aluno mandou */
+  .entregas{margin-top:16px}
+  .ent-h{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:9px}
+  .ent-h b{font:700 13px/1 var(--head);color:var(--text)}
+  .ent-h span{font-size:12px;color:var(--faint)}
+  .ent{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:13px;
+    margin-bottom:8px;overflow:hidden}
+  .ent-top{display:flex;align-items:center;gap:11px;width:100%;background:none;border:0;color:var(--text);
+    padding:11px 13px;cursor:pointer;text-align:left;font:inherit}
+  .ent-top:hover{background:rgba(255,255,255,.035)}
+  .ent-top.aberto .aluno-seta{transform:rotate(90deg)}
+  .ent-tag{flex:none;font:700 10px/1 var(--head);letter-spacing:.06em;text-transform:uppercase;
+    color:var(--gold);background:rgba(255,207,92,.14);padding:5px 7px;border-radius:6px}
+  .ent-tag.proj{color:#39ff88;background:rgba(57,255,136,.13)}
+  .ent-nome{flex:1;min-width:0}
+  .ent-nome b{display:block;font:700 13.5px/1.3 var(--head);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ent-nome small{display:block;color:var(--faint);font-size:12px;margin-top:3px}
+  .ent-tempo{flex:none;text-align:right}
+  .ent-tempo b{display:block;font:800 15px/1 var(--head);color:var(--text);font-family:var(--mono)}
+  .ent-tempo small{display:block;color:var(--faint);font-size:11px;margin-top:3px}
+  .ent-det{padding:0 13px 13px;border-top:1px solid var(--border)}
+  .ent-nums{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+  .ent-nums span{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;
+    padding:7px 10px;font-size:11.5px;color:var(--faint);text-align:center}
+  .ent-nums b{display:block;font:800 14px/1.2 var(--head);color:var(--text);margin-bottom:2px}
+  .ent-nums span.aviso{border-color:rgba(255,207,92,.34);background:rgba(255,207,92,.09)}
+  .ent-nums span.aviso b{color:var(--gold)}
+  .ent-cabeca{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:7px}
+  .ent-cabeca span{font:700 11px/1 var(--head);letter-spacing:.07em;text-transform:uppercase;color:var(--faint)}
+  .ent-cabeca .btn{margin-left:auto;padding:5px 10px;font-size:12px}
+  .ent-cod{margin:0;max-height:330px;overflow:auto;background:var(--bg);border:1px solid var(--border);
+    border-radius:11px;padding:12px 13px;font:400 12.5px/1.65 var(--mono);color:#cfd3dc;white-space:pre}
+  .ent-vazia{font-size:12.5px;color:var(--faint);margin:0}
+  @media (max-width:640px){
+    .ent-top{gap:9px;padding:10px 11px}
+    .ent-nome b{font-size:12.5px}
+    .ent-tempo b{font-size:13.5px}
+    .ent-nums span{flex:1;min-width:78px;padding:6px 7px;font-size:10.5px}
+    .ent-cod{font-size:11.5px;padding:10px;max-height:260px}
   }
   /* Simulador do Gerenciador de Anúncios */
   .ads{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
@@ -762,6 +803,7 @@
     .stats-grid{grid-template-columns:1fr 1fr}
     .aluno-pct b{font-size:15px}
     .tab-mod th:nth-child(2),.tab-mod th:nth-child(3){width:60px}
+    .tab-mod th:nth-child(4),.tab-mod td:nth-child(4){width:52px}
     .conv .cod{font-size:14px}
   }
 
@@ -3831,13 +3873,13 @@ const XP_LESSON=60, XP_PROVA=240, LEVEL_STEP=300;
 let P = load();
 
 function load(){
-  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{},criado:null,foto:null};
+  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{},criado:null,foto:null,provas:{}};
   MODULES.forEach(m=>{ base.mods[m.id]={done:[],prova:false,project:false}; });
   try{
     const s=localStorage.getItem(KEY);
     if(s){
       const d=JSON.parse(s);
-      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||''; base.certs=d.certs||{}; base.criado=d.criado||null; base.foto=d.foto||null;
+      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||''; base.certs=d.certs||{}; base.criado=d.criado||null; base.foto=d.foto||null; base.provas=d.provas||{};
       MODULES.forEach(m=>{ if(d.mods&&d.mods[m.id]) base.mods[m.id]=Object.assign({done:[],prova:false,project:false},d.mods[m.id]); });
       return base;
     }
@@ -4739,8 +4781,9 @@ function openProva(m,proj){
       </aside>
     </div>`;
 
-  let termState=null;
+  let termState=null, resets=0, runs=0, colagens=0;
   const ed=$('#edp');
+  if(ed) ed.addEventListener('paste',()=>{ colagens++; });
   if(isAds){ /* os campos do gerenciador se ligam mais abaixo */ }
   else if(isTerm){
     termState=newTerm();
@@ -4751,6 +4794,7 @@ function openProva(m,proj){
   const tick=setInterval(()=>{ const el=$('#ptime'); if(!el){ clearInterval(tick); return; } if(!done) el.textContent=fmtTime(elapsed()); },1000);
 
   function paint(states,detail){
+    if(!$('#meter')) return;
     let n=0;
     states.forEach((ok,i)=>{
       const el=$('#ms-'+i); if(ok) n++;
@@ -4778,6 +4822,7 @@ function openProva(m,proj){
   function paintCheats(code){
     pv.cheats.forEach((c,ci)=>c.parts.forEach((p,pi)=>{
       const el=$('#ch-'+ci+'-'+pi);
+      if(!el) return;
       let ok;
       if(p.k){ const el2=$('#af-'+p.k); const v=el2?String(el2.value||'').trim():''; ok=v.length>0&&v.indexOf('—')<0; }
       else ok=p.re.test(code);
@@ -4804,7 +4849,7 @@ function openProva(m,proj){
   if(!live){
     paint(labels.map(()=>false));
     $('#runp').addEventListener('click',()=>{
-      ran=true;
+      ran=true; runs++;
       const r=testJS(pv,ed.value);
       if(r.err){ $('#perr').innerHTML=errBox(r.err); paint(labels.map(()=>false)); return; }
       $('#perr').innerHTML=''; paint(r.states,r.detail);
@@ -4815,9 +4860,14 @@ function openProva(m,proj){
   $('#submit').addEventListener('click',()=>{
     if(done||$('#submit').disabled) return;
     done=true;
-    finishProva(m,$('#pstatus'),elapsed(),proj);
+    const tipo=isAds?'ads':(isTerm?'term':kind);
+    const texto=entregaTexto(pv,tipo,{valores:isAds?adsValores(pv):null,
+      hist:isTerm?termState.hist:null, codigo:(!isAds&&!isTerm&&ed)?ed.value:''});
+    finishProva(m,$('#pstatus'),elapsed(),proj,{tipo:tipo,missoes:total,
+      recomecos:resets,rodadas:runs,colagens:colagens,entrega:texto});
   });
   $('#reset').addEventListener('click',()=>{
+    resets++;
     if(isTerm){
       termState=newTerm();
       $('#termwrap').innerHTML=termBox('prova');
@@ -4832,12 +4882,118 @@ function openProva(m,proj){
   scrollTo({top:0,behavior:'auto'});
 }
 
-function finishProva(m,status,secs,proj){
+/* ---------- Entregas: guardar como a prova/projeto foi feita ---------- */
+const ENTREGAS_MAX=3, ENTREGA_CHARS=5000;
+function entregaTexto(pv,tipo,ctx){
+  if(tipo==='ads'){
+    const v=(ctx&&ctx.valores)||{};
+    return (pv.campos||[]).map(c=>{
+      const vl=String(v[c.id]==null?'':v[c.id]).trim();
+      return '['+(c.nivel||'Campo')+'] '+c.label+': '+(vl&&vl.indexOf('—')<0?vl:'(em branco)');
+    }).join('\n');
+  }
+  if(tipo==='term'){
+    const h=(ctx&&ctx.hist)||[];
+    return h.length?h.map(l=>'$ '+l).join('\n'):'';
+  }
+  return (ctx&&ctx.codigo)||'';
+}
+function provaRegistrar(bkey,reg){
+  P.provas=P.provas||{};
+  const lista=(P.provas[bkey]||[]).slice();
+  lista.unshift(reg);
+  if(lista.length>ENTREGAS_MAX) lista.length=ENTREGAS_MAX;
+  P.provas[bkey]=lista;
+}
+function dataHora(iso){
+  if(!iso) return 'sem data';
+  const d=new Date(iso);
+  if(isNaN(d.getTime())) return String(iso);
+  const p=n=>String(n).padStart(2,'0');
+  return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' às '+p(d.getHours())+':'+p(d.getMinutes());
+}
+function entregasDe(dados){
+  const d=dados||{}, provas=d.provas||{}, fora=[];
+  MODULES.forEach((mod,j)=>{
+    [['','Prova',mod.prova],['-proj','Projeto',mod.project]].forEach(par=>{
+      const pv=par[2]; if(!pv) return;
+      (provas[mod.id+par[0]]||[]).forEach(r=>{
+        if(!r) return;
+        fora.push({
+          mod:j+1, modulo:mod.title, rotulo:par[1], titulo:pv.title,
+          quando:r.quando||'', segundos:r.segundos||0, tipo:r.tipo||'',
+          missoes:r.missoes||0, recomecos:r.recomecos||0, rodadas:r.rodadas||0,
+          colagens:r.colagens||0, primeira:r.primeira!==false, entrega:String(r.entrega||'')
+        });
+      });
+    });
+  });
+  fora.sort((a,b)=>String(b.quando).localeCompare(String(a.quando)));
+  return fora;
+}
+function entregaLinhas(t){ return t?t.split('\n').length:0; }
+function painelEntregas(r,i){
+  if(!r.entregas.length) return `<div class="entregas">
+    <div class="ent-h"><b>Provas e projetos entregues</b></div>
+    <p class="ent-vazia">Nada entregue ainda. As entregas feitas antes desta versão do site não ficaram guardadas — a partir de agora toda prova e todo projeto chega aqui com o código e o tempo.</p>
+  </div>`;
+  return `<div class="entregas">
+    <div class="ent-h"><b>Provas e projetos entregues</b><span>${r.entregas.length} entrega${r.entregas.length===1?'':'s'} guardada${r.entregas.length===1?'':'s'} · as 3 últimas de cada uma</span></div>
+    ${r.entregas.map((e,k)=>`<div class="ent">
+      <button class="ent-top" data-eb="${i}-${k}">
+        <span class="ent-tag${e.rotulo==='Projeto'?' proj':''}">${e.rotulo}</span>
+        <span class="ent-nome"><b>${e.mod}. ${esc(e.titulo)}</b>
+          <small>${esc(dataHora(e.quando))}${e.primeira?'':' · refez'}${e.recomecos?' · recomeçou '+e.recomecos+'x':''}</small></span>
+        <span class="ent-tempo"><b>${fmtTime(e.segundos)}</b><small>levou</small></span>
+        <span class="aluno-seta">${IC.arrow}</span>
+      </button>
+      <div class="ent-det" id="eb-${i}-${k}" hidden>
+        <div class="ent-nums">
+          <span><b>${fmtTime(e.segundos)}</b>tempo</span>
+          <span><b>${e.missoes}</b>missões</span>
+          <span class="${e.recomecos?'aviso':''}"><b>${e.recomecos}</b>recomeços</span>
+          ${e.tipo==='js'?`<span><b>${e.rodadas}</b>rodadas de teste</span>`:''}
+          <span class="${e.colagens?'aviso':''}"><b>${e.colagens}</b>colagens</span>
+          <span><b>${entregaLinhas(e.entrega)}</b>linhas</span>
+        </div>
+        <div class="ent-cabeca">
+          <span>${e.tipo==='term'?'Comandos que ele digitou':(e.tipo==='ads'?'Campanha que ele montou':'Código que ele entregou')}</span>
+          <button class="btn btn-ghost" data-ecop="${i}-${k}">Copiar</button>
+        </div>
+        <pre class="ent-cod" id="ec-${i}-${k}">${esc(e.entrega||'(a entrega veio vazia)')}</pre>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+function ligarEntregas(v){
+  v.querySelectorAll('[data-eb]').forEach(b=>b.addEventListener('click',()=>{
+    const d=$('#eb-'+b.dataset.eb);
+    d.hidden=!d.hidden;
+    b.classList.toggle('aberto',!d.hidden);
+  }));
+  v.querySelectorAll('[data-ecop]').forEach(b=>b.addEventListener('click',()=>{
+    const pre=$('#ec-'+b.dataset.ecop); if(!pre) return;
+    const txt=pre.textContent||'';
+    const ta=document.createElement('textarea');
+    ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    let ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+    ta.remove();
+    if(ok) toast('Código copiado.','mint');
+    else if(navigator.clipboard) navigator.clipboard.writeText(txt).then(()=>toast('Código copiado.','mint'),()=>{});
+  }));
+}
+
+function finishProva(m,status,secs,proj,info){
   const mod=MODULES[m], first=proj?!ST(m).project:!ST(m).prova, next=MODULES[m+1];
   const xp=proj?XP_PROJETO:XP_PROVA, bkey=proj?mod.id+'-proj':mod.id;
   P.best=P.best||{};
   const prevBest=P.best[bkey], record=!prevBest||secs<prevBest;
   if(record) P.best[bkey]=secs;
+  if(info) provaRegistrar(bkey,{quando:new Date().toISOString(), segundos:secs, primeira:first,
+    tipo:info.tipo||'', missoes:info.missoes||0, recomecos:info.recomecos||0,
+    rodadas:info.rodadas||0, colagens:info.colagens||0,
+    entrega:String(info.entrega||'').slice(0,ENTREGA_CHARS)});
   if(first){ if(proj) ST(m).project=true; else ST(m).prova=true; P.xp+=xp; bumpStreak(); }
   save(); renderHeader(); confetti(true);
   status.innerHTML='<span style="color:#39ff88">'+(proj?'Projeto entregue!':'Prova entregue!')+'</span>';
@@ -4974,6 +5130,16 @@ function fundirProgresso(nuvem){
   if(!P.nome&&nuvem.nome){ P.nome=nuvem.nome; mudou=true; }
   if(nuvem.criado&&(!P.criado||nuvem.criado<P.criado)){ P.criado=nuvem.criado; mudou=true; }
   if(!P.foto&&nuvem.foto){ P.foto=nuvem.foto; mudou=true; }
+  P.provas=P.provas||{};
+  Object.keys(nuvem.provas||{}).forEach(k=>{
+    const minhas=P.provas[k]||[], tenho=new Set(minhas.map(r=>r&&r.quando));
+    const novas=(nuvem.provas[k]||[]).filter(r=>r&&r.quando&&!tenho.has(r.quando));
+    if(!novas.length) return;
+    P.provas[k]=minhas.concat(novas)
+      .sort((a,b)=>String(b.quando).localeCompare(String(a.quando)))
+      .slice(0,ENTREGAS_MAX);
+    mudou=true;
+  });
   return mudou;
 }
 
@@ -5339,14 +5505,17 @@ function souMentor(){
   return !!e && MENTOR_EMAILS.indexOf(e)>=0;
 }
 function resumoDe(dados){
-  const d=dados||{}, mods=d.mods||{};
+  const d=dados||{}, mods=d.mods||{}, best=d.best||{};
   let aulas=0, provas=0, projetos=0, total=0;
   const porMod=MODULES.map(mod=>{
     const st=mods[mod.id]||{done:[],prova:false,project:false};
     aulas+=(st.done||[]).length; total+=mod.lessons.length;
     if(st.prova) provas++;
     if(mod.project&&st.project) projetos++;
-    return {id:mod.id, titulo:mod.title, feitas:(st.done||[]).length, de:mod.lessons.length, prova:!!st.prova, projeto:!!st.project};
+    return {id:mod.id, titulo:mod.title, feitas:(st.done||[]).length, de:mod.lessons.length,
+      prova:!!st.prova, projeto:!!st.project,
+      tProva:(best[mod.id]==null?null:best[mod.id]),
+      tProjeto:(best[mod.id+'-proj']==null?null:best[mod.id+'-proj'])};
   });
   return {
     nome:d.nome||'', xp:d.xp||0, streak:d.streak||0,
@@ -5357,7 +5526,7 @@ function resumoDe(dados){
     erros:(d.errors||[]).length,
     dias:Object.keys(d.hist||{}).length,
     ultimaAula:(()=>{const h=Object.keys(d.hist||{}).sort(); return h.length?h[h.length-1]:null;})(),
-    porMod
+    porMod, entregas:entregasDe(d)
   };
 }
 function quandoFoi(iso){
@@ -5477,10 +5646,12 @@ async function openAdmin(){
             <span><b>${r.notas}</b>anotações</span>
             <span><b>${r.erros}</b>a revisar</span>
           </div>
-          <table class="tab-mod"><thead><tr><th>Módulo</th><th>Aulas</th><th>Prova</th></tr></thead><tbody>
+          <table class="tab-mod"><thead><tr><th>Módulo</th><th>Aulas</th><th>Prova</th><th>Tempo</th></tr></thead><tbody>
           ${r.porMod.map((m,j)=>`<tr class="${m.prova?'ok':''}"><td>${j+1}. ${esc(m.titulo)}</td>
-            <td>${m.feitas}/${m.de}</td><td>${m.prova?'passou':(m.feitas>=m.de?'liberada':'—')}</td></tr>`).join('')}
+            <td>${m.feitas}/${m.de}</td><td>${m.prova?'passou':(m.feitas>=m.de?'liberada':'—')}</td>
+            <td>${m.tProva==null?'—':fmtTime(m.tProva)}</td></tr>`).join('')}
           </tbody></table>
+          ${painelEntregas(r,i)}
           <div class="nota-mentor">
             <label for="nm-${i}"><b>Minhas anotações sobre ${esc(nome)}</b><span>só você vê</span><span class="salvo" id="nms-${i}"></span></label>
             <textarea id="nm-${i}" data-aluno="${esc(l.id)}" placeholder="Onde travou, o que mandar, o que combinar na próxima conversa...">${esc(notas[l.id]||'')}</textarea>
@@ -5493,6 +5664,7 @@ async function openAdmin(){
       d.hidden=!d.hidden;
       b.classList.toggle('aberto',!d.hidden);
     }));
+    ligarEntregas(v);
     v.querySelectorAll('.nota-mentor textarea').forEach((ta,i)=>{
       let t;
       ta.addEventListener('input',()=>{
