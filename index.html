@@ -3913,6 +3913,250 @@ const ADS_PROVA = {
   ]
 };
 
+/* ---------- Conteúdo: Inglês para programação ---------- */
+const EN_LESSONS = [
+  {
+    title:"Por que tudo é em inglês",
+    goal:"Entender por que o código fala inglês — e por que isso joga a seu favor.",
+    learn:`<p>Você já escreveu <code>&lt;header&gt;</code>, <code>color</code>, <code>font-size</code>. Tudo isso é inglês. Não é frescura nem exibição: as linguagens de programação foram criadas por gente que falava inglês, e o mundo inteiro passou a usar as mesmas palavras pra não virar bagunça.</p>
+<p>A boa notícia é que <strong>o inglês do código é pequeno</strong>. Não é o inglês de conversar, nem o de ler um livro. É um conjunto de umas <strong>trinta palavras</strong> que se repetem até você sonhar com elas — e depois um punhado de verbos e substantivos que você reconhece porque já viu mil vezes.</p>
+<p>Você não precisa falar inglês. Precisa <strong>reconhecer</strong> inglês. É a diferença entre saber conversar e saber ler uma placa.</p>
+<p class="hint">Quem não lê inglês de código copia e cola sem entender. Quem lê, consegue consertar.</p>`,
+    code:`<h2>O inglês que o código usa</h2>\n<ul>\n  <li><b>if</b> — se</li>\n  <li><b>else</b> — senão</li>\n  <li><b>return</b> — devolver</li>\n  <li><b>true</b> / <b>false</b> — verdadeiro / falso</li>\n  <li><b>length</b> — comprimento, tamanho</li>\n</ul>\n<p>Cinco palavras. Faltam vinte e cinco.</p>`,
+    tip:"Não traduza frase por frase. Reconheça a palavra e siga. Velocidade vem da repetição.",
+    quiz:[
+      {q:"Por que as linguagens de programação são em inglês?",opts:[
+        {t:"Porque foram criadas por quem falava inglês e o mundo padronizou nisso",ok:true,fb:"Isso. É convenção histórica que virou padrão mundial."},
+        {t:"Porque o computador só entende inglês",ok:false,fb:"O computador entende zero e um. O inglês é pros humanos."},
+        {t:"Porque português não funciona em código",ok:false,fb:"Funciona pra dar nome às suas coisas. Só as palavras da linguagem é que são fixas em inglês."}]},
+      {q:"Quantas palavras de inglês você precisa pra começar a ler código?",opts:[
+        {t:"Umas trinta, que se repetem o tempo todo",ok:true,fb:"Exato. O vocabulário do código é pequeno e repetitivo."},
+        {t:"O inglês inteiro, fluente",ok:false,fb:"Não. Programador nenhum precisa disso pra trabalhar."},
+        {t:"Nenhuma, dá pra adivinhar",ok:false,fb:"Adivinhar é o que faz você colar código que não entende."}]},
+      {q:"Qual habilidade importa mais aqui?",opts:[
+        {t:"Reconhecer a palavra quando ela aparece",ok:true,fb:"Certo. É leitura, não conversa."},
+        {t:"Ter pronúncia boa",ok:false,fb:"Ninguém pronuncia código. Você lê."},
+        {t:"Saber conjugar verbos em inglês",ok:false,fb:"No código o verbo aparece quase sempre no infinitivo."}]}
+    ]
+  },
+  {
+    title:"As palavras que a linguagem já traz",
+    goal:"Reconhecer as palavras-chave que toda linguagem usa.",
+    learn:`<p>Essas são as <strong>palavras reservadas</strong>: a linguagem já tem dono delas. Você não escolhe, não traduz, não muda. Só usa.</p>
+<p><strong>Decisão:</strong> <code>if</code> (se), <code>else</code> (senão), <code>switch</code> (chave de opções), <code>case</code> (caso).<br>
+<strong>Repetição:</strong> <code>for</code> (para cada), <code>while</code> (enquanto), <code>break</code> (quebrar, sair), <code>continue</code> (continuar, pular esta volta).<br>
+<strong>Guardar:</strong> <code>const</code> (constante, não muda), <code>let</code> (deixe, pode mudar), <code>var</code> (variável, jeito antigo).<br>
+<strong>Fazer:</strong> <code>function</code> (função), <code>return</code> (retornar, devolver), <code>new</code> (novo), <code>class</code> (classe).<br>
+<strong>Verdade:</strong> <code>true</code> (verdadeiro), <code>false</code> (falso), <code>null</code> (nulo, vazio de propósito), <code>undefined</code> (indefinido, nunca recebeu valor).<br>
+<strong>Erro:</strong> <code>try</code> (tentar), <code>catch</code> (pegar, capturar), <code>throw</code> (lançar), <code>finally</code> (por fim).</p>
+<p>Repare em <code>return</code>. Em português você diria "devolve". Toda vez que ler <code>return</code>, leia "devolve isso aqui pra quem chamou".</p>`,
+    code:`<h2>As reservadas</h2>\n<pre>\nconst  → constante, não muda\nlet    → deixe, pode mudar\nif     → se\nelse   → senão\nfor    → para cada\nwhile  → enquanto\nreturn → devolve\ntrue   → verdadeiro\nfalse  → falso\nnull   → vazio de propósito\n</pre>`,
+    tip:"null é vazio porque alguém esvaziou. undefined é vazio porque nunca foi preenchido. Essa diferença derruba muita gente.",
+    quiz:[
+      {q:"O que <code>return</code> faz?",opts:[
+        {t:"Devolve um valor para quem chamou a função",ok:true,fb:"Isso. Return é 'devolve'."},
+        {t:"Volta para o começo do código",ok:false,fb:"Isso seria um laço. Return entrega o resultado e encerra a função."},
+        {t:"Repete a última linha",ok:false,fb:"Repetir é com for ou while."}]},
+      {q:"Qual a diferença entre <code>null</code> e <code>undefined</code>?",opts:[
+        {t:"null é vazio de propósito; undefined nunca recebeu valor",ok:true,fb:"Certo. Um foi esvaziado, o outro nunca foi preenchido."},
+        {t:"São a mesma coisa com nomes diferentes",ok:false,fb:"Parecem, mas contam histórias diferentes sobre o que aconteceu."},
+        {t:"null é erro e undefined é zero",ok:false,fb:"Nenhum dos dois é erro, e nenhum é zero."}]},
+      {q:"<code>while</code> quer dizer o quê?",opts:[
+        {t:"Enquanto",ok:true,fb:"Isso. Enquanto a condição for verdadeira, repete."},
+        {t:"Branco",ok:false,fb:"Branco é white. While é enquanto — uma letra muda tudo."},
+        {t:"Esperar",ok:false,fb:"Esperar é wait. While é enquanto."}]}
+    ]
+  },
+  {
+    title:"Os verbos: o que a função faz",
+    goal:"Entender o nome de uma função só de ler o verbo.",
+    learn:`<p>Função faz alguma coisa. Por isso o nome dela <strong>começa com verbo</strong>. Aprenda os verbos e você adivinha o que a função faz antes de ler o corpo dela.</p>
+<p><strong>Pegar e guardar:</strong> <code>get</code> (pegar), <code>set</code> (definir), <code>save</code> (salvar), <code>load</code> (carregar), <code>fetch</code> (buscar lá fora).<br>
+<strong>Mexer na lista:</strong> <code>add</code> (adicionar), <code>remove</code> (remover), <code>push</code> (empurrar pro fim), <code>pop</code> (tirar do fim), <code>find</code> (encontrar um), <code>filter</code> (filtrar vários), <code>sort</code> (ordenar), <code>map</code> (transformar cada um).<br>
+<strong>Ciclo de vida:</strong> <code>create</code> (criar), <code>update</code> (atualizar), <code>delete</code> (apagar), <code>start</code> (começar), <code>stop</code> (parar), <code>open</code> (abrir), <code>close</code> (fechar).<br>
+<strong>Tela:</strong> <code>render</code> (desenhar na tela), <code>show</code> (mostrar), <code>hide</code> (esconder), <code>toggle</code> (alternar entre os dois).<br>
+<strong>Conferir:</strong> <code>check</code> (conferir), <code>validate</code> (validar), <code>handle</code> (lidar com).</p>
+<p>Então <code>getUserName()</code> pega o nome do usuário. <code>hideMenu()</code> esconde o menu. <code>validateEmail()</code> confere se o e-mail serve. Você já sabia, sem ninguém explicar.</p>`,
+    code:`<h2>O verbo entrega o enredo</h2>\n<pre>\ngetPrice()      → pega o preço\nsaveUser()      → salva o usuário\nremoveItem()    → remove o item\nfindProduct()   → encontra um produto\nfilterActive()  → filtra os ativos\ntoggleMenu()    → abre/fecha o menu\nvalidateForm()  → confere o formulário\n</pre>`,
+    tip:"Se o nome de uma função não começa com verbo, provavelmente o nome está ruim. Vale pro código dos outros e pro seu.",
+    quiz:[
+      {q:"O que <code>toggleMenu()</code> provavelmente faz?",opts:[
+        {t:"Alterna o menu: se está aberto fecha, se está fechado abre",ok:true,fb:"Isso. Toggle é alternar entre dois estados."},
+        {t:"Apaga o menu pra sempre",ok:false,fb:"Apagar seria delete ou remove."},
+        {t:"Cria um menu novo",ok:false,fb:"Criar seria create."}]},
+      {q:"Qual a diferença entre <code>find</code> e <code>filter</code>?",opts:[
+        {t:"find devolve um; filter devolve todos os que servem",ok:true,fb:"Exato. Um encontra, o outro peneira."},
+        {t:"São sinônimos",ok:false,fb:"Não. A quantidade que volta é diferente."},
+        {t:"filter devolve um e find devolve vários",ok:false,fb:"É o contrário."}]},
+      {q:"Por que nome de função começa com verbo?",opts:[
+        {t:"Porque função faz alguma coisa, e o verbo diz o quê",ok:true,fb:"Certo. O verbo entrega a intenção."},
+        {t:"Porque a linguagem obriga",ok:false,fb:"Não obriga. É convenção — mas todo mundo segue."},
+        {t:"Porque fica mais curto",ok:false,fb:"Nem sempre fica. É sobre clareza."}]}
+    ]
+  },
+  {
+    title:"Os substantivos: o que o código guarda",
+    goal:"Reconhecer o nome das coisas que aparecem em todo projeto.",
+    learn:`<p>Se verbo é o que a função faz, substantivo é <strong>o que a variável guarda</strong>. Esses aparecem em absolutamente todo projeto, em qualquer linguagem.</p>
+<p><strong>Conteúdo:</strong> <code>value</code> (valor), <code>name</code> (nome), <code>title</code> (título), <code>text</code> (texto), <code>label</code> (rótulo), <code>message</code> (mensagem), <code>description</code> (descrição).<br>
+<strong>Coleção:</strong> <code>list</code> (lista), <code>array</code> (vetor, lista), <code>item</code> (item), <code>index</code> (posição), <code>length</code> (tamanho), <code>count</code> (contagem), <code>total</code> (total), <code>size</code> (tamanho).<br>
+<strong>Mundo real:</strong> <code>user</code> (usuário), <code>product</code> (produto), <code>order</code> (pedido), <code>price</code> (preço), <code>amount</code> (quantia), <code>date</code> (data).<br>
+<strong>Máquina:</strong> <code>data</code> (dados), <code>file</code> (arquivo), <code>path</code> (caminho), <code>url</code> (endereço), <code>key</code> (chave), <code>id</code> (identificador), <code>request</code> (pedido), <code>response</code> (resposta).<br>
+<strong>Quando dá ruim:</strong> <code>error</code> (erro), <code>status</code> (situação), <code>result</code> (resultado), <code>default</code> (padrão).</p>
+<p>Duas armadilhas: <code>length</code> é <strong>tamanho</strong>, não "comprimento de texto" só — serve pra lista também. E <code>data</code> em inglês é <strong>dados</strong>, nunca a data do calendário. Data do calendário é <code>date</code>.</p>`,
+    code:`<h2>Duas que confundem</h2>\n<pre>\ndata  → dados       (NÃO é data de calendário)\ndate  → data        (essa sim, do calendário)\n\nlength → tamanho    (de texto E de lista)\nindex  → posição    (começa no zero)\n</pre>`,
+    tip:"Quando ler 'data' em código, pense 'dados'. Esse escorregão custa horas pra quem fala português.",
+    quiz:[
+      {q:"Em código, <code>data</code> quer dizer o quê?",opts:[
+        {t:"Dados",ok:true,fb:"Isso. Data de calendário é date."},
+        {t:"Data do calendário",ok:false,fb:"Essa é a armadilha. Calendário é date."},
+        {t:"Um tipo de erro",ok:false,fb:"Erro é error."}]},
+      {q:"<code>length</code> serve pra quê?",opts:[
+        {t:"Saber o tamanho — de um texto ou de uma lista",ok:true,fb:"Certo. Serve pros dois."},
+        {t:"Só pra medir texto",ok:false,fb:"Lista também tem length."},
+        {t:"Pra somar números",ok:false,fb:"Somar seria sum ou total."}]},
+      {q:"O que <code>index</code> representa?",opts:[
+        {t:"A posição de um item na lista",ok:true,fb:"Isso. E começa no zero."},
+        {t:"O total de itens",ok:false,fb:"Total é length ou count."},
+        {t:"O nome do item",ok:false,fb:"Nome é name."}]}
+    ]
+  },
+  {
+    title:"Ler o erro em inglês sem travar",
+    goal:"Entender a mensagem vermelha em vez de copiar ela no Google.",
+    learn:`<p>A mensagem de erro é a melhor amiga que você tem — e ela fala inglês. Quase sempre tem a mesma forma: <strong>o quê</strong> + <strong>qual é o problema</strong>.</p>
+<p><code>total is not defined</code> — "total não está definido". Você usou um nome que não existe. Ou errou a digitação, ou esqueceu de criar.</p>
+<p><code>total is not a function</code> — "total não é uma função". Você colocou parênteses em algo que não é função.</p>
+<p><code>Cannot read properties of undefined (reading 'name')</code> — "não consigo ler propriedades de indefinido". A coisa antes do ponto não existe. Se é <code>user.name</code>, o problema é o <code>user</code>, não o <code>name</code>.</p>
+<p><code>Unexpected token</code> — "símbolo inesperado". Tem um caractere fora do lugar: vírgula, chave, aspas.</p>
+<p><code>Missing ) after argument list</code> — "falta ) depois da lista de argumentos". Faltou fechar parêntese.</p>
+<p><code>Assignment to constant variable</code> — "atribuição a variável constante". Você tentou mudar uma <code>const</code>.</p>
+<p class="hint">O truque: leia da direita pra esquerda. <strong>Qual é o problema</strong> primeiro, <strong>onde</strong> depois.</p>`,
+    code:`<h2>Traduzindo o vermelho</h2>\n<pre>\nx is not defined\n  → x não existe\n\nx is not a function\n  → x existe, mas não é função\n\nCannot read properties of undefined\n  → o que vem antes do ponto não existe\n\nUnexpected token\n  → tem um símbolo fora do lugar\n</pre>`,
+    tip:"Antes de pesquisar o erro, leia o erro. Ele quase sempre já diz a resposta.",
+    quiz:[
+      {q:"<code>Cannot read properties of undefined (reading 'name')</code> — onde está o problema?",opts:[
+        {t:"No objeto antes do ponto, que não existe",ok:true,fb:"Isso. Se é user.name, o problema é o user."},
+        {t:"Na propriedade name, que está escrita errado",ok:false,fb:"Ela nem chegou a ser lida. O que falhou veio antes."},
+        {t:"Na linha de cima",ok:false,fb:"Pode ter nascido antes, mas o erro aponta o objeto indefinido."}]},
+      {q:"O que significa <code>is not defined</code>?",opts:[
+        {t:"Esse nome não existe no código",ok:true,fb:"Certo. Ou erro de digitação, ou faltou criar."},
+        {t:"O valor está vazio",ok:false,fb:"Vazio seria null. Not defined é que o nome nem existe."},
+        {t:"A função está com erro dentro",ok:false,fb:"Aí o erro seria outro."}]},
+      {q:"<code>Assignment to constant variable</code> quer dizer que você...",opts:[
+        {t:"Tentou mudar o valor de uma const",ok:true,fb:"Isso. Const não muda. Use let."},
+        {t:"Criou duas variáveis com o mesmo nome",ok:false,fb:"Esse erro seria 'already been declared'."},
+        {t:"Esqueceu o ponto e vírgula",ok:false,fb:"Isso daria Unexpected token, se desse alguma coisa."}]}
+    ]
+  },
+  {
+    title:"Dar nome em inglês que outro dev entende",
+    goal:"Escrever nomes que qualquer programador lê sem perguntar.",
+    learn:`<p>Agora você sai de leitor pra escritor. Nome bom segue quatro regras simples.</p>
+<p><strong>1. camelCase.</strong> Primeira palavra minúscula, as seguintes com inicial maiúscula, tudo grudado: <code>userName</code>, <code>totalPrice</code>, <code>isActive</code>. Nada de <code>user_name</code> em JavaScript, nada de espaço, nada de acento.</p>
+<p><strong>2. Verdadeiro ou falso começa com <code>is</code>, <code>has</code> ou <code>can</code>.</strong> <code>isActive</code> (está ativo), <code>hasError</code> (tem erro), <code>canEdit</code> (pode editar). Quem lê sabe na hora que a resposta é sim ou não.</p>
+<p><strong>3. Lista no plural.</strong> <code>user</code> é um. <code>users</code> são vários. Essa letra sozinha evita confusão o dia inteiro.</p>
+<p><strong>4. Função é verbo, valor é substantivo.</strong> <code>getTotal()</code> faz; <code>total</code> guarda.</p>
+<p>E o pecado capital: nome que não diz nada. <code>a</code>, <code>x</code>, <code>temp</code>, <code>data2</code>, <code>coisa</code>. Daqui a duas semanas nem você lembra.</p>`,
+    code:`<h2>Antes e depois</h2>\n<pre>\nlista_de_usuario  →  users\nnome              →  name\nativo             →  isActive\npegarTotal()      →  getTotal()\nx                 →  price\ndata2             →  updatedAt\n</pre>`,
+    tip:"Teste do nome: leia em voz alta. Se precisar explicar, o nome está ruim.",
+    quiz:[
+      {q:"Qual é o melhor nome para uma variável que guarda sim ou não?",opts:[
+        {t:"isActive",ok:true,fb:"Isso. is, has ou can na frente avisa que é verdadeiro/falso."},
+        {t:"ativo",ok:false,fb:"Está em português e não avisa que é sim/não."},
+        {t:"active_flag",ok:false,fb:"Em JavaScript o padrão é camelCase, e 'flag' não diz o que é."}]},
+      {q:"Como se escreve 'preço total' em camelCase?",opts:[
+        {t:"totalPrice",ok:true,fb:"Certo. Grudado, segunda palavra com maiúscula."},
+        {t:"total_price",ok:false,fb:"Esse é o estilo de outras linguagens. Em JS, camelCase."},
+        {t:"TotalPrice",ok:false,fb:"Inicial maiúscula fica reservada pra classe."}]},
+      {q:"Por que lista vai no plural?",opts:[
+        {t:"Pra quem lê saber na hora que são vários",ok:true,fb:"Isso. user é um, users são vários."},
+        {t:"Porque a linguagem exige",ok:false,fb:"Não exige. É convenção que salva tempo."},
+        {t:"Pra ficar mais bonito",ok:false,fb:"É clareza, não estética."}]}
+    ]
+  },
+  {
+    title:"Ler documentação e o GitHub",
+    goal:"Se virar sozinho na página oficial e no repositório.",
+    learn:`<p>Toda ferramenta boa tem documentação, e ela é em inglês. As palavras se repetem tanto que depois de duas páginas você já navega no automático.</p>
+<p><strong>Na documentação:</strong> <code>parameter</code> (o que a função recebe), <code>argument</code> (o valor que você passa), <code>returns</code> (o que ela devolve), <code>required</code> (obrigatório), <code>optional</code> (opcional), <code>default</code> (valor padrão se você não passar nada), <code>deprecated</code> (está velho, não use em coisa nova), <code>example</code> (exemplo), <code>usage</code> (como usar), <code>note</code> (observação), <code>warning</code> (aviso).</p>
+<p><strong>No GitHub:</strong> <code>repository</code> (repositório, o projeto), <code>README</code> (leia-me, a porta de entrada), <code>issue</code> (problema ou pedido aberto), <code>pull request</code> (pedido pra juntar seu código), <code>commit</code> (uma alteração salva), <code>merge</code> (juntar), <code>branch</code> (ramo), <code>fork</code> (cópia pra sua conta), <code>release</code> (versão publicada), <code>contributor</code> (quem ajudou).</p>
+<p><code>deprecated</code> é a que mais economiza tempo: quando a documentação marca algo assim, ela está dizendo "isso ainda funciona hoje, mas vai sumir". Não comece nada novo com uma coisa deprecated.</p>`,
+    code:`<h2>Na documentação</h2>\n<pre>\nparameter  → o que a função recebe\nreturns    → o que ela devolve\nrequired   → obrigatório\noptional   → opcional\ndefault    → valor padrão\ndeprecated → velho, não use em coisa nova\n</pre>`,
+    tip:"Quando travar numa biblioteca, procure a seção 'Usage' ou 'Example' antes de qualquer outra. É onde está o código pronto.",
+    quiz:[
+      {q:"A documentação marca uma função como <code>deprecated</code>. O que fazer?",opts:[
+        {t:"Não usar em código novo — ela vai ser removida",ok:true,fb:"Isso. Ainda funciona, mas tem prazo de validade."},
+        {t:"Usar, porque é a mais recomendada",ok:false,fb:"É o contrário: deprecated é a que está sendo aposentada."},
+        {t:"Ignorar o aviso, não significa nada",ok:false,fb:"Significa, e um dia o código quebra."}]},
+      {q:"O que é um <code>pull request</code>?",opts:[
+        {t:"Um pedido pra juntar o seu código ao projeto",ok:true,fb:"Certo. Você propõe, alguém revisa e junta."},
+        {t:"Um erro reportado por um usuário",ok:false,fb:"Isso é uma issue."},
+        {t:"Baixar o projeto pro seu computador",ok:false,fb:"Baixar é clone ou pull — sem o request."}]},
+      {q:"Na documentação, <code>returns</code> diz o quê?",opts:[
+        {t:"O que a função devolve pra você",ok:true,fb:"Isso. É o resultado que volta."},
+        {t:"O que você precisa passar pra ela",ok:false,fb:"Isso são os parameters."},
+        {t:"Quantas vezes ela pode ser chamada",ok:false,fb:"Isso não costuma estar na documentação."}]}
+    ]
+  },
+  {
+    title:"Juntando tudo: o inglês da tela",
+    goal:"Reconhecer as palavras que aparecem pro usuário final.",
+    learn:`<p>Falta o inglês que o usuário vê — botões, avisos, telas. Você vai escrever essas palavras em todo projeto, e vai lê-las em todo sistema que usar.</p>
+<p><strong>Botões:</strong> <code>submit</code> (enviar), <code>cancel</code> (cancelar), <code>confirm</code> (confirmar), <code>save changes</code> (salvar alterações), <code>edit</code> (editar), <code>delete</code> (excluir), <code>search</code> (buscar), <code>preview</code> (pré-visualizar), <code>next</code> / <code>back</code> (próximo / voltar).</p>
+<p><strong>Conta:</strong> <code>sign up</code> (criar conta), <code>sign in</code> / <code>log in</code> (entrar), <code>log out</code> (sair), <code>settings</code> (configurações), <code>profile</code> (perfil), <code>forgot password</code> (esqueci a senha).</p>
+<p><strong>Estado:</strong> <code>loading</code> (carregando), <code>success</code> (deu certo), <code>failed</code> (falhou), <code>warning</code> (aviso), <code>required field</code> (campo obrigatório), <code>try again</code> (tente de novo), <code>no results found</code> (nada encontrado).</p>
+<p>Repare que é o mesmo vocabulário das aulas anteriores aparecendo de novo: <code>save</code>, <code>delete</code>, <code>search</code>, <code>settings</code>. O inglês do código e o inglês da tela são quase o mesmo — e é por isso que ele cabe em trinta palavras.</p>`,
+    code:`<h2>O que o usuário lê</h2>\n<pre>\nsubmit     → enviar\ncancel     → cancelar\nsettings   → configurações\nloading    → carregando\nfailed     → falhou\ntry again  → tente de novo\nno results found → nada encontrado\n</pre>`,
+    tip:"Na prova você vai pegar um código escrito em portunhol e deixar ele em inglês de verdade. Revise a aula 6 antes.",
+    quiz:[
+      {q:"<code>required field</code> quer dizer o quê numa tela?",opts:[
+        {t:"Campo obrigatório",ok:true,fb:"Isso. Required é obrigatório."},
+        {t:"Campo solicitado pelo usuário",ok:false,fb:"Required aqui é obrigatório, não solicitado."},
+        {t:"Campo já preenchido",ok:false,fb:"Preenchido seria filled."}]},
+      {q:"Qual é a diferença entre <code>sign up</code> e <code>sign in</code>?",opts:[
+        {t:"sign up é criar conta; sign in é entrar numa que já existe",ok:true,fb:"Certo. Up cria, in entra."},
+        {t:"São a mesma coisa",ok:false,fb:"Botar os dois no mesmo botão confunde o usuário."},
+        {t:"sign up é sair",ok:false,fb:"Sair é log out ou sign out."}]},
+      {q:"Uma tela mostra <code>no results found</code>. O que aconteceu?",opts:[
+        {t:"A busca funcionou, mas não achou nada",ok:true,fb:"Isso. Não é erro — é busca vazia."},
+        {t:"Deu erro no servidor",ok:false,fb:"Erro apareceria como failed ou error."},
+        {t:"A página ainda está carregando",ok:false,fb:"Carregando é loading."}]}
+    ]
+  }
+];
+
+const EN_PROVA = {
+  kind:'dom',
+  cola:'Cola do inglês',
+  colaSub:'Os nomes que a prova espera. Cada peça acende em verde quando aparece no seu código.',
+  title:"Prova prática — Traduza o código para o inglês de verdade",
+  brief:`<p><strong>Sua missão:</strong> esse código funciona pela metade e está escrito em portunhol. Reescreva os nomes em inglês de verdade e conserte o que está quebrado.</p>
+  <p>Tem um erro escondido ali. O navegador já te disse qual, em inglês, no comentário. Leia a mensagem antes de sair caçando.</p>
+  <p class="hint">A página final precisa mostrar só os usuários ativos e o total certo. Renomear sem funcionar não vale.</p>`,
+  starter:`<ul id="list"></ul>\n<p id="footer"></p>\n\n<script>\n  // 1) lista no plural, em ingles\n  const lista_de_usuarios = [\n    {nome:"Ana",   ativo:true},\n    {nome:"Bruno", ativo:false},\n    {nome:"Carla", ativo:true}\n  ];\n\n  // 2) funcao: verbo na frente\n  function pegarAtivos(lista){\n    return lista.filter(u => u.ativo);\n  }\n\n  // 3) funcao que desenha na tela\n  function mostrar(usuarios){\n    const alvo = document.getElementById("list");\n    usuarios.forEach(u => {\n      const linha = document.createElement("li");\n      linha.textContent = u.nome;\n      alvo.appendChild(linha);\n    });\n  }\n\n  mostrar(pegarAtivos(lista_de_usuarios));\n\n  // Uncaught TypeError: Cannot read properties of undefined (reading 'lenght')\n  document.getElementById("footer").textContent =\n    "Total: " + pegarAtivos(lista_de_usuarios).lenght;\n<\/script>\n`,
+  cheats:[
+    {name:'Lista',note:'plural',parts:[{t:'users',re:/\busers\b/}]},
+    {name:'Propriedades',note:'name e booleano com is',parts:[{t:'name:',re:/\bname\s*:/},{t:'isActive:',re:/\bisActive\s*:/}]},
+    {name:'Funções',note:'verbo na frente',parts:[{t:'getActiveUsers',re:/\bget[A-Z]\w*/},{t:'renderUsers',re:/\b(render|show)[A-Z]\w*/}]},
+    {name:'O erro',note:'leia em inglês',parts:[{t:'.length',re:/\.length\b/},{t:'sem .lenght',re:/^(?![\s\S]*\.lenght)[\s\S]*$/}]}
+  ],
+  checks:[
+    {label:'A lista virou users — plural, em inglês',
+     test:c=>/\busers\s*=/.test(c.js)&&!/lista_de_usuarios/.test(c.js)},
+    {label:'As propriedades viraram name e isActive',
+     test:c=>/\bname\s*:/.test(c.js)&&/\bisActive\s*:/.test(c.js)&&!/\bnome\s*:/.test(c.js)&&!/\bativo\s*:/.test(c.js)},
+    {label:'A função que filtra começa com o verbo get',
+     test:c=>/function\s+get[A-Z]\w*\s*\(/.test(c.js)&&!/pegarAtivos/.test(c.js)},
+    {label:'A função que desenha na tela começa com render ou show',
+     test:c=>/function\s+(render|show)[A-Z]\w*\s*\(/.test(c.js)&&!/function\s+mostrar\s*\(/.test(c.js)},
+    {label:'O erro em inglês foi lido: lenght virou length',
+     test:c=>/\.length\b/.test(c.js)&&!/lenght/.test(c.js)},
+    {label:'Nenhum nome em português sobrou no código',
+     test:c=>!/\b(lista|alvo|linha|usuarios|nome|ativo|pegar|mostrar)\w*\b/i.test(c.js.replace(/\/\/[^\n]*/g,''))}
+  ]
+};
+
 /* ---------- Módulos da trilha ---------- */
 PROVA.fn = 'media';
 const MODULES = [
@@ -3920,6 +4164,8 @@ const MODULES = [
    lead:'Oito aulas curtas para entender como uma página nasce: tags, títulos, listas, links, imagens e a estrutura completa. Você escreve e vê o resultado na hora.'},
   {id:'css',fase:'Fase 0',title:'CSS: o visual',kind:'css',lessons:CSS_LESSONS,prova:CSS_PROVA,
    lead:'Oito aulas para deixar as páginas bonitas: cores, fontes, classes, espaçamentos, cantos arredondados e flexbox. Você muda o CSS e vê o resultado na hora.'},
+  {id:'en',fase:'Fase 1',title:'Inglês para programação',kind:'html',lessons:EN_LESSONS,prova:EN_PROVA,
+   lead:'Oito aulas com o inglês que o código usa de verdade: as palavras-chave das linguagens, os verbos que viram nome de função, as mensagens de erro e como dar nome que outro programador entende.'},
   {id:'js',fase:'Fase 1',title:'Lógica com JavaScript',kind:'js',lessons:LESSONS,prova:PROVA,
    lead:'Oito aulas práticas com JavaScript rodando aqui no navegador: variáveis, condições, laços, funções e listas.'},
   {id:'dom',fase:'Fase 1',title:'JavaScript na página (DOM)',kind:'dom',lessons:DOM_LESSONS,prova:DOM_PROVA,
@@ -3938,19 +4184,43 @@ const MODULES = [
 
 /* ---------- Estado / progresso ---------- */
 const KEY='encryptando_v2', OLD_KEY='devquest_m1_v1';
+/* Esquema 2: o modulo 'en' entrou no indice 2 e empurrou os seguintes.
+   errors ('m:i:q') e certs ('m2','p2'...) guardam indice, entao precisam andar junto. */
+const ESQUEMA=2, CORTE_EN=2;
+function migrarIndices(d){
+  if(!d||(d.v||0)>=ESQUEMA) return d;
+  if(Array.isArray(d.errors)) d.errors=d.errors.map(k=>{
+    if(typeof k!=='string') return k;
+    const p=k.split(':'), m=Number(p[0]);
+    if(!Number.isInteger(m)||m<CORTE_EN) return k;
+    p[0]=String(m+1); return p.join(':');
+  });
+  if(d.certs&&typeof d.certs==='object'){
+    const novo={};
+    Object.keys(d.certs).forEach(k=>{
+      const c=k.match(/^([mp])(\d+)$/);
+      if(c&&Number(c[2])>=CORTE_EN) novo[c[1]+(Number(c[2])+1)]=d.certs[k];
+      else novo[k]=d.certs[k];
+    });
+    d.certs=novo;
+  }
+  d.v=ESQUEMA;
+  return d;
+}
 const XP_LESSON=60, XP_PROVA=240, LEVEL_STEP=300;
 let P = load();
 
 function load(){
-  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{},criado:null,foto:null,provas:{}};
+  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{},criado:null,foto:null,provas:{},v:ESQUEMA};
   MODULES.forEach(m=>{ base.mods[m.id]={done:[],prova:false,project:false}; });
   try{
     const s=localStorage.getItem(KEY);
     if(s){
       const d=JSON.parse(s);
       base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||''; base.certs=d.certs||{}; base.criado=d.criado||null; base.foto=d.foto||null; base.provas=d.provas||{};
+      base.v=d.v||0;
       MODULES.forEach(m=>{ if(d.mods&&d.mods[m.id]) base.mods[m.id]=Object.assign({done:[],prova:false,project:false},d.mods[m.id]); });
-      return base;
+      return migrarIndices(base);
     }
     const o=localStorage.getItem(OLD_KEY);
     if(o){
@@ -4260,80 +4530,82 @@ function setEditor(id,value){
 }
 
 /* ---------- Vídeo-aulas por módulo (links conferidos) ---------- */
-MODULES[0].videos=[
+/* Preso por id, nunca por indice: inserir modulo no meio nao pode trocar o dono. */
+const M=id=>MODULES.find(m=>m.id===id);
+M('html').videos=[
   {id:'LJo0VZP_Msk',t:'Introdução: o que é HTML? (Aula 01)',ch:'Chief of Design'},
   {id:'Ejkb_YpuHWs',t:'Começa aqui o curso de HTML5 e CSS3',ch:'Curso em Vídeo'},
   {id:'jgQjeqGRdgA',t:'O que vamos aprender no módulo 01?',ch:'Curso em Vídeo'}
 ];
-MODULES[0].playlist={id:'PLHz_AreHm4dkZ9-atkcmcBaMZdmLHft8n',t:'Curso completo e atual de HTML5 e CSS3 — Módulo 1 de 5',ch:'Curso em Vídeo',n:'41 vídeos'};
-MODULES[1].videos=[
+M('html').playlist={id:'PLHz_AreHm4dkZ9-atkcmcBaMZdmLHft8n',t:'Curso completo e atual de HTML5 e CSS3 — Módulo 1 de 5',ch:'Curso em Vídeo',n:'41 vídeos'};
+M('css').videos=[
   {id:'vPNIAJ9B4hg',t:'O que vamos aprender no módulo 02? (CSS)',ch:'Curso em Vídeo'},
   {id:'YeGn9nGies0',t:'Primeiros passos com Flexbox CSS',ch:'Curso em Vídeo'},
   {id:'EM0grbJ3Lws',t:'Aprenda CSS Flexbox em 30 minutos',ch:'Matheus Battisti — Hora de Codar'}
 ];
-MODULES[1].playlist={id:'PLHz_AreHm4dkZ9-atkcmcBaMZdmLHft8n',t:'Curso completo e atual de HTML5 e CSS3 — Módulo 1 de 5',ch:'Curso em Vídeo',n:'41 vídeos'};
-MODULES[2].videos=[
+M('css').playlist={id:'PLHz_AreHm4dkZ9-atkcmcBaMZdmLHft8n',t:'Curso completo e atual de HTML5 e CSS3 — Módulo 1 de 5',ch:'Curso em Vídeo',n:'41 vídeos'};
+M('js').videos=[
   {id:'iF2MdbrTiBM',t:'Curso de Lógica de Programação completo para iniciantes',ch:'Dev Aprender'},
   {id:'i6Oi-YtXnAU',t:'Curso de JavaScript completo + 14 mini-projetos',ch:'Dev Aprender'}
 ];
-MODULES[2].playlist={id:'PLHz_AreHm4dmSj0MHol_aoNYCSGFqvfXV',t:'Curso de Algoritmos e Lógica de Programação',ch:'Curso em Vídeo',n:'17 vídeos'};
+M('js').playlist={id:'PLHz_AreHm4dmSj0MHol_aoNYCSGFqvfXV',t:'Curso de Algoritmos e Lógica de Programação',ch:'Curso em Vídeo',n:'17 vídeos'};
 
-MODULES[5].videos=[
+M('git').videos=[
   {id:'ts-H3W1uLMM',t:'Git: minicurso para sair do zero em 45 minutos',ch:'Código Fonte TV'},
   {id:'_hZf1teRFNg',t:'Git e GitHub: introdução prática para iniciantes',ch:'DevSuperior'},
   {id:'kB5e-gTAl_s',t:'Curso de Git e GitHub completo para iniciantes',ch:'Dev Aprender'}
 ];
-MODULES[5].playlist={id:'PLbEOwbQR9lqzK14I7OOeREEIE4k6rjgIj',t:'Git e GitHub — Curso prático',ch:'Professor José de Assis',n:'21 vídeos'};
+M('git').playlist={id:'PLbEOwbQR9lqzK14I7OOeREEIE4k6rjgIj',t:'Git e GitHub — Curso prático',ch:'Professor José de Assis',n:'21 vídeos'};
 
-MODULES[6].videos=[
+M('api').videos=[
   {id:'mLjrUc5oMGw',t:'O que é uma API? Entenda de uma vez por todas',ch:'Senhor Programador'},
   {id:'qIGYM4S8x50',t:'Fetch API e async/await na prática',ch:'Matheus Battisti — Hora de Codar'},
   {id:'NJzNc8-KqQI',t:'Consumindo API com JavaScript do zero',ch:'Gustavo Caetano'}
 ];
-MODULES[6].playlist={id:'PLnex8IkmReXxZEXje06kW1uCwm5iC8M_Z',t:'Curso de JavaScript completo',ch:'Professor Edson Maia',n:'115 vídeos'};
+M('api').playlist={id:'PLnex8IkmReXxZEXje06kW1uCwm5iC8M_Z',t:'Curso de JavaScript completo',ch:'Professor Edson Maia',n:'115 vídeos'};
 
-MODULES[0].links=[
+M('html').links=[
   {t:'Google Chrome',u:'https://www.google.com/chrome/',d:'O navegador usado nas aulas. Se já tem, pule.',tipo:'download'},
   {t:'Referência de HTML (MDN)',u:'https://developer.mozilla.org/pt-BR/docs/Web/HTML',d:'A documentação oficial, em português. Consulte quando esquecer uma tag.',tipo:'site'}
 ];
-MODULES[1].links=[
+M('css').links=[
   {t:'Referência de CSS (MDN)',u:'https://developer.mozilla.org/pt-BR/docs/Web/CSS',d:'Toda propriedade de CSS explicada, em português.',tipo:'site'},
   {t:'Google Fonts',u:'https://fonts.google.com/',d:'Fontes gratuitas para usar nos seus projetos.',tipo:'site'}
 ];
-MODULES[2].links=[
+M('js').links=[
   {t:'Referência de JavaScript (MDN)',u:'https://developer.mozilla.org/pt-BR/docs/Web/JavaScript',d:'A documentação da linguagem, em português.',tipo:'site'}
 ];
-MODULES[4].links=[
+M('vscode').links=[
   {t:'Baixar o VS Code',u:'https://code.visualstudio.com/download',d:'O editor da aula 1. Escolha a versão do seu sistema e instale com as opções padrão.',tipo:'download'},
   {t:'Extensão Live Server',u:'https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer',d:'Recarrega a página sozinha quando você salva. Aula 6.',tipo:'download'},
   {t:'Extensão Prettier',u:'https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode',d:'Arruma a indentação do arquivo inteiro com Shift+Alt+F. Aula 6.',tipo:'download'}
 ];
-MODULES[5].links=[
+M('git').links=[
   {t:'Baixar o Git',u:'https://git-scm.com/downloads',d:'O programa que versiona o seu código. Instale antes da aula 2.',tipo:'download'},
   {t:'Criar conta no GitHub',u:'https://github.com/signup',d:'Onde o projeto fica guardado na internet. Gratuito.',tipo:'site'},
   {t:'GitHub Pages',u:'https://pages.github.com/',d:'Como publicar o seu site de graça, no ar de verdade.',tipo:'site'}
 ];
-MODULES[8].links=[
+M('ads').links=[
   {t:'Gerenciador de Negócios da Meta',u:'https://business.facebook.com/',d:'Onde ficam páginas, contas de anúncio e pixels. Aula 2.',tipo:'site'},
   {t:'Gerenciador de Anúncios',u:'https://adsmanager.facebook.com/',d:'Onde as campanhas são criadas de verdade. Aulas 3 a 8.',tipo:'site'}
 ];
 
-MODULES[4].videos=[
+M('vscode').videos=[
   {id:'NXgsXiu4LtA',t:'VS Code para Iniciantes',ch:'Refatorando'},
   {id:'tdXITJlB6dM',t:'Tutorial VS Code: o que todo programador iniciante precisa saber',ch:'Dev em Dobro'},
   {id:'tZnBfIdTTaU',t:'VS Code descomplicado: programador iniciante mais eficiente',ch:'Dev em Dobro'}
 ];
-MODULES[4].playlist={id:'PLQyxir6TzMSVaH7Ua8Myfx9SUOwjfINrS',t:'Curso Introdução ao VS Code',ch:'playlist no YouTube',n:'curso completo'};
+M('vscode').playlist={id:'PLQyxir6TzMSVaH7Ua8Myfx9SUOwjfINrS',t:'Curso Introdução ao VS Code',ch:'playlist no YouTube',n:'curso completo'};
 
-MODULES[1].project=PROJETO_FASE0;
-MODULES[3].project=PROJETO_FASE1;
+M('css').project=PROJETO_FASE0;
+M('dom').project=PROJETO_FASE1;
 
-MODULES[3].videos=[
+M('dom').videos=[
   {id:'UPD0vts-eMQ',t:'Manipulação do DOM explicada na prática',ch:'Escola DNC'},
   {id:'wWnBB-mZIvY',t:'Eventos DOM — Curso JavaScript #10',ch:'Curso em Vídeo'},
   {id:'UftSB4DaRU4',t:'Manipulação de DOM com JavaScript, do zero',ch:'Rocketseat'}
 ];
-MODULES[3].playlist={id:'PLnex8IkmReXxZEXje06kW1uCwm5iC8M_Z',t:'Curso de JavaScript completo',ch:'Professor Edson Maia',n:'115 vídeos'};
+M('dom').playlist={id:'PLnex8IkmReXxZEXje06kW1uCwm5iC8M_Z',t:'Curso de JavaScript completo',ch:'Professor Edson Maia',n:'115 vídeos'};
 
 IC.again='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>';
 IC.video='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor" stroke="none"/></svg>';
@@ -4420,9 +4692,9 @@ function renderHome(){
   const cur=currentModule(), cm=MODULES[cur];
   const fases=[
     {n:"Fase 0",t:"Fundamentos da Web",d:"HTML para a estrutura e CSS para o visual de toda página.",m:[0,1]},
-    {n:"Fase 1",t:"Lógica & JavaScript",d:"Pensar como programador e depois dar vida às páginas.",m:[2,3]},
-    {n:"Fase 2",t:"Jornada Dev",d:"Ferramentas de verdade, versionamento, aplicações conectadas e IA.",m:[4,5,6,7]},
-    {n:"Fase 3",t:"Marketing Digital",d:"Levar produto e público até o projeto.",m:[8]}
+    {n:"Fase 1",t:"Inglês & Lógica",d:"O inglês que o código usa e o raciocínio para resolver problemas.",m:[2,3,4]},
+    {n:"Fase 2",t:"Jornada Dev",d:"Ferramentas de verdade, versionamento, aplicações conectadas e IA.",m:[5,6,7,8]},
+    {n:"Fase 3",t:"Marketing Digital",d:"Levar produto e público até o projeto.",m:[9]}
   ];
   let html=`
     <p class="eyebrow">${cm.fase} — Módulo ${cur+1}</p>
@@ -4842,8 +5114,8 @@ function openProva(m,proj){
         </div>
       </div>
       <aside class="cola" aria-label="Cola de sintaxe">
-        <h3>${kind==='html'?'Cola das tags':(kind==='css'?'Cola do CSS':(isTerm?'Cola dos comandos':(kind==='ia'?'Os quatro defeitos':(isAds?'Os três níveis':'Cola do JavaScript'))))}</h3>
-        <p class="sub">${isAds?'Cada campo acende em verde quando você o preenche. Preencher não é acertar: as missões é que conferem a escolha.':(isTerm?'Cada comando acende em verde quando você o usa no terminal.':(kind==='ia'?'Cada defeito acende em verde quando o seu conserto aparece no código.':(kind==='html'?'Toda tag abre e fecha (menos a imagem). Cada peça acende em verde quando aparece no seu código.':'Cada peça acende em verde quando aparece no seu código.')))}</p>
+        <h3>${pv.cola || (kind==='html'?'Cola das tags':(kind==='css'?'Cola do CSS':(isTerm?'Cola dos comandos':(kind==='ia'?'Os quatro defeitos':(isAds?'Os três níveis':'Cola do JavaScript')))))}</h3>
+        <p class="sub">${pv.colaSub || (isAds?'Cada campo acende em verde quando você o preenche. Preencher não é acertar: as missões é que conferem a escolha.':(isTerm?'Cada comando acende em verde quando você o usa no terminal.':(kind==='ia'?'Cada defeito acende em verde quando o seu conserto aparece no código.':(kind==='html'?'Toda tag abre e fecha (menos a imagem). Cada peça acende em verde quando aparece no seu código.':'Cada peça acende em verde quando aparece no seu código.'))))}</p>
         <div class="cola-legend"><span><i class="dotk" style="background:#39ff88"></i>já usou</span><span><i class="dotk" style="background:#ff4d5e"></i>ainda não</span></div>
         ${pv.cheats.map((c,ci)=>`<div class="cheat"><div class="cn"><span>${esc(c.name)}</span>${c.note?`<span class="note">${esc(c.note)}</span>`:''}</div>
           <div class="parts">${c.parts.map((p,pi)=>(pi?'<span class="arrow">…</span>':'')+`<span class="tagchip" id="ch-${ci}-${pi}">${esc(p.t)}</span>`).join('')}</div></div>`).join('')}
@@ -5172,6 +5444,7 @@ function contaSair(){
 /* Junta o que veio da nuvem com o que está aqui, sem perder nada dos dois lados */
 function fundirProgresso(nuvem){
   if(!nuvem||!nuvem.mods) return false;
+  nuvem=migrarIndices(nuvem);
   let mudou=false;
   MODULES.forEach(mod=>{
     const aqui=P.mods[mod.id]||{done:[],prova:false,project:false};
