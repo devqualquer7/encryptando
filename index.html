@@ -5679,10 +5679,13 @@ function openEntrar(modo){
       <div class="ftroca">
         ${criar?'Já tem conta? <button class="linkbtn" id="ftroca">Entrar</button>':'Ainda não tem conta? <button class="linkbtn" id="ftroca">Criar agora</button>'}
       </div>
+      ${criar?'':'<div class="ftroca"><button class="linkbtn" id="fesqueci">Esqueci minha senha</button></div>'}
       <div class="ftroca"><button class="linkbtn" id="fpular">Continuar sem conta, só neste navegador</button></div>
     </div>`;
   $('#back').addEventListener('click',renderHome);
   $('#ftroca').addEventListener('click',()=>openEntrar(criar?'entrar':'criar'));
+  const esq=$('#fesqueci'); if(esq) esq.addEventListener('click',openEsqueci);
+  mostrarAviso();
   $('#fpular').addEventListener('click',renderHome);
   const enviar=async()=>{
     const email=($('#femail').value||'').trim();
@@ -5943,6 +5946,117 @@ async function painelConvites(){
   await pinta();
 }
 
+/* ---------- Voltar de um link do Supabase (recuperação de senha, login social) ---------- */
+function tokensDaURL(){
+  const h=(location.hash||'').replace(/^#/,'');
+  if(h.indexOf('access_token=')<0&&h.indexOf('error=')<0&&h.indexOf('error_description=')<0) return null;
+  const p=new URLSearchParams(h), fora={};
+  p.forEach((v,k)=>{ fora[k]=v; });
+  return fora;
+}
+function limparHash(destino){
+  try{ history.replaceState(null,'',location.pathname+location.search+(destino?'#'+destino:'')); }
+  catch(e){ location.hash=destino||''; }
+}
+function enderecoDoSite(){ return location.origin+location.pathname; }
+let avisoConta='';
+function mostrarAviso(){
+  if(!avisoConta) return;
+  const m=$('#fmsg'); if(!m) return;
+  m.textContent=avisoConta; avisoConta='';
+}
+
+async function contaPedirSenhaNova(email){
+  const volta=encodeURIComponent(enderecoDoSite());
+  return supaFetch('/auth/v1/recover?redirect_to='+volta,
+    {method:'POST', body:JSON.stringify({email:email})});
+}
+async function contaPerfilRemoto(){
+  const u=await supaFetch('/auth/v1/user');
+  if(!u||!u.id) throw new Error('não consegui ler a conta');
+  SESSAO.uid=u.id;
+  SESSAO.email=u.email||SESSAO.email||'';
+  const meta=u.user_metadata||{};
+  SESSAO.nome=SESSAO.nome||meta.nome||meta.full_name||meta.name||meta.global_name||'';
+  if(SESSAO.nome&&!P.nome){ P.nome=SESSAO.nome; save(); }
+  sessaoGravar();
+  return SESSAO;
+}
+async function contaTrocarSenha(novaSenha){
+  if(!sessaoValida()) throw new Error('Esse link expirou. Peça outro.');
+  await supaFetch('/auth/v1/user',{method:'PUT',body:JSON.stringify({password:novaSenha})});
+}
+
+function openSenhaNova(){
+  const v=$('#view');
+  v.innerHTML=`
+    <div class="lv-top"><button class="back" id="back">${IC.back} Trilha</button>
+      <span class="lv-kicker">Conta</span></div>
+    <h1 class="lv-title">Escolher uma senha nova</h1>
+    <p class="lv-goal">Você chegou pelo link do email. Digite a senha nova e pronto — já entra direto.</p>
+    <div class="form-conta">
+      <label for="fnova">Senha nova</label>
+      <input id="fnova" class="cinput" type="password" autocomplete="new-password" placeholder="Pelo menos 6 caracteres">
+      <label for="fnova2">Repita a senha</label>
+      <input id="fnova2" class="cinput" type="password" autocomplete="new-password" placeholder="A mesma coisa de novo">
+      <button class="btn btn-primary btn-largo" id="fsalvar">Salvar senha nova</button>
+      <p class="fmsg" id="fmsg"></p>
+    </div>`;
+  $('#back').addEventListener('click',renderHome);
+  const salvar=async()=>{
+    const a=$('#fnova').value||'', b=$('#fnova2').value||'', msg=$('#fmsg'), bt=$('#fsalvar');
+    if(a.length<6){ msg.textContent='A senha precisa de pelo menos 6 caracteres.'; return; }
+    if(a!==b){ msg.textContent='As duas senhas estão diferentes.'; return; }
+    bt.disabled=true; msg.textContent='Salvando...';
+    try{
+      await contaTrocarSenha(a);
+      msg.innerHTML='<span style="color:#39ff88">Senha trocada. Você já está dentro.</span>';
+      renderHeader();
+      await sincronizar(true);
+      setTimeout(()=>{ limparHash(); renderHome(); toast('Senha trocada com sucesso.','mint'); },1200);
+    }catch(e){ msg.textContent='Não consegui: '+e.message; bt.disabled=false; }
+  };
+  $('#fsalvar').addEventListener('click',salvar);
+  $('#fnova2').addEventListener('keydown',e=>{ if(e.key==='Enter') salvar(); });
+  $('#fnova').focus();
+  scrollTo({top:0,behavior:'auto'});
+}
+
+function openEsqueci(){
+  const v=$('#view');
+  v.innerHTML=`
+    <div class="lv-top"><button class="back" id="back">${IC.back} Trilha</button>
+      <span class="lv-kicker">Conta</span></div>
+    <h1 class="lv-title">Esqueci minha senha</h1>
+    <p class="lv-goal">Põe o email da conta. Mandamos um link pra você escolher uma senha nova.</p>
+    <div class="form-conta">
+      <label for="femail">Email</label>
+      <input id="femail" class="cinput" type="email" autocomplete="email" placeholder="voce@email.com">
+      <button class="btn btn-primary btn-largo" id="fok">Mandar o link</button>
+      <p class="fmsg" id="fmsg"></p>
+      <div class="ftroca"><button class="linkbtn" id="fvolta">Voltar para entrar</button></div>
+    </div>`;
+  $('#back').addEventListener('click',renderHome);
+  $('#fvolta').addEventListener('click',()=>openEntrar());
+  const enviar=async()=>{
+    const email=($('#femail').value||'').trim(), msg=$('#fmsg'), bt=$('#fok');
+    if(!email){ msg.textContent='Põe o email da conta.'; return; }
+    bt.disabled=true; msg.textContent='Mandando...';
+    try{
+      await contaPedirSenhaNova(email);
+      msg.innerHTML='<span style="color:#39ff88">Link enviado. Olhe a caixa de entrada e o spam.</span>';
+    }catch(e){
+      msg.textContent='Não consegui mandar: '+e.message;
+      bt.disabled=false;
+    }
+  };
+  $('#fok').addEventListener('click',enviar);
+  $('#femail').addEventListener('keydown',e=>{ if(e.key==='Enter') enviar(); });
+  mostrarAviso();
+  $('#femail').focus();
+  scrollTo({top:0,behavior:'auto'});
+}
+
 async function openAdmin(){
   const v=$('#view');
   v.innerHTML=`<div class="lv-top"><button class="back" id="back">${IC.back} Trilha</button>
@@ -6032,6 +6146,34 @@ function conviteDaURL(){
   return m?decodeURIComponent(m[1]).toUpperCase():'';
 }
 function rota(){
+  const t=tokensDaURL();
+  if(t){
+    if(t.error||t.error_description){
+      const bruto=decodeURIComponent(t.error_description||t.error||'').replace(/\+/g,' ');
+      const expirou=/expired|invalid/i.test(bruto)||t.error_code==='otp_expired';
+      avisoConta = expirou
+        ? 'Esse link já expirou. Peça um novo aqui embaixo.'
+        : bruto;
+      if(expirou){ limparHash('esqueci'); openEsqueci(); }
+      else { limparHash('entrar'); openEntrar(); }
+      mostrarAviso();
+      return;
+    }
+    if(t.access_token){
+      const recuperando = t.type==='recovery';
+      guardarSessao({access_token:t.access_token,refresh_token:t.refresh_token,expires_in:Number(t.expires_in)||3600});
+      limparHash(recuperando?'senha-nova':'');
+      if(recuperando) openSenhaNova(); else renderHome();
+      contaPerfilRemoto().then(()=>{
+        renderHeader();
+        if(!recuperando){ sincronizar(true); toast('Você entrou.','mint'); }
+      }).catch(e=>{
+        renderHeader();
+        if(!recuperando) toast('Entrei, mas não consegui ler a conta: '+e.message);
+      });
+      return;
+    }
+  }
   const h=(location.hash||'').replace(/^#/,'').trim().toLowerCase();
   if(/^convite=/.test(h)){ openEntrar('criar'); return; }
   if(!h){ renderHome(); return; }
@@ -6040,6 +6182,8 @@ function rota(){
   if(h==='perfil'){ openPerfil(); return; }
   if(h==='admin'||h==='painel'||h==='alunos'){ openAdmin(); return; }
   if(h==='entrar'||h==='conta'){ openEntrar(); return; }
+  if(h==='esqueci'||h==='esqueci-senha'){ openEsqueci(); return; }
+  if(h==='senha-nova'){ openSenhaNova(); return; }
   if(h==='criar-conta'){ openEntrar('criar'); return; }
   if(h==='revisao'||h==='revisão'){ openReview(); return; }
   if(h==='certificado'||h==='certificados'){
