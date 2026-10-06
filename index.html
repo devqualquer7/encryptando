@@ -4688,6 +4688,7 @@ function currentModule(){
   return c<0 ? MODULES.length-1 : c;
 }
 function renderHome(){
+  if(precisaConta()){ openEntrar('criar'); return; }
   const v=$('#view');
   const cur=currentModule(), cm=MODULES[cur];
   const fases=[
@@ -5380,6 +5381,8 @@ const SESS_KEY='encryptando_sessao';
 let SESSAO=null, syncT=null, syncEstado='';
 
 function nuvemLigada(){ return !!(SUPA.url && SUPA.key); }
+/* Sem conta nao se entra: a trilha inteira fica atras do cadastro. */
+function precisaConta(){ return nuvemLigada() && !sessaoValida(); }
 function sessaoValida(){ return !!(SESSAO && SESSAO.access_token); }
 function contaNome(){ return (SESSAO && SESSAO.nome) || P.nome || ''; }
 function contaEmail(){ return (SESSAO && SESSAO.email) || ''; }
@@ -5662,7 +5665,7 @@ function openEntrar(modo){
   const v=$('#view');
   v.innerHTML=`
     <div class="lv-top">
-      <button class="back" id="back">${IC.back} Trilha</button>
+      ${precisaConta()?'':`<button class="back" id="back">${IC.back} Trilha</button>`}
       <span class="lv-kicker">Conta</span>
     </div>
     <h1 class="lv-title">${criar?'Criar minha conta':'Entrar na minha conta'}</h1>
@@ -5680,13 +5683,11 @@ function openEntrar(modo){
         ${criar?'Já tem conta? <button class="linkbtn" id="ftroca">Entrar</button>':'Ainda não tem conta? <button class="linkbtn" id="ftroca">Criar agora</button>'}
       </div>
       ${criar?'':'<div class="ftroca"><button class="linkbtn" id="fesqueci">Esqueci minha senha</button></div>'}
-      <div class="ftroca"><button class="linkbtn" id="fpular">Continuar sem conta, só neste navegador</button></div>
     </div>`;
-  $('#back').addEventListener('click',renderHome);
+  const bk=$('#back'); if(bk) bk.addEventListener('click',renderHome);
   $('#ftroca').addEventListener('click',()=>openEntrar(criar?'entrar':'criar'));
   const esq=$('#fesqueci'); if(esq) esq.addEventListener('click',openEsqueci);
   mostrarAviso();
-  $('#fpular').addEventListener('click',renderHome);
   const enviar=async()=>{
     const email=($('#femail').value||'').trim();
     const senha=$('#fsenha').value||'';
@@ -5779,7 +5780,7 @@ function avatarHTML(cls,nome){
 }
 
 /* ---------- Convites de acesso ---------- */
-const EXIGIR_CONVITE = true;
+const EXIGIR_CONVITE = false;   /* cadastro aberto: o convite virou atalho, nao porta */
 const CONVITE_KEY = 'encryptando_convite';
 
 function codigoNovo(){
@@ -5990,7 +5991,7 @@ async function contaTrocarSenha(novaSenha){
 function openSenhaNova(){
   const v=$('#view');
   v.innerHTML=`
-    <div class="lv-top"><button class="back" id="back">${IC.back} Trilha</button>
+    <div class="lv-top">${precisaConta()?'':`<button class="back" id="back">${IC.back} Trilha</button>`}
       <span class="lv-kicker">Conta</span></div>
     <h1 class="lv-title">Escolher uma senha nova</h1>
     <p class="lv-goal">Você chegou pelo link do email. Digite a senha nova e pronto — já entra direto.</p>
@@ -6002,7 +6003,7 @@ function openSenhaNova(){
       <button class="btn btn-primary btn-largo" id="fsalvar">Salvar senha nova</button>
       <p class="fmsg" id="fmsg"></p>
     </div>`;
-  $('#back').addEventListener('click',renderHome);
+  const bk=$('#back'); if(bk) bk.addEventListener('click',renderHome);
   const salvar=async()=>{
     const a=$('#fnova').value||'', b=$('#fnova2').value||'', msg=$('#fmsg'), bt=$('#fsalvar');
     if(a.length<6){ msg.textContent='A senha precisa de pelo menos 6 caracteres.'; return; }
@@ -6025,7 +6026,7 @@ function openSenhaNova(){
 function openEsqueci(){
   const v=$('#view');
   v.innerHTML=`
-    <div class="lv-top"><button class="back" id="back">${IC.back} Trilha</button>
+    <div class="lv-top">${precisaConta()?'':`<button class="back" id="back">${IC.back} Trilha</button>`}
       <span class="lv-kicker">Conta</span></div>
     <h1 class="lv-title">Esqueci minha senha</h1>
     <p class="lv-goal">Põe o email da conta. Mandamos um link pra você escolher uma senha nova.</p>
@@ -6036,7 +6037,7 @@ function openEsqueci(){
       <p class="fmsg" id="fmsg"></p>
       <div class="ftroca"><button class="linkbtn" id="fvolta">Voltar para entrar</button></div>
     </div>`;
-  $('#back').addEventListener('click',renderHome);
+  const bk=$('#back'); if(bk) bk.addEventListener('click',renderHome);
   $('#fvolta').addEventListener('click',()=>openEntrar());
   const enviar=async()=>{
     const email=($('#femail').value||'').trim(), msg=$('#fmsg'), bt=$('#fok');
@@ -6175,7 +6176,15 @@ function rota(){
     }
   }
   const h=(location.hash||'').replace(/^#/,'').trim().toLowerCase();
-  if(/^convite=/.test(h)){ openEntrar('criar'); return; }
+  if(/^convite=/.test(h)){
+    const cod=conviteDaURL();
+    if(cod){ try{ localStorage.setItem(CONVITE_KEY,cod); }catch(e){} }
+    openEntrar('criar'); return;
+  }
+  if(precisaConta()){
+    const livres=['entrar','conta','criar-conta','esqueci','esqueci-senha','senha-nova'];
+    if(livres.indexOf(h)<0){ openEntrar('criar'); return; }
+  }
   if(!h){ renderHome(); return; }
   if(h==='glossario'||h==='glossário'){ openGloss(); return; }
   if(h==='progresso'){ openProgress(); return; }
