@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://devqualquer7.github.io/encryptando/sitemap.xml
