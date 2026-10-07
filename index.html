@@ -490,6 +490,18 @@
   .avatar img,.hbtn .av img,.aluno-av img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
   .foto-acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
   .foto-acoes .fmsg2{font-size:12.5px;color:var(--faint)}
+  /* Entrar com Google / Discord */
+  .social{display:flex;flex-direction:column;gap:9px;margin-bottom:4px}
+  .btn-social{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    border:0;border-radius:12px;padding:13px 16px;cursor:pointer;
+    font:700 14.5px/1 var(--head);letter-spacing:-.01em;transition:filter .15s, transform .08s}
+  .btn-social svg{flex:none}
+  .btn-social:hover{filter:brightness(.93)}
+  .btn-social:active{transform:translateY(1px)}
+  .btn-social:disabled{opacity:.6;cursor:default}
+  .ou{display:flex;align-items:center;gap:12px;margin:16px 0 2px;color:var(--faint);font-size:12.5px}
+  .ou::before,.ou::after{content:"";flex:1;height:1px;background:var(--border)}
+  @media (pointer:coarse){ .btn-social{min-height:46px} }
   /* Painel do mentor */
   .aluno{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:10px;overflow:hidden}
   .aluno-top{display:flex;align-items:center;gap:13px;width:100%;background:none;border:0;color:var(--text);
@@ -5659,6 +5671,55 @@ function dataBonita(iso){
 }
 
 /* ---------- Tela de entrar / criar conta ---------- */
+/* ---------- Entrar com Google / Discord ---------- */
+const PROVEDORES_UI = [
+  {id:'google', nome:'Google', cor:'#fff', fundo:'#ffffff', texto:'#1f1f1f',
+   icone:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.27c0-.79-.07-1.54-.2-2.27H12v4.51h6.47a5.54 5.54 0 0 1-2.4 3.63v3h3.88c2.27-2.09 3.55-5.17 3.55-8.87z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.08 7.95-2.91l-3.88-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.26v3.09A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.27 14.29a7.2 7.2 0 0 1 0-4.58V6.62H1.26a12 12 0 0 0 0 10.76l4.01-3.09z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.18 15.24 0 12 0A12 12 0 0 0 1.26 6.62l4.01 3.09C6.22 6.86 8.87 4.75 12 4.75z"/></svg>'},
+  {id:'discord', nome:'Discord', fundo:'#5865F2', texto:'#ffffff',
+   icone:'<svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.3.5c1.6.4 2.9 1 4.1 1.8a13.9 13.9 0 0 0-12.4 0A13 13 0 0 1 11 3.5L10.7 3C8.9 3.2 7.2 3.7 5.7 4.4 2.6 9 1.8 13.4 2.2 17.8a19.9 19.9 0 0 0 6 3l1.3-1.8c-1-.4-1.9-.8-2.7-1.4l.6-.4a14.2 14.2 0 0 0 12.2 0l.6.4c-.8.6-1.8 1-2.7 1.4l1.3 1.8c2.2-.7 4.2-1.7 6-3 .5-5.1-.8-9.5-3.5-13.4zM8.9 15.2c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.2 1.1 2.1 2.4c0 1.3-.9 2.4-2.1 2.4zm6.2 0c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.2 1.1 2.1 2.4c0 1.3-.9 2.4-2.1 2.4z"/></svg>'}
+];
+let PROVEDORES_ON = null;   /* null = ainda nao perguntamos */
+
+async function provedoresAtivos(){
+  if(PROVEDORES_ON) return PROVEDORES_ON;
+  try{
+    const s=await supaFetch('/auth/v1/settings');
+    const e=(s&&s.external)||{};
+    PROVEDORES_ON = PROVEDORES_UI.filter(p=>!!e[p.id]).map(p=>p.id);
+  }catch(err){ PROVEDORES_ON = []; }
+  return PROVEDORES_ON;
+}
+
+function entrarCom(provedor){
+  try{ sessionStorage.setItem('encryptando_social', provedor); }catch(e){}
+  const volta=encodeURIComponent(enderecoDoSite());
+  location.href = SUPA.url.replace(/\/+$/,'')+'/auth/v1/authorize?provider='+encodeURIComponent(provedor)+'&redirect_to='+volta;
+}
+
+function blocoSocial(ativos,criar){
+  if(!ativos.length) return '';
+  const bts=ativos.map(id=>{
+    const p=PROVEDORES_UI.find(x=>x.id===id);
+    return `<button class="btn-social" data-prov="${p.id}" style="background:${p.fundo};color:${p.texto}">
+      ${p.icone}<span>${criar?'Criar conta com':'Entrar com'} ${p.nome}</span></button>`;
+  }).join('');
+  return `<div class="social">${bts}</div><div class="ou"><span>ou com email</span></div>`;
+}
+
+function ligarSocial(raiz){
+  raiz.querySelectorAll('[data-prov]').forEach(b=>b.addEventListener('click',()=>{
+    b.disabled=true;
+    const m=$('#fmsg'); if(m) m.textContent='Abrindo o '+(PROVEDORES_UI.find(x=>x.id===b.dataset.prov)||{}).nome+'...';
+    entrarCom(b.dataset.prov);
+  }));
+}
+
+/* Depois que a pessoa volta do provedor, carimba o convite se ela veio por um. */
+async function depoisDoSocial(){
+  try{ sessionStorage.removeItem('encryptando_social'); }catch(e){}
+  try{ await carimbarConvite(); }catch(e){}
+}
+
 function openEntrar(modo){
   if(!nuvemLigada()){ openPerfil(); return; }
   const criar = modo==='criar';
@@ -5671,6 +5732,7 @@ function openEntrar(modo){
     <h1 class="lv-title">${criar?'Criar minha conta':'Entrar na minha conta'}</h1>
     <p class="lv-goal">${criar?'Com uma conta o seu progresso acompanha você no celular, no computador da casa e em qualquer navegador.':'Entre para continuar de onde parou, em qualquer aparelho.'}</p>
     <div class="form-conta">
+      <div id="socialwrap"></div>
       ${criar?`<label for="fnome">Seu nome</label><input id="fnome" class="cinput" placeholder="Nome completo" value="${esc(P.nome||'')}">
       ${EXIGIR_CONVITE?`<label for="fconv">Código do convite</label><input id="fconv" class="cinput" placeholder="XXXX-XXXX" value="${esc(conviteDaURL()||'')}" autocapitalize="characters">`:''}`:''}
       <label for="femail">Email</label>
@@ -5687,6 +5749,12 @@ function openEntrar(modo){
   const bk=$('#back'); if(bk) bk.addEventListener('click',renderHome);
   $('#ftroca').addEventListener('click',()=>openEntrar(criar?'entrar':'criar'));
   const esq=$('#fesqueci'); if(esq) esq.addEventListener('click',openEsqueci);
+  provedoresAtivos().then(ativos=>{
+    const alvo=$('#socialwrap');
+    if(!alvo||!ativos.length) return;
+    alvo.innerHTML=blocoSocial(ativos,criar);
+    ligarSocial(alvo);
+  });
   mostrarAviso();
   const enviar=async()=>{
     const email=($('#femail').value||'').trim();
@@ -6165,9 +6233,13 @@ function rota(){
       guardarSessao({access_token:t.access_token,refresh_token:t.refresh_token,expires_in:Number(t.expires_in)||3600});
       limparHash(recuperando?'senha-nova':'');
       if(recuperando) openSenhaNova(); else renderHome();
-      contaPerfilRemoto().then(()=>{
+      contaPerfilRemoto().then(async()=>{
         renderHeader();
-        if(!recuperando){ sincronizar(true); toast('Você entrou.','mint'); }
+        if(!recuperando){
+          await depoisDoSocial();
+          sincronizar(true);
+          toast('Você entrou.','mint');
+        }
       }).catch(e=>{
         renderHeader();
         if(!recuperando) toast('Entrei, mas não consegui ler a conta: '+e.message);
