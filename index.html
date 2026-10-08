@@ -523,7 +523,7 @@
   .vit-slot{min-height:108px;border-radius:14px;border:1px dashed var(--border-strong);background:rgba(255,255,255,.025);
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;text-align:center;color:var(--faint);font-size:11.5px;line-height:1.25;min-width:0}
   .vit-slot.has{border-style:solid;background:linear-gradient(180deg,color-mix(in srgb,var(--rc) 14%,transparent),rgba(255,255,255,.02));border-color:color-mix(in srgb,var(--rc) 50%,transparent);color:var(--text)}
-  .vit-slot b{font:700 12px/1.2 var(--display);overflow-wrap:anywhere}
+  .vit-slot b{font:700 12px/1.2 var(--display);overflow-wrap:normal;-webkit-hyphens:auto;hyphens:auto;max-width:100%}
   .vit-slot .vi{font-size:28px;line-height:1}
   .pf-tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:5px;margin:0 0 18px}
   .pf-tab{flex:1;border:0;background:none;color:var(--muted);font:700 13.5px/1 var(--body);padding:11px 8px;border-radius:10px;cursor:pointer;display:flex;gap:6px;align-items:center;justify-content:center}
@@ -582,7 +582,10 @@
     .pf-banner{height:168px}
   }
   @media (min-width:900px){ .pf-banner{height:210px} .vit-slot{min-height:120px} }
-  @media (max-width:380px){ .pf-mini b{font-size:17px} .pf-tab{font-size:12.5px;padding:10px 4px} }
+  @media (max-width:380px){ .pf-mini b{font-size:17px} .pf-tab{font-size:12.5px;padding:10px 4px}
+    .pf-corpo{padding:0 14px 16px} .pf-vit{gap:6px} .vit-slot{padding:8px 4px} .vit-slot b{font-size:10.5px} .vit-slot .vi{font-size:25px} }
+  /* aviso usa a largura do texto (até 90% da tela) em vez de encolher pela metade no celular */
+  #toast{width:max-content}
   /* Foto de perfil */
   .avatar.comfoto,.hbtn .av.comfoto,.aluno-av.comfoto{padding:0;overflow:hidden;background:none}
   .avatar img,.hbtn .av img,.aluno-av img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
@@ -5799,7 +5802,7 @@ function verificarMedalhas(semRender){
       if(typeof agendarSync==='function') agendarSync();
       if(typeof renderHeader==='function') renderHeader();
       const alta=novas.slice().sort((a,b)=>Object.keys(RARIDADES).indexOf(b.r)-Object.keys(RARIDADES).indexOf(a.r))[0];
-      toast((novas.length===1?'Medalha: '+alta.n:novas.length+' medalhas novas, a maior: '+alta.n)+'  +'+xp+' XP','gold');
+      toast((novas.length===1?'Medalha nova: '+alta.n:novas.length+' medalhas novas')+' · +'+xp+' XP','gold');
       try{ confetti(novas.some(m=>m.r==='epica'||m.r==='lendaria')); }catch(e){}
       if(!semRender&&document.querySelector('.pf-card')) openPerfil();
     }
