@@ -586,6 +586,68 @@
     .pf-corpo{padding:0 14px 16px} .pf-vit{gap:6px} .vit-slot{padding:8px 4px} .vit-slot b{font-size:10.5px} .vit-slot .vi{font-size:25px} }
   /* aviso usa a largura do texto (até 90% da tela) em vez de encolher pela metade no celular */
   #toast{width:max-content}
+
+  /* ===== Ranking da turma e Hall da Fama ===== */
+  .hrank{flex:none;min-width:38px;justify-content:center;padding:6px 9px;gap:0}
+  .hrank svg{flex:none;width:18px;height:18px;color:var(--gold)}
+  .rk-hall .sec-h{flex-wrap:wrap;gap:4px 10px}
+  @media (max-width:360px){ .hstats{gap:8px} .hrank{min-width:36px;padding:6px 8px} }
+  .rk-sub{color:var(--muted);font-size:14px;margin:4px 0 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .rk-att{border:1px solid var(--border);background:var(--surface);color:var(--muted);font:700 12px/1 var(--body);padding:7px 11px;border-radius:999px;cursor:pointer}
+  .rk-podio{display:grid;grid-template-columns:1fr 1.15fr 1fr;align-items:end;gap:8px;margin:6px 0 18px}
+  .rk-pd{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;--md:#c9d1dc}
+  .rk-pd.p1{--md:#ffcf5c}.rk-pd.p3{--md:#d08a4a}
+  .rk-coroa{font-size:24px;line-height:1;margin-bottom:2px}
+  .rk-pd .rk-av{width:58px;height:58px;font-size:18px;border:3px solid var(--md);box-shadow:0 8px 22px -8px var(--md)}
+  .rk-pd.p1 .rk-av{width:74px;height:74px;font-size:22px}
+  .rk-pd .rk-nm{display:block;max-width:100%;margin-top:7px;font:700 13px/1.2 var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rk-pd .rk-vl{display:block;font:700 12px/1.2 var(--mono);color:var(--gold);margin-top:3px}
+  .rk-pd .rk-eu{font:700 10px/1 var(--mono);color:var(--violet-2);margin-top:3px}
+  .rk-base{width:100%;margin-top:8px;border-radius:12px 12px 4px 4px;display:grid;place-items:center;font:800 22px/1 var(--display);color:#0a0a0c;
+    background:linear-gradient(180deg,var(--md),color-mix(in srgb,var(--md) 45%,#0a0a0c))}
+  .rk-pd.p1 .rk-base{height:88px}.rk-pd.p2 .rk-base{height:66px}.rk-pd.p3 .rk-base{height:52px}
+  .rk-pd.vazio .rk-av{opacity:.35}
+  .rk-av{border-radius:50%;flex:none;display:grid;place-items:center;font:800 13px/1 var(--display);color:#fff;
+    background:linear-gradient(145deg,var(--violet),#8b1109);overflow:hidden}
+  .rk-av img{width:100%;height:100%;object-fit:cover;display:block}
+  .rk-lista{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+  .rk-row{display:flex;align-items:center;gap:11px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px 12px;min-width:0}
+  .rk-row.eu{border-color:rgba(255,42,31,.55);background:linear-gradient(90deg,rgba(255,42,31,.13),var(--surface) 70%)}
+  .rk-pos{width:26px;text-align:center;font:800 15px/1 var(--display);color:var(--faint);flex:none}
+  .rk-row .rk-av{width:38px;height:38px}
+  .rk-id{min-width:0;flex:1}
+  .rk-id b{display:block;font:700 14px/1.25 var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rk-id small{display:block;color:var(--faint);font-size:12px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rk-val{text-align:right;flex:none}
+  .rk-val b{display:block;font:800 15px/1.1 var(--display);color:var(--gold)}
+  .rk-val small{display:block;color:var(--faint);font-size:11px;margin-top:2px}
+  .rk-tag{font:700 10px/1 var(--mono);color:var(--violet-2);margin-left:6px;vertical-align:1px}
+  .rk-fixo{position:sticky;bottom:10px;z-index:6;margin-top:-8px;margin-bottom:20px;box-shadow:0 14px 40px -12px rgba(0,0,0,.9)}
+  .rk-aviso{background:var(--surface);border:1px dashed var(--border-strong);border-radius:14px;padding:16px;color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:16px}
+  .rk-aviso b{color:var(--text)}
+  .rk-aviso .btn{margin-top:12px}
+  .rk-recs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:26px}
+  .rk-rec{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}
+  .rk-rec .ic{font-size:26px;line-height:1}
+  .rk-rec .lb{font:700 11px/1.2 var(--mono);color:var(--faint);letter-spacing:.05em;text-transform:uppercase;margin-top:8px}
+  .rk-rec .vl{font:800 20px/1.1 var(--display);color:var(--gold);margin-top:8px}
+  .rk-rec .quem{display:flex;align-items:center;gap:7px;margin-top:9px;max-width:100%;min-width:0}
+  .rk-rec .quem .rk-av{width:26px;height:26px;font-size:10px}
+  .rk-rec .quem span{font:700 12.5px/1.2 var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rk-rec.aberto .vl{color:var(--faint);font-size:15px}
+  .rk-skel{height:62px;border-radius:14px;background:linear-gradient(90deg,var(--surface),var(--surface-2),var(--surface));background-size:200% 100%;animation:rkskel 1.2s linear infinite;margin-bottom:8px}
+  @keyframes rkskel{to{background-position:-200% 0}}
+  @media (prefers-reduced-motion:reduce){.rk-skel{animation:none}}
+  .pf-rank{display:flex;align-items:center;gap:10px;width:100%;margin:10px 0 4px;background:linear-gradient(90deg,rgba(255,207,92,.1),var(--surface));
+    border:1px solid rgba(255,207,92,.32);border-radius:14px;padding:13px 14px;color:var(--text);font:700 14px/1.2 var(--display);cursor:pointer;text-align:left}
+  .pf-rank svg{width:18px;height:18px;color:var(--gold);flex:none}
+  .pf-rank span{flex:1}
+  .pf-rank i{font-style:normal;color:var(--faint)}
+  @media (max-width:380px){
+    .rk-pd .rk-av{width:50px;height:50px;font-size:16px} .rk-pd.p1 .rk-av{width:64px;height:64px}
+    .rk-row{gap:9px;padding:9px 10px} .rk-row .rk-av{width:34px;height:34px} .rk-pos{width:22px;font-size:14px}
+    .rk-rec{padding:12px 8px} .rk-rec .vl{font-size:18px}
+  }
   /* Foto de perfil */
   .avatar.comfoto,.hbtn .av.comfoto,.aluno-av.comfoto{padding:0;overflow:hidden;background:none}
   .avatar img,.hbtn .av img,.aluno-av img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
@@ -1053,6 +1115,7 @@
         <div class="lvlrow"><span>Nível <b id="lvlN">1</b></span><span id="xpN">0 XP</span></div>
         <div class="xpbar"><div class="xpfill" id="xpFill" style="width:0%"></div></div>
       </div>
+      <button class="hbtn hrank" id="rankBtn" title="Ranking da turma" aria-label="Ranking da turma"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v4a6 6 0 0 1-12 0z"/><path d="M6 6H3v1a4 4 0 0 0 4 4M18 6h3v1a4 4 0 0 1-4 4M9 20h6M12 14v6"/></svg></button>
       <button class="hbtn" id="perfilBtn" title="Meu perfil"><span class="av" id="perfilAv">?</span><span class="rot" id="perfilNome">Perfil</span><i class="nuvem off" id="perfilNuvem"></i></button>
     </div>
   </div>
@@ -4348,13 +4411,13 @@ const XP_LESSON=60, XP_PROVA=240, LEVEL_STEP=300;
 let P = load();
 
 function load(){
-  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{},criado:null,foto:null,provas:{},banner:null,titulo:null,vitrine:[],medalhas:null,v:ESQUEMA};
+  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{},criado:null,foto:null,provas:{},banner:null,titulo:null,vitrine:[],medalhas:null,melhorOfensiva:0,rankingOculto:null,v:ESQUEMA};
   MODULES.forEach(m=>{ base.mods[m.id]={done:[],prova:false,project:false}; });
   try{
     const s=localStorage.getItem(KEY);
     if(s){
       const d=JSON.parse(s);
-      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||''; base.certs=d.certs||{}; base.criado=d.criado||null; base.foto=d.foto||null; base.provas=d.provas||{}; base.banner=d.banner||null; base.titulo=d.titulo||null; base.vitrine=Array.isArray(d.vitrine)?d.vitrine.slice(0,3):[]; base.medalhas=(d.medalhas&&typeof d.medalhas==='object')?d.medalhas:null;
+      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||''; base.certs=d.certs||{}; base.criado=d.criado||null; base.foto=d.foto||null; base.provas=d.provas||{}; base.banner=d.banner||null; base.melhorOfensiva=d.melhorOfensiva||0; base.rankingOculto=(typeof d.rankingOculto==='boolean')?d.rankingOculto:null; base.titulo=d.titulo||null; base.vitrine=Array.isArray(d.vitrine)?d.vitrine.slice(0,3):[]; base.medalhas=(d.medalhas&&typeof d.medalhas==='object')?d.medalhas:null;
       base.v=d.v||0;
       MODULES.forEach(m=>{ if(d.mods&&d.mods[m.id]) base.mods[m.id]=Object.assign({done:[],prova:false,project:false},d.mods[m.id]); });
       return migrarIndices(base);
@@ -4385,6 +4448,7 @@ function bumpStreak(){
     } else P.streak=1;
     P.lastDay=today;
   } else if(P.streak===0){ P.streak=1; P.lastDay=today; }
+  P.melhorOfensiva=Math.max(P.melhorOfensiva||0,P.streak||0);
 }
 
 /* Embaralha as posições das alternativas (Fisher–Yates) */
@@ -5663,6 +5727,8 @@ function fundirProgresso(nuvem){
   if(!P.foto&&nuvem.foto&&fotoValida(nuvem.foto)){ P.foto=nuvem.foto; mudou=true; }
   if(!P.banner&&nuvem.banner&&bannerValido(nuvem.banner)){ P.banner=nuvem.banner; mudou=true; }
   if(!P.titulo&&nuvem.titulo){ P.titulo=nuvem.titulo; mudou=true; }
+  if((nuvem.melhorOfensiva||0)>(P.melhorOfensiva||0)){ P.melhorOfensiva=nuvem.melhorOfensiva; mudou=true; }
+  if(P.rankingOculto==null&&typeof nuvem.rankingOculto==='boolean'){ P.rankingOculto=nuvem.rankingOculto; mudou=true; }
   if((!P.vitrine||!P.vitrine.length)&&Array.isArray(nuvem.vitrine)&&nuvem.vitrine.length){ P.vitrine=nuvem.vitrine.slice(0,3); mudou=true; }
   if(nuvem.medalhas&&typeof nuvem.medalhas==='object'){
     P.medalhas=P.medalhas||{};
@@ -5873,6 +5939,7 @@ function perfilAbaGeral(ctx){
       ${x.m.p?`<div class="mbar"><i style="width:${Math.round(x.f*100)}%"></i></div>`:''}</div></div>`).join('');
   return `
     <div class="pf-mini">${stats.slice(0,4).map(s=>`<div><b>${esc(String(s.v))}</b><span>${esc(s.k)}</span></div>`).join('')}</div>
+    <button class="pf-rank" id="prank">${IC.trophy}<span>Ranking da turma e Hall da Fama</span><i>›</i></button>
     ${faltam.length?`<div class="sec-h"><h2>Quase lá</h2><span class="muted">próximas medalhas</span></div><div class="pf-next">${prx}</div>`:''}
     <div class="sec-h"><h2>Números</h2><span class="muted">tudo que você já fez</span></div>
     <div class="stats-grid">${stats.slice(4).map(s=>`<div class="statcard"><span class="sv">${esc(String(s.v))}</span><span class="sk">${esc(s.k)}</span><small>${esc(s.s)}</small></div>`).join('')}</div>`;
@@ -5927,6 +5994,9 @@ function perfilAbaEditar(ctx){
         <span class="fmsg2" id="pfotom">Fica quadrada, 128 pixels, e acompanha a sua conta.</span>
       </div>
     </div>
+    <div class="pf-blk"><h3>Ranking da turma</h3>
+      <p class="dica">${P.rankingOculto?'Você está escondido do ranking. Seu progresso continua contando só para você.':'Você aparece no ranking como <b style="color:var(--text)">'+esc(nomeCurto(P.nome||contaNome()||'Aluno'))+'</b>, só primeiro nome e a inicial do sobrenome.'}</p>
+      <button class="btn btn-ghost" id="prkx">${P.rankingOculto?'Voltar a aparecer no ranking':'Esconder meu nome do ranking'}</button></div>
     ${P.titulo?'<div class="pf-blk"><h3>Título</h3><p class="dica">Aparece embaixo do seu nome. Escolha na aba Medalhas.</p><button class="btn btn-ghost" id="ptitx">Tirar título</button></div>':''}
     ${souMentor()?`<div class="conta-box ok"><div><b>Você é o mentor desta turma</b><small>veja o progresso de todos os alunos que criaram conta</small></div>
       <div class="conta-acoes"><button class="btn btn-primary" id="pmentor">${IC.trophy} Abrir painel do mentor</button></div></div>`:''}
@@ -6026,6 +6096,11 @@ function openPerfil(aba){
   });
   const bbx=$('#pbannerx'); if(bbx) bbx.addEventListener('click',()=>{ P.banner=null; save(); toast('Banner padrão.'); openPerfil(); });
   const btx=$('#ptitx'); if(btx) btx.addEventListener('click',()=>{ P.titulo=null; save(); openPerfil(); });
+  const brk=$('#prank'); if(brk) brk.addEventListener('click',()=>openRanking('geral'));
+  const brx=$('#prkx'); if(brx) brx.addEventListener('click',()=>{
+    P.rankingOculto=!P.rankingOculto; save(); RANK=null;
+    toast(P.rankingOculto?'Você saiu do ranking.':'Você voltou para o ranking.','mint'); openPerfil();
+  });
   const ps=$('#psalvar');
   if(ps) ps.addEventListener('click',()=>{
     P.nome=($('#pnome').value||'').trim(); save(); agendarSync();
@@ -6052,6 +6127,153 @@ function openPerfil(aba){
   const bp=$('#cprog'); if(bp) bp.addEventListener('click',openProgress);
   scrollTo({top:0,behavior:'auto'});
 }
+
+/* ---------- Ranking da turma e Hall da Fama ----------
+   Os dados vêm da função ranking_alunos() no Supabase, que devolve só nome curto
+   e números (nada de anotações, e-mails ou entregas). */
+let rankAba='geral', RANK=null, RANK_T=0, RANK_P=null;
+function nomeCurto(n){
+  const p=String(n||'').trim().split(/\s+/).filter(Boolean);
+  if(!p.length) return 'Aluno';
+  return p[0].slice(0,16)+(p.length>1?' '+p[p.length-1][0].toUpperCase()+'.':'');
+}
+function rankLimpar(l){
+  const num=(v,max)=>{ v=Math.floor(Number(v)); return isFinite(v)&&v>0?Math.min(v,max):0; };
+  return (Array.isArray(l)?l:[]).slice(0,300).map(r=>({
+    eu:r&&r.eu===true,
+    nome:String((r&&r.nome)||'Aluno').slice(0,24),
+    foto:(r&&fotoValida(r.foto))?r.foto:null,
+    titulo:(r&&typeof r.titulo==='string'&&/^[a-z0-9]{1,20}$/.test(r.titulo))?r.titulo:null,
+    xp:num(r&&r.xp,1e8), aulas:num(r&&r.aulas,1e4), provas:num(r&&r.provas,100), projetos:num(r&&r.projetos,100),
+    medalhas:num(r&&r.medalhas,100), semana:num(r&&r.semana,1e4), ofensiva:num(r&&r.ofensiva,3650),
+    dias:num(r&&r.dias,3650), melhor_tempo:(r&&r.melhor_tempo!=null)?num(r.melhor_tempo,86400)||null:null,
+    formado_em:(r&&typeof r.formado_em==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.formado_em))?r.formado_em:null
+  }));
+}
+function rankCarregar(forcar){
+  if(!forcar&&RANK&&Date.now()-RANK_T<60000) return Promise.resolve(RANK);
+  if(RANK_P) return RANK_P;
+  RANK_P=(async()=>{
+    try{ await sincronizar(true); }catch(e){}
+    const l=await supaFetch('/rest/v1/rpc/ranking_alunos',{method:'POST',body:'{}'});
+    RANK=rankLimpar(l); RANK_T=Date.now(); return RANK;
+  })();
+  RANK_P.then(()=>{ RANK_P=null; },()=>{ RANK_P=null; });
+  return RANK_P;
+}
+function rkAv(r,cls){
+  return r&&r.foto?`<span class="rk-av ${cls||''}"><img src="${r.foto}" alt=""></span>`
+                  :`<span class="rk-av ${cls||''}">${esc(iniciais(r?r.nome:'?'))}</span>`;
+}
+function rkSub(r){
+  const lvl=Math.floor(r.xp/LEVEL_STEP)+1, t=r.titulo?medalhaPorId(r.titulo):null;
+  return patenteDe(lvl).n+' · nível '+lvl+(t?' · '+t.ic+' '+t.n:'');
+}
+function rkPodio(lista,val){
+  const ord=[1,0,2];
+  return `<div class="rk-podio">${ord.map(i=>{
+    const r=lista[i], cls='p'+(i+1);
+    if(!r) return `<div class="rk-pd ${cls} vazio"><span class="rk-av">?</span><span class="rk-nm" style="color:var(--faint)">vaga aberta</span><span class="rk-vl">&nbsp;</span><div class="rk-base">${i+1}</div></div>`;
+    return `<div class="rk-pd ${cls}">${i===0?'<span class="rk-coroa">👑</span>':''}${rkAv(r)}
+      <span class="rk-nm">${esc(r.nome)}</span><span class="rk-vl">${esc(val(r))}</span>${r.eu?'<span class="rk-eu">você</span>':''}
+      <div class="rk-base">${i+1}</div></div>`;
+  }).join('')}</div>`;
+}
+function rkLinha(r,pos,val,un,extra){
+  return `<div class="rk-row ${r.eu?'eu':''} ${extra||''}"><span class="rk-pos">${pos}</span>${rkAv(r)}
+    <span class="rk-id"><b>${esc(r.nome)}${r.eu?'<span class="rk-tag">VOCÊ</span>':''}</b><small>${esc(rkSub(r))}</small></span>
+    <span class="rk-val"><b>${esc(val(r))}</b>${un?`<small>${esc(un)}</small>`:''}</span></div>`;
+}
+function rkClassificacao(lista,val,un,vazio){
+  if(!lista.length) return `<div class="rk-aviso">${vazio}</div>`;
+  const MOSTRA=50, iEu=lista.findIndex(r=>r.eu);
+  let h=rkPodio(lista,val);
+  const resto=lista.slice(3,MOSTRA);
+  if(resto.length) h+=`<div class="rk-lista">${resto.map((r,i)=>rkLinha(r,i+4,val,un)).join('')}</div>`;
+  if(iEu>=MOSTRA) h+=rkLinha(lista[iEu],iEu+1,val,un,'rk-fixo');
+  return h;
+}
+function rkHall(lista){
+  const formados=lista.filter(r=>r.formado_em&&r.provas>=MODULES.length)
+    .sort((a,b)=>a.formado_em.localeCompare(b.formado_em)||b.xp-a.xp);
+  const melhor=(f,menor)=>{
+    let m=null;
+    lista.forEach(r=>{ const v=f(r); if(v==null||v<=0) return; if(!m||(menor?v<f(m):v>f(m))) m=r; });
+    return m;
+  };
+  const recs=[
+    {ic:'🔥', lb:'Maior ofensiva', r:melhor(r=>r.ofensiva), v:r=>plural(r.ofensiva,'dia','dias')},
+    {ic:'⚡', lb:'Prova mais rápida', r:melhor(r=>r.melhor_tempo,true), v:r=>fmtTime(r.melhor_tempo)},
+    {ic:'🏆', lb:'Mais XP', r:melhor(r=>r.xp), v:r=>r.xp+' XP'},
+    {ic:'🏅', lb:'Mais medalhas', r:melhor(r=>r.medalhas), v:r=>String(r.medalhas)},
+    {ic:'📚', lb:'Mais aulas', r:melhor(r=>r.aulas), v:r=>String(r.aulas)},
+    {ic:'📅', lb:'Mais dias de estudo', r:melhor(r=>r.dias), v:r=>plural(r.dias,'dia','dias')}
+  ];
+  const lugar=i=>(i+1)+'º';
+  return `<div class="rk-hall"><div class="sec-h"><h2>🎓 Formados</h2><span class="muted">fecharam a trilha inteira</span></div>
+    ${formados.length?`<div class="rk-lista">${formados.map((r,i)=>`<div class="rk-row ${r.eu?'eu':''}"><span class="rk-pos" style="color:var(--gold)">${lugar(i)}</span>${rkAv(r)}
+      <span class="rk-id"><b>${esc(r.nome)}${r.eu?'<span class="rk-tag">VOCÊ</span>':''}</b><small>formado em ${esc(r.formado_em.split('-').reverse().join('/'))}</small></span>
+      <span class="rk-val"><b>${r.xp}</b><small>XP</small></span></div>`).join('')}</div>`
+      :`<div class="rk-aviso"><b>Ninguém fechou a trilha inteira ainda.</b><br>O primeiro nome que entrar aqui fica marcado como o 1º formado do Encryptando.</div>`}
+    <div class="sec-h"><h2>Recordes</h2><span class="muted">bateu, assumiu o lugar</span></div>
+    <div class="rk-recs">${recs.map(x=>x.r
+      ?`<div class="rk-rec"><span class="ic">${x.ic}</span><span class="lb">${x.lb}</span><span class="vl">${esc(x.v(x.r))}</span>
+          <span class="quem">${rkAv(x.r)}<span>${esc(x.r.nome)}${x.r.eu?' (você)':''}</span></span></div>`
+      :`<div class="rk-rec aberto"><span class="ic" style="filter:grayscale(1);opacity:.5">${x.ic}</span><span class="lb">${x.lb}</span><span class="vl">em aberto</span></div>`).join('')}</div></div>`;
+}
+function rkCorpo(lista){
+  const eu=lista.find(r=>r.eu);
+  let aviso='';
+  if(P.rankingOculto) aviso=`<div class="rk-aviso">Você escolheu <b>não aparecer</b> no ranking. Dá para voltar em Perfil › Editar.</div>`;
+  else if(!eu&&!souMentor()) aviso=`<div class="rk-aviso">Você ainda não aparece aqui. <b>Conclua a primeira aula</b> e o seu nome entra no ranking.</div>`;
+  if(rankAba==='semana'){
+    const sem=lista.filter(r=>r.semana>0).sort((a,b)=>b.semana-a.semana||b.xp-a.xp);
+    return aviso+`<p class="rk-sub" style="margin-top:0">Aulas concluídas desde segunda-feira. Zera toda semana, então todo mundo tem chance.</p>`+
+      rkClassificacao(sem,r=>plural(r.semana,'aula','aulas'),'','<b>Ninguém fez aula nesta semana ainda.</b><br>Uma aula hoje já te coloca no topo.');
+  }
+  if(rankAba==='hall') return rkHall(lista);
+  return aviso+rkClassificacao(lista,r=>r.xp+' XP','XP total','<b>O ranking ainda está vazio.</b><br>Assim que os alunos concluírem a primeira aula, eles aparecem aqui.');
+}
+function openRanking(aba){
+  if(typeof aba==='string') rankAba=aba;
+  const v=$('#view');
+  v.innerHTML=`<div class="pf">
+    <div class="lv-top"><button class="back" id="back">${IC.back} Trilha</button><span class="lv-kicker">Ranking</span></div>
+    <h1 class="lv-title">Ranking da turma</h1>
+    <div class="rk-sub"><span id="rkinfo">Carregando...</span><button class="rk-att" id="rkatt">Atualizar</button></div>
+    <div class="pf-tabs" role="tablist">
+      <button class="pf-tab ${rankAba==='geral'?'on':''}" data-rk="geral" role="tab">Geral</button>
+      <button class="pf-tab ${rankAba==='semana'?'on':''}" data-rk="semana" role="tab">Semana</button>
+      <button class="pf-tab ${rankAba==='hall'?'on':''}" data-rk="hall" role="tab">Hall da Fama</button>
+    </div>
+    <div id="rkcorpo"><div class="rk-skel"></div><div class="rk-skel"></div><div class="rk-skel"></div></div></div>`;
+  $('#back').addEventListener('click',renderHome);
+  v.querySelectorAll('[data-rk]').forEach(b=>b.addEventListener('click',()=>openRanking(b.dataset.rk)));
+  scrollTo({top:0,behavior:'auto'});
+  const corpo=$('#rkcorpo'), info=$('#rkinfo'), att=$('#rkatt');
+  if(!nuvemLigada()||!sessaoValida()){
+    info.textContent='Só para quem tem conta.'; att.hidden=true;
+    corpo.innerHTML=`<div class="rk-aviso"><b>Entre na sua conta para ver o ranking.</b><br>Com conta, o seu progresso vai para a nuvem e o seu nome entra na disputa com a turma.
+      <br><button class="btn btn-primary" id="rkentrar">Entrar ou criar conta</button></div>`;
+    $('#rkentrar').addEventListener('click',openEntrar);
+    return;
+  }
+  att.addEventListener('click',()=>{ RANK=null; openRanking(); });
+  rankCarregar().then(lista=>{
+    if(!document.body.contains(corpo)) return;
+    info.textContent=plural(lista.length,'aluno no ranking','alunos no ranking')+' · atualizado agora';
+    corpo.innerHTML=rkCorpo(lista);
+  }).catch(e=>{
+    if(!document.body.contains(corpo)) return;
+    const faltaSQL=/ranking_alunos|function|schema cache|404/i.test(e.message||'');
+    info.textContent='Não deu para carregar.';
+    corpo.innerHTML=`<div class="rk-aviso">${faltaSQL
+      ?(souMentor()?'<b>Falta ligar o ranking no Supabase.</b><br>Rode o arquivo <code>ranking.sql</code> no SQL Editor do Supabase e toque em Atualizar.'
+                   :'<b>O ranking está sendo preparado.</b><br>Volte daqui a pouco.')
+      :'<b>Sem conexão com o ranking agora.</b><br>Confira a internet e toque em Atualizar.'}</div>`;
+  });
+}
+
 function dataBonita(iso){
   const p=String(iso).split('-'); if(p.length<3) return iso;
   const meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
@@ -6699,6 +6921,7 @@ function rota(){
   if(h==='glossario'||h==='glossário'){ openGloss(); return; }
   if(h==='progresso'){ openProgress(); return; }
   if(h==='perfil'){ openPerfil(); return; }
+  if(h==='ranking'||h==='hall-da-fama'){ openRanking(h==='ranking'?'geral':'hall'); return; }
   if(h==='admin'||h==='painel'||h==='alunos'){ openAdmin(); return; }
   if(h==='entrar'||h==='conta'){ openEntrar(); return; }
   if(h==='esqueci'||h==='esqueci-senha'){ openEsqueci(); return; }
@@ -6729,6 +6952,7 @@ addEventListener('hashchange',rota);
 /* ---------- Boot ---------- */
 sessaoLer();
 if(!P.criado){ P.criado=new Date().toISOString().slice(0,10); save(); }
+document.getElementById('rankBtn').addEventListener('click',()=>openRanking('geral'));
 document.getElementById('perfilBtn').addEventListener('click',()=>{
   if(nuvemLigada()&&!sessaoValida()) openEntrar(); else openPerfil('geral');
 });
