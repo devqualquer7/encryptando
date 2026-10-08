@@ -648,6 +648,137 @@
     .rk-row{gap:9px;padding:9px 10px} .rk-row .rk-av{width:34px;height:34px} .rk-pos{width:22px;font-size:14px}
     .rk-rec{padding:12px 8px} .rk-rec .vl{font-size:18px}
   }
+
+  /* ===== Central do mentor ===== */
+  .adm-atalho{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 18px;padding:14px 16px;border-radius:16px;cursor:pointer;text-align:left;color:var(--text);
+    background:linear-gradient(100deg,rgba(255,207,92,.16),rgba(255,207,92,.04) 60%,var(--surface));border:1px solid rgba(255,207,92,.42)}
+  .adm-atalho .ic{font-size:24px;line-height:1;flex:none}
+  .adm-atalho span{flex:1;min-width:0}
+  .adm-atalho b{display:block;font:800 15px/1.2 var(--display)}
+  .adm-atalho small{display:block;color:var(--muted);font-size:12.5px;margin-top:3px}
+  .adm-atalho i{font-style:normal;color:var(--gold);font-size:22px;line-height:1}
+  .adm-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 16px;color:var(--muted);font-size:13.5px}
+  .adm-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:18px}
+  .adm-kpi{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;min-width:0}
+  .adm-kpi b{display:block;font:800 26px/1.05 var(--display)}
+  .adm-kpi span{display:block;font-size:12.5px;color:var(--muted);margin-top:6px;font-weight:600}
+  .adm-kpi small{display:block;font-size:11.5px;color:var(--faint);margin-top:2px}
+  .adm-kpi.alerta{border-color:rgba(255,90,106,.5);background:linear-gradient(180deg,rgba(255,90,106,.1),var(--surface))}
+  .adm-kpi.alerta b{color:#ff8a96}
+  .adm-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px;min-width:0}
+  .adm-card h3{font:700 15px/1.3 var(--display);margin:0}
+  .adm-card .sub{color:var(--faint);font-size:12px;margin-top:3px}
+  .adm-graf{margin-top:14px}
+  .adm-bars{display:flex;align-items:flex-end;gap:2px;height:120px;border-bottom:1px solid var(--border-strong)}
+  .adm-graf.mini .adm-bars{height:70px}
+  .adm-bar{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;background:none;border:0;padding:0;cursor:pointer;min-width:0;position:relative}
+  .adm-bar i{display:block;width:100%;max-width:24px;height:var(--h);background:var(--violet);border-radius:4px 4px 0 0}
+  .adm-bar.zero i{height:2px;background:var(--surface-3);border-radius:0}
+  .adm-bar.hoje i{background:linear-gradient(180deg,#ff6a5c,var(--violet))}
+  .adm-bar:hover i,.adm-bar.sel i{filter:brightness(1.25)}
+  .adm-bar .bv{font:700 10.5px/1 var(--mono);color:var(--muted);margin-bottom:4px}
+  .adm-eixo{display:flex;justify-content:space-between;font:600 10.5px/1 var(--mono);color:var(--faint);margin-top:6px}
+  .adm-leitura{margin-top:10px;font-size:13px;color:var(--muted);min-height:18px}
+  .adm-leitura b{color:var(--text)}
+  .adm-alertas{display:flex;flex-direction:column;gap:8px}
+  .adm-al{display:flex;align-items:center;gap:11px;width:100%;text-align:left;color:var(--text);background:var(--bg-2);border:1px solid var(--border);
+    border-left:4px solid var(--st);border-radius:12px;padding:11px 12px;cursor:pointer;min-width:0}
+  .adm-al .tx{flex:1;min-width:0}
+  .adm-al b{display:block;font:700 14px/1.25 var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .adm-al small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px;line-height:1.35}
+  .adm-al i{font-style:normal;color:var(--faint);flex:none}
+  .st-travado{--st:#ff5a6a}.st-sumido{--st:#ffb84d}.st-quase{--st:#35d98a}.st-ativo{--st:#35d98a}.st-novo{--st:#847579}.st-ok{--st:#4da3ff}
+  .adm-chip{display:inline-flex;align-items:center;gap:5px;font:700 11px/1 var(--body);padding:5px 9px;border-radius:999px;white-space:nowrap;
+    color:var(--st);background:color-mix(in srgb,var(--st) 14%,transparent);border:1px solid color-mix(in srgb,var(--st) 40%,transparent)}
+  .adm-feed{display:flex;flex-direction:column}
+  .adm-dia{font:700 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin:14px 0 8px}
+  .adm-dia:first-child{margin-top:4px}
+  .adm-ev{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);background:none;border-left:0;border-right:0;border-top:0;
+    color:var(--text);text-align:left;width:100%;cursor:pointer}
+  .adm-ev:last-child{border-bottom:0}
+  .adm-ev .em{font-size:18px;line-height:1.2;flex:none;width:24px;text-align:center}
+  .adm-ev .tx{flex:1;min-width:0;font-size:13.5px;line-height:1.4}
+  .adm-ev .tx small{display:block;color:var(--faint);font-size:11.5px}
+  .adm-av{position:relative;flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font:800 14px/1 var(--display);color:#fff;
+    background:linear-gradient(145deg,var(--violet),#8b1109)}
+  .adm-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+  .adm-av .dot{position:absolute;right:-1px;bottom:-1px;width:13px;height:13px;border-radius:50%;background:var(--st);border:2.5px solid var(--surface)}
+  .adm-busca{display:flex;gap:8px;margin-bottom:10px}
+  .adm-busca input{flex:1;min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);padding:11px 13px;font:500 16px/1.2 var(--body)}
+  .adm-busca select{flex:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);padding:0 10px;font:600 13px/1 var(--body);max-width:44%}
+  .adm-chips{display:flex;gap:7px;overflow-x:auto;margin:0 -2px 14px;padding:2px;scrollbar-width:none}
+  .adm-chips::-webkit-scrollbar{display:none}
+  .adm-chips button{flex:none;border:1px solid var(--border);background:var(--surface);color:var(--muted);font:700 12.5px/1 var(--body);padding:9px 12px;border-radius:999px;cursor:pointer}
+  .adm-chips button.on{background:var(--text);color:#0a0a0c;border-color:transparent}
+  .adm-lista{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+  .adm-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:11px 12px;cursor:pointer;min-width:0}
+  .adm-row:hover{border-color:var(--border-strong)}
+  .adm-row .tx{flex:1;min-width:0}
+  .adm-row .nm{display:flex;align-items:center;gap:7px;min-width:0}
+  .adm-row .nm b{font:700 14.5px/1.25 var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .adm-row small{display:block;color:var(--faint);font-size:12px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .adm-prog{height:6px;border-radius:999px;background:var(--surface-3);overflow:hidden;margin-top:7px}
+  .adm-prog i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--violet),#ff6a5c)}
+  .adm-row .pc{flex:none;text-align:right}
+  .adm-row .pc b{display:block;font:800 16px/1 var(--display)}
+  .adm-row .pc small{margin-top:3px}
+  .adm-vazio{background:var(--surface);border:1px dashed var(--border-strong);border-radius:14px;padding:18px;color:var(--muted);font-size:14px;text-align:center}
+  .adm-nav{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .adm-nav .sp{flex:1}
+  .adm-nav button svg{width:15px;height:15px;flex:none}
+  .adm-nav button{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:8px 12px;font:700 13px/1 var(--body);cursor:pointer}
+  .adm-nav button:disabled{opacity:.35;cursor:default}
+  .adm-ficha-top{display:flex;gap:14px;align-items:center}
+  .adm-ficha-top .adm-av{width:64px;height:64px;font-size:21px}
+  .adm-ficha-top .adm-av .dot{width:16px;height:16px}
+  .adm-ficha-top h1{font:800 22px/1.15 var(--display);margin:0;word-break:break-word}
+  .adm-ficha-top .adm-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+  .adm-linha{color:var(--muted);font-size:13px;margin-top:12px;line-height:1.5}
+  .adm-motivo{margin-top:12px;border-left:4px solid var(--st);background:color-mix(in srgb,var(--st) 10%,var(--bg-2));border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.45}
+  .adm-nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+  .adm-nums div{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:10px 8px;text-align:center;min-width:0}
+  .adm-nums b{display:block;font:800 17px/1.1 var(--display)}
+  .adm-nums span{display:block;font-size:11px;color:var(--faint);margin-top:4px;line-height:1.2}
+  .adm-mods{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+  .adm-mod{display:flex;align-items:center;gap:10px;min-width:0}
+  .adm-mod .n{flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font:800 11px/1 var(--display);background:var(--surface-3);color:var(--muted)}
+  .adm-mod .tx{flex:1;min-width:0}
+  .adm-mod .tx b{display:block;font:600 13px/1.2 var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .adm-mod .adm-prog{margin-top:5px;height:5px}
+  .adm-mod .adm-chip{font-size:10.5px;padding:4px 8px}
+  .adm-acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .adm-card .entregas{margin-top:0}
+  .adm-card textarea{width:100%;min-height:110px;background:var(--bg-2);border:1px solid var(--border);border-radius:12px;color:var(--text);padding:12px;font:400 16px/1.5 var(--body);resize:vertical;margin-top:10px}
+  .adm-salvo{font-size:12px;color:var(--faint);margin-left:8px;font-weight:600}
+  @media (min-width:700px){
+    .adm-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .adm-nums{grid-template-columns:repeat(5,minmax(0,1fr))}
+  }
+  @media (max-width:380px){
+    .adm-kpi b{font-size:22px} .adm-row{gap:10px;padding:10px} .adm-av{width:38px;height:38px;font-size:13px}
+    .adm-busca select{font-size:12px;padding:0 6px}
+  }
+
+  /* ===== @ do aluno ===== */
+  .pf-arroba{font:600 14px/1.2 var(--mono);color:var(--muted);margin-top:4px;word-break:break-all}
+  .pf-arroba button{background:none;border:0;padding:0;color:var(--violet-2);font:inherit;cursor:pointer;text-decoration:underline}
+  .arroba-campo{display:flex;align-items:center;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .arroba-campo:focus-within{border-color:rgba(255,42,31,.5)}
+  .arroba-campo span{padding:0 4px 0 13px;font:700 16px/1 var(--mono);color:var(--faint)}
+  .arroba-campo input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--text);padding:12px 12px 12px 0;font:600 16px/1.2 var(--mono)}
+  .arroba-st{min-height:20px;font-size:13px;margin:8px 0 12px;color:var(--faint)}
+  .arroba-st.ok{color:var(--mint)} .arroba-st.erro{color:var(--danger)}
+  .rk-arr{display:block;font:600 11px/1.2 var(--mono);color:var(--faint);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* ===== Botão flutuante do Discord ===== */
+  .dc-flutua{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;align-items:center;gap:8px;
+    height:54px;min-width:54px;padding:0 15px;border-radius:999px;background:#5865F2;color:#fff;text-decoration:none;font:700 14px/1 var(--body);
+    box-shadow:0 12px 30px -10px rgba(88,101,242,.9),0 0 0 1px rgba(255,255,255,.14) inset;transition:transform .2s,opacity .2s}
+  .dc-flutua svg{width:26px;height:26px;flex:none}
+  .dc-flutua span{display:none}
+  .dc-flutua:hover{transform:translateY(-2px)}
+  .dc-flutua.some{opacity:0;pointer-events:none;transform:translateY(20px)}
+  @media (min-width:900px){ .dc-flutua span{display:inline} }
+  @media (prefers-reduced-motion:reduce){ .dc-flutua{transition:none} }
   /* Foto de perfil */
   .avatar.comfoto,.hbtn .av.comfoto,.aluno-av.comfoto{padding:0;overflow:hidden;background:none}
   .avatar img,.hbtn .av img,.aluno-av img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
@@ -4408,16 +4539,17 @@ function migrarIndices(d){
   return d;
 }
 const XP_LESSON=60, XP_PROVA=240, LEVEL_STEP=300;
+const ARROBA_RE=/^[a-z0-9_][a-z0-9_.]{1,18}[a-z0-9_]$/;
 let P = load();
 
 function load(){
-  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{},criado:null,foto:null,provas:{},banner:null,titulo:null,vitrine:[],medalhas:null,melhorOfensiva:0,rankingOculto:null,v:ESQUEMA};
+  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{},criado:null,foto:null,provas:{},banner:null,titulo:null,vitrine:[],medalhas:null,melhorOfensiva:0,rankingOculto:null,arroba:null,v:ESQUEMA};
   MODULES.forEach(m=>{ base.mods[m.id]={done:[],prova:false,project:false}; });
   try{
     const s=localStorage.getItem(KEY);
     if(s){
       const d=JSON.parse(s);
-      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||''; base.certs=d.certs||{}; base.criado=d.criado||null; base.foto=d.foto||null; base.provas=d.provas||{}; base.banner=d.banner||null; base.melhorOfensiva=d.melhorOfensiva||0; base.rankingOculto=(typeof d.rankingOculto==='boolean')?d.rankingOculto:null; base.titulo=d.titulo||null; base.vitrine=Array.isArray(d.vitrine)?d.vitrine.slice(0,3):[]; base.medalhas=(d.medalhas&&typeof d.medalhas==='object')?d.medalhas:null;
+      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||''; base.certs=d.certs||{}; base.criado=d.criado||null; base.foto=d.foto||null; base.provas=d.provas||{}; base.banner=d.banner||null; base.melhorOfensiva=d.melhorOfensiva||0; base.arroba=(typeof d.arroba==='string'&&ARROBA_RE.test(d.arroba))?d.arroba:null; base.rankingOculto=(typeof d.rankingOculto==='boolean')?d.rankingOculto:null; base.titulo=d.titulo||null; base.vitrine=Array.isArray(d.vitrine)?d.vitrine.slice(0,3):[]; base.medalhas=(d.medalhas&&typeof d.medalhas==='object')?d.medalhas:null;
       base.v=d.v||0;
       MODULES.forEach(m=>{ if(d.mods&&d.mods[m.id]) base.mods[m.id]=Object.assign({done:[],prova:false,project:false},d.mods[m.id]); });
       return migrarIndices(base);
@@ -4899,6 +5031,7 @@ function renderHome(){
     {n:"Fase 3",t:"Marketing Digital",d:"Levar produto e público até o projeto.",m:[9]}
   ];
   let html=`
+    ${(typeof souMentor==='function'&&souMentor())?`<button class="adm-atalho" id="goMentor"><span class="ic">👑</span><span><b>Central do mentor</b><small>alunos, alertas e atividade da turma</small></span><i>›</i></button>`:''}
     <p class="eyebrow">${cm.fase} — Módulo ${cur+1}</p>
     <h1 class="title">${cur===0?'Sua jornada começa pelo <span class="hl">HTML</span>':'Próxima parada: <span class="hl">'+cm.title+'</span>'}</h1>
     <p class="lead">${cm.lead} Aprenda, pratique e prove, uma etapa de cada vez.</p>
@@ -4924,6 +5057,7 @@ function renderHome(){
   html+=`<div class="homefoot"><button class="btn btn-ghost" id="goProg">${IC.clock} Meu progresso</button><button class="btn btn-ghost" id="goGloss">${IC.book} Glossário</button></div>`;
   html+=`<p class="foot"><b>Encryptando</b> — protótipo de plataforma de mentoria.<br>Seu progresso fica salvo neste navegador.</p>`;
   v.innerHTML=html;
+  const gm=$('#goMentor'); if(gm) gm.addEventListener('click',()=>openAdmin('geral'));
 
   v.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>{
     const m=+b.dataset.m, i=+b.dataset.open;
@@ -5634,7 +5768,7 @@ function nuvemLigada(){ return !!(SUPA.url && SUPA.key); }
 /* Sem conta nao se entra: a trilha inteira fica atras do cadastro. */
 function precisaConta(){ return nuvemLigada() && !sessaoValida(); }
 function sessaoValida(){ return !!(SESSAO && SESSAO.access_token); }
-function contaNome(){ return (SESSAO && SESSAO.nome) || P.nome || ''; }
+function contaNome(){ return P.nome || (SESSAO && SESSAO.nome) || ''; }  /* o nome salvo no perfil vale mais que o do login */
 function contaEmail(){ return (SESSAO && SESSAO.email) || ''; }
 
 function sessaoLer(){
@@ -5994,12 +6128,17 @@ function perfilAbaEditar(ctx){
         <span class="fmsg2" id="pfotom">Fica quadrada, 128 pixels, e acompanha a sua conta.</span>
       </div>
     </div>
+    <div class="pf-blk"><h3>Seu @</h3>
+      <p class="dica">Único na turma, como no Instagram. Ninguém mais pode usar o mesmo. No ranking, ele aparece junto do seu nome.</p>
+      ${nuvemLigada()&&sessaoValida()
+        ?`<div class="arroba-campo"><span>@</span><input id="parroba" maxlength="20" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" inputmode="text" placeholder="seu.nome" value="${esc(P.arroba||'')}"></div>
+          <div class="arroba-st" id="parst">${P.arroba?'Esse é o seu @ agora.':'3 a 20 caracteres: letras, números, ponto e _.'}</div>
+          <div class="bn-acoes"><button class="btn btn-primary" id="parsalvar">Salvar @</button>${P.arroba?'<button class="btn btn-ghost" id="parx">Remover @</button>':''}</div>`
+        :`<button class="btn btn-primary" id="parentrar">Entrar na conta para escolher</button>`}</div>
     <div class="pf-blk"><h3>Ranking da turma</h3>
-      <p class="dica">${P.rankingOculto?'Você está escondido do ranking. Seu progresso continua contando só para você.':'Você aparece no ranking como <b style="color:var(--text)">'+esc(nomeCurto(P.nome||contaNome()||'Aluno'))+'</b>, só primeiro nome e a inicial do sobrenome.'}</p>
+      <p class="dica">${P.rankingOculto?'Você está escondido do ranking. Seu progresso continua contando só para você.':'Você aparece no ranking como <b style="color:var(--text)">'+esc(nomeCurto(P.nome||contaNome()||'Aluno'))+'</b>'+(P.arroba?' (@'+esc(P.arroba)+')':'')+', só primeiro nome e a inicial do sobrenome.'}</p>
       <button class="btn btn-ghost" id="prkx">${P.rankingOculto?'Voltar a aparecer no ranking':'Esconder meu nome do ranking'}</button></div>
     ${P.titulo?'<div class="pf-blk"><h3>Título</h3><p class="dica">Aparece embaixo do seu nome. Escolha na aba Medalhas.</p><button class="btn btn-ghost" id="ptitx">Tirar título</button></div>':''}
-    ${souMentor()?`<div class="conta-box ok"><div><b>Você é o mentor desta turma</b><small>veja o progresso de todos os alunos que criaram conta</small></div>
-      <div class="conta-acoes"><button class="btn btn-primary" id="pmentor">${IC.trophy} Abrir painel do mentor</button></div></div>`:''}
     ${conta}`;
 }
 
@@ -6051,6 +6190,7 @@ function openPerfil(aba){
       <div class="pf-corpo">
         <div class="pf-av-wrap">${avatarHTML('avatar',nome)}<span class="pf-lvl" title="Nível ${lvl}">${lvl}</span></div>
         <h1 class="pf-nome">${esc(nome)}</h1>
+        <div class="pf-arroba">${P.arroba?'@'+esc(P.arroba):(nuvemLigada()&&sessaoValida()?'<button id="parir">Escolher meu @</button>':'')}</div>
         <div class="pf-sub">
           <span class="pf-chip rank">${patente.n}</span>
           ${tit?`<span class="pf-chip tit">${tit.ic} ${esc(tit.n)}</span>`:''}
@@ -6065,6 +6205,7 @@ function openPerfil(aba){
         <div class="pf-vit">${slots}</div>
       </div>
     </div>
+    ${souMentor()?`<button class="adm-atalho" id="pmentor"><span class="ic">👑</span><span><b>Central do mentor</b><small>acompanhe cada aluno de perto</small></span><i>›</i></button>`:''}
     <div class="pf-tabs" role="tablist">
       <button class="pf-tab ${perfilAba==='geral'?'on':''}" data-aba="geral" role="tab">Visão geral</button>
       <button class="pf-tab ${perfilAba==='medalhas'?'on':''}" data-aba="medalhas" role="tab">Medalhas <small>${ganhas.length}/${MEDALHAS.length}</small></button>
@@ -6097,6 +6238,45 @@ function openPerfil(aba){
   const bbx=$('#pbannerx'); if(bbx) bbx.addEventListener('click',()=>{ P.banner=null; save(); toast('Banner padrão.'); openPerfil(); });
   const btx=$('#ptitx'); if(btx) btx.addEventListener('click',()=>{ P.titulo=null; save(); openPerfil(); });
   const brk=$('#prank'); if(brk) brk.addEventListener('click',()=>openRanking('geral'));
+  const bpi=$('#parir'); if(bpi) bpi.addEventListener('click',()=>{ openPerfil('editar'); setTimeout(()=>{ const i=$('#parroba'); if(i){ i.scrollIntoView({block:'center'}); i.focus(); } },50); });
+  const bpe=$('#parentrar'); if(bpe) bpe.addEventListener('click',openEntrar);
+  const pai=$('#parroba'), pas=$('#parst'), pab=$('#parsalvar');
+  if(pai){
+    let t, ultimo='';
+    const marca=(txt,c)=>{ pas.textContent=txt; pas.className='arroba-st'+(c?' '+c:''); };
+    pai.addEventListener('input',()=>{
+      const pos=pai.selectionStart, limpo=arrobaLimpar(pai.value);
+      if(limpo!==pai.value){ pai.value=limpo; try{ pai.setSelectionRange(Math.min(pos,limpo.length),Math.min(pos,limpo.length)); }catch(e){} }
+      clearTimeout(t);
+      if(limpo===P.arroba){ marca('Esse é o seu @ agora.','ok'); return; }
+      const prob=arrobaProblema(limpo); if(prob){ marca(prob,limpo?'erro':''); return; }
+      marca('Conferindo...'); ultimo=limpo;
+      t=setTimeout(async()=>{
+        try{
+          const r=await supaFetch('/rest/v1/rpc/arroba_disponivel',{method:'POST',body:JSON.stringify({p_arroba:limpo})});
+          if(ultimo!==limpo) return;
+          (r===true||(Array.isArray(r)&&r[0]===true))?marca('✓ @'+limpo+' está disponível','ok'):marca('✗ @'+limpo+' já está em uso ou é reservado','erro');
+        }catch(e){ marca('Não consegui conferir agora. Tente salvar mesmo assim.'); }
+      },450);
+    });
+    const gravar=async(valor)=>{
+      pab.disabled=true; marca('Salvando...');
+      try{
+        await sincronizar(true);
+        const r=await supaFetch('/rest/v1/rpc/definir_arroba',{method:'POST',body:JSON.stringify({p_arroba:valor})});
+        P.arroba=(typeof r==='string'&&ARROBA_RE.test(r))?r:null; save(); RANK=null; arrobaBuscado=Date.now();
+        toast(P.arroba?'Agora você é @'+P.arroba:'@ removido.','mint'); openPerfil('editar');
+      }catch(e){
+        const m=String(e.message||'');
+        marca(/arroba_|function|schema cache/i.test(m)?'O @ ainda está sendo ligado no servidor. Tente mais tarde.':m,'erro');
+        pab.disabled=false;
+      }
+    };
+    pab.addEventListener('click',()=>{ const v=arrobaLimpar(pai.value), prob=arrobaProblema(v); if(prob){ marca(prob,'erro'); pai.focus(); return; } if(v===P.arroba){ marca('Esse já é o seu @.','ok'); return; } gravar(v); });
+    pai.addEventListener('keydown',e=>{ if(e.key==='Enter') pab.click(); });
+    const pax=$('#parx'); if(pax) pax.addEventListener('click',()=>gravar(''));
+  }
+  arrobaCarregar();
   const brx=$('#prkx'); if(brx) brx.addEventListener('click',()=>{
     P.rankingOculto=!P.rankingOculto; save(); RANK=null;
     toast(P.rankingOculto?'Você saiu do ranking.':'Você voltou para o ranking.','mint'); openPerfil();
@@ -6109,7 +6289,7 @@ function openPerfil(aba){
   const bs=$('#csync'); if(bs) bs.addEventListener('click',()=>sincronizar(false).then(()=>openPerfil()));
   const bo=$('#csair'); if(bo) bo.addEventListener('click',()=>{ contaSair(); toast('Você saiu da conta.'); openPerfil(); });
   const be=$('#centrar'); if(be) be.addEventListener('click',openEntrar);
-  const bm=$('#pmentor'); if(bm) bm.addEventListener('click',openAdmin);
+  const bm=$('#pmentor'); if(bm) bm.addEventListener('click',()=>openAdmin('geral'));
   const bf=$('#pfotob'), fi=$('#pfoto');
   if(bf) bf.addEventListener('click',()=>fi.click());
   if(fi) fi.addEventListener('change',()=>{
@@ -6126,6 +6306,43 @@ function openPerfil(aba){
   });
   const bp=$('#cprog'); if(bp) bp.addEventListener('click',openProgress);
   scrollTo({top:0,behavior:'auto'});
+}
+
+
+/* ---------- @ do aluno (único na turma, garantido pelo banco) ---------- */
+const DISCORD_URL='https://discord.gg/UXMBXBUY28';
+function arrobaLimpar(v){ return String(v||'').toLowerCase().replace(/^@+/,'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9_.]/g,'').slice(0,20); }
+function arrobaProblema(a){
+  if(!a) return 'Digite o @ que você quer.';
+  if(a.length<3) return 'Use pelo menos 3 caracteres.';
+  if(/^\.|\.$/.test(a)) return 'Não pode começar nem terminar com ponto.';
+  if(a.indexOf('..')>=0) return 'Não pode ter dois pontos seguidos.';
+  if(!ARROBA_RE.test(a)) return 'Use só letras minúsculas, números, ponto e _.';
+  return '';
+}
+let arrobaBuscado=0;
+async function arrobaCarregar(){
+  if(!nuvemLigada()||!sessaoValida()||!SESSAO.uid) return;
+  if(Date.now()-arrobaBuscado<60000) return;
+  arrobaBuscado=Date.now();
+  try{
+    const l=await supaFetch('/rest/v1/progresso?id=eq.'+SESSAO.uid+'&select=arroba');
+    const a=(Array.isArray(l)&&l[0]&&typeof l[0].arroba==='string'&&ARROBA_RE.test(l[0].arroba))?l[0].arroba:null;
+    if(Array.isArray(l)&&l.length&&a!==P.arroba){ P.arroba=a; save(); if(document.querySelector('.pf-card')) openPerfil(); }
+  }catch(e){}
+}
+function ligarDiscord(){
+  if(document.getElementById('dcBtn')) return;
+  const p=(typeof PROVEDORES_UI!=='undefined')?PROVEDORES_UI.find(x=>x.id==='discord'):null;
+  const a=document.createElement('a');
+  a.id='dcBtn'; a.className='dc-flutua'; a.href=DISCORD_URL; a.target='_blank'; a.rel='noopener noreferrer';
+  a.setAttribute('aria-label','Entrar na comunidade do Encryptando no Discord'); a.title='Comunidade no Discord';
+  a.innerHTML=(p?p.icone:'')+'<span>Comunidade</span>';
+  document.body.appendChild(a);
+  /* some enquanto o aluno digita (teclado aberto no celular) para não cobrir nada */
+  const campo=el=>el&&(el.tagName==='INPUT'||el.tagName==='TEXTAREA'||el.isContentEditable);
+  document.addEventListener('focusin',e=>{ if(campo(e.target)) a.classList.add('some'); });
+  document.addEventListener('focusout',()=>{ setTimeout(()=>{ if(!campo(document.activeElement)) a.classList.remove('some'); },60); });
 }
 
 /* ---------- Ranking da turma e Hall da Fama ----------
@@ -6147,7 +6364,8 @@ function rankLimpar(l){
     xp:num(r&&r.xp,1e8), aulas:num(r&&r.aulas,1e4), provas:num(r&&r.provas,100), projetos:num(r&&r.projetos,100),
     medalhas:num(r&&r.medalhas,100), semana:num(r&&r.semana,1e4), ofensiva:num(r&&r.ofensiva,3650),
     dias:num(r&&r.dias,3650), melhor_tempo:(r&&r.melhor_tempo!=null)?num(r.melhor_tempo,86400)||null:null,
-    formado_em:(r&&typeof r.formado_em==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.formado_em))?r.formado_em:null
+    formado_em:(r&&typeof r.formado_em==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.formado_em))?r.formado_em:null,
+    arroba:(r&&typeof r.arroba==='string'&&ARROBA_RE.test(r.arroba))?r.arroba:null
   }));
 }
 function rankCarregar(forcar){
@@ -6175,13 +6393,13 @@ function rkPodio(lista,val){
     const r=lista[i], cls='p'+(i+1);
     if(!r) return `<div class="rk-pd ${cls} vazio"><span class="rk-av">?</span><span class="rk-nm" style="color:var(--faint)">vaga aberta</span><span class="rk-vl">&nbsp;</span><div class="rk-base">${i+1}</div></div>`;
     return `<div class="rk-pd ${cls}">${i===0?'<span class="rk-coroa">👑</span>':''}${rkAv(r)}
-      <span class="rk-nm">${esc(r.nome)}</span><span class="rk-vl">${esc(val(r))}</span>${r.eu?'<span class="rk-eu">você</span>':''}
+      <span class="rk-nm">${esc(r.nome)}</span>${r.arroba?`<span class="rk-arr">@${esc(r.arroba)}</span>`:''}<span class="rk-vl">${esc(val(r))}</span>${r.eu?'<span class="rk-eu">você</span>':''}
       <div class="rk-base">${i+1}</div></div>`;
   }).join('')}</div>`;
 }
 function rkLinha(r,pos,val,un,extra){
   return `<div class="rk-row ${r.eu?'eu':''} ${extra||''}"><span class="rk-pos">${pos}</span>${rkAv(r)}
-    <span class="rk-id"><b>${esc(r.nome)}${r.eu?'<span class="rk-tag">VOCÊ</span>':''}</b><small>${esc(rkSub(r))}</small></span>
+    <span class="rk-id"><b>${esc(r.nome)}${r.eu?'<span class="rk-tag">VOCÊ</span>':''}</b><small>${r.arroba?'@'+esc(r.arroba)+' · ':''}${esc(rkSub(r))}</small></span>
     <span class="rk-val"><b>${esc(val(r))}</b>${un?`<small>${esc(un)}</small>`:''}</span></div>`;
 }
 function rkClassificacao(lista,val,un,vazio){
@@ -6605,8 +6823,8 @@ function quandoFoi(iso){
   if(dias<30) return 'há '+Math.floor(dias/7)+' semana'+(dias<14?'':'s');
   return 'há '+Math.floor(dias/30)+' m'+(dias<60?'ês':'eses');
 }
-async function painelConvites(){
-  const v=$('#view');
+async function painelConvites(alvo){
+  const v=alvo||$('#view');
   const caixa=document.createElement('div');
   caixa.id='convwrap';
   caixa.innerHTML=`<div class="sec-h"><h2>Convites</h2><span class="muted">quem pode criar conta</span></div>
@@ -6778,95 +6996,289 @@ function openEsqueci(){
   scrollTo({top:0,behavior:'auto'});
 }
 
-async function openAdmin(){
-  const v=$('#view');
-  v.innerHTML=`<div class="lv-top"><button class="back" id="back">${IC.back} Trilha</button>
-    <span class="lv-kicker" style="color:var(--gold)">Painel do mentor</span></div>
-    <h1 class="lv-title">Meus alunos</h1>
-    <p class="lv-goal" id="admsub">Buscando o progresso de todo mundo...</p>
-    <div id="admlista"></div>`;
-  $('#back').addEventListener('click',renderHome);
-  if(!nuvemLigada()||!sessaoValida()){
-    $('#admsub').textContent='Entre na sua conta para ver o painel.';
-    return;
-  }
-  try{
+/* ---------- Central do mentor ---------- */
+let ADM=null, ADM_P=null, admAba='geral', admFiltro='todos', admBusca='', admOrdem='recente', admLista=[];
+function haQuanto(iso){
+  if(!iso) return 'nunca';
+  const t=new Date(iso).getTime(); if(!isFinite(t)) return 'nunca';
+  const min=Math.round((Date.now()-t)/60000);
+  if(min<2) return 'agora';
+  if(min<60) return 'há '+min+' min';
+  const h=Math.round(min/60); if(h<24) return 'há '+h+' h';
+  const d=Math.round(h/24); if(d===1) return 'ontem';
+  if(d<30) return 'há '+d+' dias';
+  return 'há '+Math.floor(d/30)+' m'+(d<60?'ês':'eses');
+}
+function admStatus(a){
+  const r=a.r, k=a.risco;
+  if(r.aulas===0) return {c:'novo', ic:'🌱', t:'não começou'};
+  if(k.travado) return {c:'travado', ic:'🧱', t:'travado'};
+  if(k.sumido) return {c:'sumido', ic:'💤', t:'sumido '+k.sumido.dias+'d'};
+  if(k.quase) return {c:'quase', ic:'🏁', t:'quase lá'};
+  if(diasSem(r.ultimaAula)<=2) return {c:'ativo', ic:'🔥', t:'estudando'};
+  return {c:'ok', ic:'✔️', t:'em dia'};
+}
+function admChip(st){ return `<span class="adm-chip st-${st.c}">${st.ic} ${esc(st.t)}</span>`; }
+function admAvatar(a,cls){
+  const st=admStatus(a);
+  return `<span class="adm-av st-${st.c} ${cls||''}">${a.foto?`<img src="${a.foto}" alt="">`:esc(iniciais(a.nome))}<span class="dot"></span></span>`;
+}
+function admDiaKey(off){ const d=new Date(); d.setDate(d.getDate()-off); return hojeKey(d); }
+function admSemanaDe(hist){
+  const hoje=new Date(), dia=(hoje.getDay()+6)%7; let n=0;
+  for(let i=0;i<=dia;i++) n+=num((hist||{})[admDiaKey(i)],999);
+  return n;
+}
+async function admCarregar(forcar){
+  if(!forcar&&ADM&&Date.now()-ADM.t<120000) return ADM;
+  if(ADM_P) return ADM_P;
+  ADM_P=(async()=>{
     if(SESSAO.expira && Date.now()>SESSAO.expira-60000) await contaRenovar();
-    const linhas=await supaFetch('/rest/v1/progresso?select=id,nome,dados,atualizado_em&order=atualizado_em.desc');
-    if(!linhas||!linhas.length){
-      $('#admsub').textContent='Nenhum aluno cadastrou conta ainda.';
-      return;
-    }
+    let linhas;
+    try{ linhas=await supaFetch('/rest/v1/progresso?select=id,nome,arroba,dados,atualizado_em&order=atualizado_em.desc'); }
+    catch(e){ if(!/arroba/i.test(e.message||'')) throw e; linhas=await supaFetch('/rest/v1/progresso?select=id,nome,dados,atualizado_em&order=atualizado_em.desc'); }
+    let notas={}; try{ notas=await notasCarregar(); }catch(e){}
     const meu=SESSAO.uid;
-    let notas={};
-    try{ notas=await notasCarregar(); }catch(e){}
-    $('#admsub').textContent=linhas.length+(linhas.length===1?' conta cadastrada.':' contas cadastradas.')+' O progresso chega da nuvem, atualizado.';
-    const resumos=linhas.map(l=>resumoDe(l.dados));
-    const itensRisco=linhas.map((l,i)=>({i:i, nome:(l.nome||resumos[i].nome||'(sem nome)'), pct:resumos[i].pct, r:riscoDe(resumos[i])})).filter(x=>x.r.travado||x.r.sumido||x.r.quase);
-    $('#admlista').innerHTML=painelRisco(itensRisco)+'<div class="sec-h"><h2>Todos os alunos</h2></div>'+linhas.map((l,i)=>{
-      const r=resumos[i];
-      const nome=l.nome||r.nome||'(sem nome)';
-      const eu=l.id===meu;
-      const parado=diasSem(r.ultimaAula)>=DIAS_PARADO && r.aulas>0;
-      return `<div class="aluno${parado?' alerta':''}">
-        <button class="aluno-top" data-ab="${i}">
-          <span class="aluno-av">${esc(iniciais(nome))}</span>
-          <span class="aluno-id"><b>${esc(nome)}${eu?' <span class="tag-eu">você</span>':''}${selo(r)}</b>
-            <small>nível ${r.nivel} · ${r.xp} XP · ofensiva ${r.streak} · última aula ${esc(quandoFoi(r.ultimaAula))}</small></span>
-          <span class="aluno-pct"><b>${r.pct}%</b><small>${r.aulas}/${r.total} aulas</small></span>
-          <span class="aluno-seta">${IC.arrow}</span>
-        </button>
-        <div class="aluno-det" id="ad-${i}" hidden>
-          <div class="miniprog grande"><i style="width:${r.pct}%"></i></div>
-          <div class="aluno-nums">
-            <span><b>${r.provas}/${MODULES.length}</b>provas</span>
-            <span><b>${r.projetos}</b>projetos</span>
-            <span><b>${r.dias}</b>dias de estudo</span>
-            <span><b>${r.notas}</b>anotações</span>
-            <span><b>${r.erros}</b>a revisar</span>
-          </div>
-          <table class="tab-mod"><thead><tr><th>Módulo</th><th>Aulas</th><th>Prova</th><th>Tempo</th></tr></thead><tbody>
-          ${r.porMod.map((m,j)=>`<tr class="${m.prova?'ok':''}"><td>${j+1}. ${esc(m.titulo)}</td>
-            <td>${m.feitas}/${m.de}</td><td>${m.prova?'passou':(m.feitas>=m.de?'liberada':'—')}</td>
-            <td>${m.tProva==null?'—':fmtTime(m.tProva)}</td></tr>`).join('')}
-          </tbody></table>
-          ${painelEntregas(r,i)}
-          <div class="nota-mentor">
-            <label for="nm-${i}"><b>Minhas anotações sobre ${esc(nome)}</b><span>só você vê</span><span class="salvo" id="nms-${i}"></span></label>
-            <textarea id="nm-${i}" data-aluno="${esc(l.id)}" placeholder="Onde travou, o que mandar, o que combinar na próxima conversa...">${esc(notas[l.id]||'')}</textarea>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
-    v.querySelectorAll('[data-ab]').forEach(b=>b.addEventListener('click',()=>{
-      const d=$('#ad-'+b.dataset.ab);
-      d.hidden=!d.hidden;
-      b.classList.toggle('aberto',!d.hidden);
-    }));
-    v.querySelectorAll('[data-ir]').forEach(b=>b.addEventListener('click',()=>{
-      const i=b.dataset.ir, top=v.querySelector('[data-ab="'+i+'"]'), d=$('#ad-'+i);
-      if(!top||!d) return;
-      if(d.hidden){ d.hidden=false; top.classList.add('aberto'); }
-      top.scrollIntoView({behavior:'smooth',block:'start'});
-    }));
-    ligarEntregas(v);
-    v.querySelectorAll('.nota-mentor textarea').forEach((ta,i)=>{
-      let t;
-      ta.addEventListener('input',()=>{
-        clearTimeout(t);
-        const av=$('#nms-'+i); if(av) av.textContent='salvando...';
-        t=setTimeout(()=>{
-          notaGravar(ta.dataset.aluno,ta.value)
-            .then(()=>{ if(av){ av.textContent='salvo'; setTimeout(()=>{av.textContent='';},2200); } })
-            .catch(e=>{ if(av) av.textContent='não salvou: '+e.message; });
-        },900);
-      });
+    const alunos=(Array.isArray(linhas)?linhas:[]).map(l=>{
+      const d=(l.dados&&typeof l.dados==='object')?l.dados:{};
+      const r=resumoDe(d);
+      const hist=(d.hist&&typeof d.hist==='object'&&!Array.isArray(d.hist))?d.hist:{};
+      const med=(d.medalhas&&typeof d.medalhas==='object'&&!Array.isArray(d.medalhas))?d.medalhas:{};
+      return {id:String(l.id), nome:String(l.nome||r.nome||'(sem nome)').slice(0,60), eu:l.id===meu, r, risco:riscoDe(r),
+        arroba:(typeof l.arroba==='string'&&ARROBA_RE.test(l.arroba))?l.arroba:null,
+        foto:fotoValida(d.foto)?d.foto:null, visto:l.atualizado_em||null, hist, medalhas:med,
+        criado:(typeof d.criado==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d.criado))?d.criado:null,
+        semana:admSemanaDe(hist), medalhasN:Object.keys(med).length};
     });
-    await painelConvites();
-  }catch(e){
-    $('#admsub').innerHTML='Não consegui buscar: '+esc(e.message)+
-      '<br><span class="hint">Se a mensagem fala de permissão, falta rodar no Supabase a política que deixa o mentor ler todas as linhas.</span>';
+    ADM={alunos, notas, t:Date.now()};
+    return ADM;
+  })();
+  ADM_P.then(()=>{ ADM_P=null; },()=>{ ADM_P=null; });
+  return ADM_P;
+}
+function admGrafico(hists,dias,mini){
+  const vals=[];
+  for(let i=dias-1;i>=0;i--){
+    const k=admDiaKey(i); let n=0;
+    hists.forEach(h=>{ n+=num((h||{})[k],999); });
+    vals.push({k,n,off:i});
   }
+  const max=Math.max(1,...vals.map(v=>v.n)), iMax=vals.findIndex(v=>v.n===max&&v.n>0);
+  const rot=v=>v.off===0?'hoje':v.k.slice(8,10)+'/'+v.k.slice(5,7);
+  const nomeDia=v=>{ const d=new Date(v.k+'T12:00:00'); return v.off===0?'Hoje':v.off===1?'Ontem':['dom','seg','ter','qua','qui','sex','sáb'][d.getDay()]+' '+rot(v); };
+  const bars=vals.map((v,j)=>`<button class="adm-bar ${v.n?'':'zero'} ${v.off===0?'hoje':''}" style="--h:${Math.round(v.n/max*100)}%"
+      data-lt="${esc(nomeDia(v))}" data-ln="${v.n}" aria-label="${esc(nomeDia(v))}: ${plural(v.n,'aula','aulas')}">
+      ${(j===iMax||v.off===0)&&v.n?`<span class="bv">${v.n}</span>`:''}<i></i></button>`).join('');
+  const total=vals.reduce((a,v)=>a+v.n,0);
+  return `<div class="adm-graf ${mini?'mini':''}">
+    <div class="adm-bars">${bars}</div>
+    <div class="adm-eixo"><span>${esc(rot(vals[0]))}</span><span>${esc(rot(vals[Math.floor(dias/2)]))}</span><span>hoje</span></div>
+    <div class="adm-leitura">Total no período: <b>${plural(total,'aula','aulas')}</b>. Toque numa barra para ver o dia.</div></div>`;
+}
+function admLigarGrafico(raiz){
+  raiz.querySelectorAll('.adm-graf').forEach(g=>{
+    const lt=g.querySelector('.adm-leitura');
+    g.querySelectorAll('.adm-bar').forEach(b=>{
+      const mostra=()=>{ g.querySelectorAll('.adm-bar.sel').forEach(x=>x.classList.remove('sel')); b.classList.add('sel');
+        lt.innerHTML=esc(b.dataset.lt)+': <b>'+plural(+b.dataset.ln,'aula concluída','aulas concluídas')+'</b>'; };
+      b.addEventListener('click',mostra); b.addEventListener('mouseenter',mostra); b.addEventListener('focus',mostra);
+    });
+  });
+}
+function admEventos(alunos){
+  const ev=[], limite=admDiaKey(13);
+  alunos.forEach(a=>{
+    a.r.entregas.forEach(e=>{ if(e.quando) ev.push({t:e.quando, a, em:e.rotulo==='Projeto'?'🧱':'📝',
+      txt:(e.primeira?'entregou ':'refez ')+(e.rotulo==='Projeto'?'o projeto':'a prova')+' do módulo '+e.mod, det:e.titulo+' · '+fmtTime(e.segundos), hora:true}); });
+    Object.keys(a.hist).forEach(k=>{ const n=num(a.hist[k],999); if(n&&/^\d{4}-\d{2}-\d{2}$/.test(k)&&k>=limite) ev.push({t:k+'T12:00:00', a, em:'📚', txt:'concluiu '+plural(n,'aula','aulas'), det:''}); });
+    Object.keys(a.medalhas).forEach(id=>{ const dt=String(a.medalhas[id]||''), m=medalhaPorId(id); if(m&&/^\d{4}-\d{2}-\d{2}$/.test(dt)&&dt>=limite) ev.push({t:dt+'T12:00:01', a, em:m.ic, txt:'ganhou a medalha '+m.n, det:RARIDADES[m.r].n}); });
+    if(a.criado&&a.criado>=limite) ev.push({t:a.criado+'T11:59:00', a, em:'👋', txt:'entrou no Encryptando', det:''});
+  });
+  ev.sort((x,y)=>String(y.t).localeCompare(String(x.t)));
+  return ev.slice(0,40);
+}
+function admRotuloDia(t){
+  const d=new Date(t); if(!isFinite(d.getTime())) return '';
+  const k=hojeKey(d);
+  if(k===admDiaKey(0)) return 'Hoje'; if(k===admDiaKey(1)) return 'Ontem';
+  return ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'][d.getDay()]+' · '+k.slice(8,10)+'/'+k.slice(5,7);
+}
+function admGeral(alunos){
+  const turma=alunos.filter(a=>!a.eu);
+  if(!turma.length) return `<div class="adm-vazio">Nenhum aluno criou conta ainda. Gere um convite na aba <b>Convites</b> e mande o link.</div>`;
+  const ativos=turma.filter(a=>diasSem(a.r.ultimaAula)<=6).length;
+  const semana=turma.reduce((n,a)=>n+a.semana,0);
+  const atencao=turma.filter(a=>a.risco.travado||a.risco.sumido);
+  const quase=turma.filter(a=>a.risco.quase&&!a.risco.travado&&!a.risco.sumido);
+  const media=Math.round(turma.reduce((n,a)=>n+a.r.pct,0)/turma.length);
+  const kpis=`<div class="adm-kpis">
+    <div class="adm-kpi"><b>${turma.length}</b><span>Alunos</span><small>progresso médio ${media}%</small></div>
+    <div class="adm-kpi"><b>${ativos}</b><span>Ativos na semana</span><small>de ${turma.length} · fizeram aula em 7 dias</small></div>
+    <div class="adm-kpi"><b>${semana}</b><span>Aulas nesta semana</span><small>desde segunda-feira</small></div>
+    <div class="adm-kpi ${atencao.length?'alerta':''}"><b>${atencao.length}</b><span>${atencao.length?'⚠️ ':''}Precisam de você</span><small>travados ou sumidos</small></div></div>`;
+  const alerta=(a)=>{
+    const st=admStatus(a), k=a.risco;
+    const motivo=k.travado?k.travado.motivo:(k.sumido?'sem aula há '+k.sumido.dias+' dias · '+a.r.pct+'% do curso':'faltam '+plural(k.quase.faltam,'aula','aulas')+' para terminar');
+    return `<button class="adm-al st-${st.c}" data-ver="${esc(a.id)}">${admAvatar(a)}<span class="tx"><b>${esc(a.nome)}</b><small>${admChip(st)} ${esc(motivo)}</small></span><i>›</i></button>`;
+  };
+  const ordemRisco=atencao.sort((x,y)=>(y.risco.travado?2:0)-(x.risco.travado?2:0)||((y.risco.sumido||{}).dias||0)-((x.risco.sumido||{}).dias||0));
+  const alertas=ordemRisco.concat(quase);
+  const ev=admEventos(turma);
+  let dia='', feed='';
+  ev.forEach(e=>{
+    const d=admRotuloDia(e.t);
+    if(d!==dia){ dia=d; feed+=`<div class="adm-dia">${esc(d)}</div>`; }
+    const hora=e.hora?(()=>{ const x=new Date(e.t); return String(x.getHours()).padStart(2,'0')+':'+String(x.getMinutes()).padStart(2,'0'); })():'';
+    feed+=`<button class="adm-ev" data-ver="${esc(e.a.id)}"><span class="em">${e.em}</span><span class="tx"><b>${esc(e.a.nome)}</b> ${esc(e.txt)}
+      ${e.det||hora?`<small>${esc([hora,e.det].filter(Boolean).join(' · '))}</small>`:''}</span></button>`;
+  });
+  return kpis+`
+    <div class="adm-card"><h3>Aulas concluídas pela turma</h3><div class="sub">últimos 14 dias, somando todos os alunos</div>
+      ${admGrafico(turma.map(a=>a.hist),14)}</div>
+    <div class="adm-card"><h3>Precisam de você agora</h3><div class="sub">travados e sumidos primeiro, depois quem está quase terminando</div>
+      <div class="adm-alertas" style="margin-top:12px">${alertas.length?alertas.map(alerta).join(''):'<div class="adm-vazio">Tudo em dia. Ninguém travado nem sumido.</div>'}</div></div>
+    <div class="adm-card"><h3>Atividade recente</h3><div class="sub">aulas, provas, projetos e medalhas dos últimos 14 dias</div>
+      <div class="adm-feed" style="margin-top:6px">${feed||'<div class="adm-vazio" style="margin-top:10px">Nada nos últimos 14 dias.</div>'}</div></div>`;
+}
+function admFiltrar(alunos){
+  const q=norm(admBusca||'');
+  let l=alunos.filter(a=>!q||norm(a.nome).indexOf(q)>=0||(a.arroba&&a.arroba.indexOf(q.replace(/^@/,''))>=0));
+  const f={
+    todos:()=>true,
+    atencao:a=>!a.eu&&(a.risco.travado||a.risco.sumido),
+    ativos:a=>diasSem(a.r.ultimaAula)<=6,
+    quase:a=>!!a.risco.quase,
+    novos:a=>a.r.aulas===0
+  }[admFiltro]||(()=>true);
+  l=l.filter(f);
+  const ord={
+    recente:(x,y)=>String(y.visto||'').localeCompare(String(x.visto||'')),
+    progresso:(x,y)=>y.r.pct-x.r.pct||y.r.xp-x.r.xp,
+    xp:(x,y)=>y.r.xp-x.r.xp,
+    parado:(x,y)=>diasSem(y.r.ultimaAula)-diasSem(x.r.ultimaAula),
+    nome:(x,y)=>x.nome.localeCompare(y.nome,'pt-BR')
+  }[admOrdem]||(()=>0);
+  return l.sort(ord);
+}
+function admAlunos(alunos){
+  const turma=alunos.filter(a=>!a.eu);
+  const cont={todos:alunos.length, atencao:turma.filter(a=>a.risco.travado||a.risco.sumido).length,
+    ativos:alunos.filter(a=>diasSem(a.r.ultimaAula)<=6).length, quase:alunos.filter(a=>a.risco.quase).length, novos:alunos.filter(a=>a.r.aulas===0).length};
+  const chips=[['todos','Todos'],['atencao','⚠️ Precisam de você'],['ativos','🔥 Ativos'],['quase','🏁 Quase lá'],['novos','🌱 Não começaram']];
+  admLista=admFiltrar(alunos);
+  const linhas=admLista.map(a=>{
+    const st=admStatus(a), lvl=a.r.nivel;
+    return `<button class="adm-row" data-ver="${esc(a.id)}">${admAvatar(a)}
+      <span class="tx"><span class="nm"><b>${esc(a.nome)}</b>${a.eu?'<span class="tag-eu">você</span>':admChip(st)}</span>
+        <div class="adm-prog"><i style="width:${a.r.pct}%"></i></div>
+        <small>${a.arroba?'@'+esc(a.arroba)+' · ':''}nível ${lvl} · última aula ${esc(quandoFoi(a.r.ultimaAula))} · visto ${esc(haQuanto(a.visto))}</small></span>
+      <span class="pc"><b>${a.r.pct}%</b><small>${a.r.aulas}/${a.r.total}</small></span></button>`;
+  }).join('');
+  return `<div class="adm-busca"><input id="admq" type="search" placeholder="Buscar por nome ou @" value="${esc(admBusca)}" autocomplete="off">
+      <select id="admord" aria-label="Ordenar">
+        <option value="recente" ${admOrdem==='recente'?'selected':''}>Visto por último</option>
+        <option value="progresso" ${admOrdem==='progresso'?'selected':''}>Mais avançados</option>
+        <option value="xp" ${admOrdem==='xp'?'selected':''}>Mais XP</option>
+        <option value="parado" ${admOrdem==='parado'?'selected':''}>Mais tempo parado</option>
+        <option value="nome" ${admOrdem==='nome'?'selected':''}>Nome (A–Z)</option>
+      </select></div>
+    <div class="adm-chips">${chips.map(c=>`<button class="${admFiltro===c[0]?'on':''}" data-fil="${c[0]}">${c[1]} ${cont[c[0]]}</button>`).join('')}</div>
+    <div class="adm-lista" id="admlista">${linhas||'<div class="adm-vazio">Ninguém com esse filtro.</div>'}</div>`;
+}
+function openAdmin(aba){
+  if(typeof aba==='string') admAba=aba;
+  const v=$('#view');
+  v.innerHTML=`<div class="pf">
+    <div class="lv-top"><button class="back" id="back">${IC.back} Trilha</button><span class="lv-kicker" style="color:var(--gold)">Painel do mentor</span></div>
+    <h1 class="lv-title">👑 Central do mentor</h1>
+    <div class="adm-top"><span id="admsub">Buscando o progresso da turma...</span><button class="rk-att" id="admatt">Atualizar</button></div>
+    <div class="pf-tabs" role="tablist">
+      <button class="pf-tab ${admAba==='geral'?'on':''}" data-adm="geral" role="tab">Visão geral</button>
+      <button class="pf-tab ${admAba==='alunos'?'on':''}" data-adm="alunos" role="tab">Alunos</button>
+      <button class="pf-tab ${admAba==='convites'?'on':''}" data-adm="convites" role="tab">Convites</button>
+    </div>
+    <div id="admcorpo"><div class="rk-skel"></div><div class="rk-skel"></div><div class="rk-skel"></div></div></div>`;
+  $('#back').addEventListener('click',renderHome);
+  v.querySelectorAll('[data-adm]').forEach(b=>b.addEventListener('click',()=>openAdmin(b.dataset.adm)));
+  scrollTo({top:0,behavior:'auto'});
+  const corpo=$('#admcorpo'), sub=$('#admsub');
+  if(!nuvemLigada()||!sessaoValida()){ sub.textContent='Entre na sua conta para ver o painel.'; corpo.innerHTML=''; $('#admatt').hidden=true; return; }
+  if(!souMentor()){ sub.textContent='Este painel é só para o mentor da turma.'; corpo.innerHTML=''; $('#admatt').hidden=true; return; }
+  $('#admatt').addEventListener('click',()=>{ ADM=null; openAdmin(); });
+  if(admAba==='convites'){ sub.textContent='Códigos para criar conta.'; corpo.innerHTML=''; painelConvites(corpo); return; }
+  admCarregar().then(d=>{
+    if(!document.body.contains(corpo)) return;
+    const n=d.alunos.filter(a=>!a.eu).length;
+    sub.textContent=plural(n,'aluno','alunos')+' · atualizado '+haQuanto(new Date(d.t).toISOString());
+    corpo.innerHTML=admAba==='alunos'?admAlunos(d.alunos):admGeral(d.alunos);
+    corpo.querySelectorAll('[data-ver]').forEach(b=>b.addEventListener('click',()=>openAdminAluno(b.dataset.ver)));
+    admLigarGrafico(corpo);
+    const q=$('#admq');
+    if(q){
+      let t; q.addEventListener('input',()=>{ clearTimeout(t); t=setTimeout(()=>{ admBusca=q.value; const pos=q.selectionStart; openAdmin(); const q2=$('#admq'); if(q2){ q2.focus(); try{ q2.setSelectionRange(pos,pos); }catch(e){} } },250); });
+      $('#admord').addEventListener('change',e=>{ admOrdem=e.target.value; openAdmin(); });
+      corpo.querySelectorAll('[data-fil]').forEach(b=>b.addEventListener('click',()=>{ admFiltro=b.dataset.fil; openAdmin(); }));
+    }
+  }).catch(e=>{
+    if(!document.body.contains(corpo)) return;
+    sub.textContent='Não consegui buscar.';
+    corpo.innerHTML=`<div class="adm-vazio">${esc(e.message)}<br><span class="hint">Se a mensagem fala de permissão, falta a política no Supabase que deixa o mentor ler todas as linhas.</span></div>`;
+  });
+}
+function openAdminAluno(id){
+  if(!ADM){ openAdmin('alunos'); return; }
+  const a=ADM.alunos.find(x=>x.id===id); if(!a){ openAdmin('alunos'); return; }
+  const ordem=(admAba==='alunos'&&admLista.length?admLista:admFiltrar(ADM.alunos)).map(x=>x.id);
+  const pos=ordem.indexOf(id), ant=pos>0?ordem[pos-1]:null, prox=pos>=0&&pos<ordem.length-1?ordem[pos+1]:null;
+  const r=a.r, st=admStatus(a), lvl=r.nivel, k=a.risco;
+  const motivo=k.travado?'🧱 <b>Travado:</b> '+esc(k.travado.motivo):k.sumido?'💤 <b>Sumido:</b> sem abrir uma aula há '+k.sumido.dias+' dias.':k.quase?'🏁 <b>Quase lá:</b> faltam '+plural(k.quase.faltam,'aula','aulas')+' para terminar.':'';
+  const nums=[[r.pct+'%','progresso'],[r.aulas+'/'+r.total,'aulas'],[r.provas+'/'+MODULES.length,'provas'],[r.projetos,'projetos'],[r.xp,'XP'],
+    [r.streak+'d','ofensiva'],[r.dias,'dias de estudo'],[a.medalhasN,'medalhas'],[r.notas,'anotações'],[r.erros,'a revisar']];
+  const mods=r.porMod.map((m,j)=>{
+    const pct=m.de?Math.round(m.feitas/m.de*100):0;
+    const est=m.prova?{c:'ativo',t:'✔ passou'+(m.tProva!=null?' · '+fmtTime(m.tProva):'')}
+      :m.feitas>=m.de&&m.de>0?{c:'sumido',t:'prova liberada'}:m.feitas>0?{c:'ok',t:'em andamento'}:{c:'novo',t:'—'};
+    return `<div class="adm-mod"><span class="n">${j+1}</span><span class="tx"><b>${esc(m.titulo)}</b><div class="adm-prog"><i style="width:${pct}%"></i></div></span>
+      <span class="adm-chip st-${est.c}">${esc(est.t)}</span></div>`;
+  }).join('');
+  const resumo=`${a.nome} · ${r.pct}% do curso (${r.aulas}/${r.total} aulas) · ${r.provas}/${MODULES.length} provas · nível ${lvl} · ofensiva de ${r.streak} dia(s) · última aula ${quandoFoi(r.ultimaAula)}`;
+  const v=$('#view');
+  v.innerHTML=`<div class="pf">
+    <div class="adm-nav"><button id="admvolta">${IC.back} Alunos</button><span class="sp"></span>
+      <button id="admant" ${ant?'':'disabled'} aria-label="Aluno anterior">‹</button><span style="font:700 12px/1 var(--mono);color:var(--faint)">${pos>=0?(pos+1)+'/'+ordem.length:''}</span>
+      <button id="admprox" ${prox?'':'disabled'} aria-label="Próximo aluno">›</button></div>
+    <div class="adm-card">
+      <div class="adm-ficha-top">${admAvatar(a)}<div style="min-width:0"><h1>${esc(a.nome)}${a.eu?' <span class="tag-eu">você</span>':''}</h1>${a.arroba?`<div class="pf-arroba">@${esc(a.arroba)}</div>`:''}
+        <div class="adm-meta">${admChip(st)}<span class="adm-chip st-ok">${esc(patenteDe(lvl).n)} · nível ${lvl}</span></div></div></div>
+      <div class="adm-linha">Visto por último <b>${esc(haQuanto(a.visto))}</b> · última aula <b>${esc(quandoFoi(r.ultimaAula))}</b>${a.criado?' · estuda desde '+esc(a.criado.split('-').reverse().join('/')):''}</div>
+      ${motivo?`<div class="adm-motivo st-${st.c}">${motivo}</div>`:''}
+      <div class="adm-nums">${nums.map(n=>`<div><b>${esc(String(n[0]))}</b><span>${esc(n[1])}</span></div>`).join('')}</div>
+      <div class="adm-acoes"><button class="btn btn-ghost" id="admcop">Copiar resumo</button></div>
+    </div>
+    <div class="adm-card"><h3>Aulas por dia</h3><div class="sub">últimos 14 dias</div>${admGrafico([a.hist],14,true)}</div>
+    <div class="adm-card"><h3>Módulos</h3><div class="sub">aulas feitas e situação da prova de cada módulo</div><div class="adm-mods">${mods}</div></div>
+    <div class="adm-card">${painelEntregas(r,0)}</div>
+    <div class="adm-card"><h3>Minhas anotações sobre ${esc(a.nome)}<span class="adm-salvo" id="admns"></span></h3><div class="sub">só você vê · salva sozinho</div>
+      <textarea id="admnota" placeholder="Onde travou, o que mandar, o que combinar na próxima conversa...">${esc(ADM.notas[a.id]||'')}</textarea></div>
+  </div>`;
+  scrollTo({top:0,behavior:'auto'});
+  $('#admvolta').addEventListener('click',()=>openAdmin(admAba==='geral'?'geral':'alunos'));
+  if(ant) $('#admant').addEventListener('click',()=>openAdminAluno(ant));
+  if(prox) $('#admprox').addEventListener('click',()=>openAdminAluno(prox));
+  admLigarGrafico(v); ligarEntregas(v);
+  $('#admcop').addEventListener('click',()=>{
+    const ta=document.createElement('textarea'); ta.value=resumo; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); let ok=false; try{ ok=document.execCommand('copy'); }catch(e){} ta.remove();
+    if(ok) toast('Resumo copiado.','mint'); else if(navigator.clipboard) navigator.clipboard.writeText(resumo).then(()=>toast('Resumo copiado.','mint'),()=>{});
+  });
+  const nt=$('#admnota'), av=$('#admns'); let t;
+  nt.addEventListener('input',()=>{
+    clearTimeout(t); av.textContent='salvando...';
+    t=setTimeout(()=>{
+      notaGravar(a.id,nt.value).then(()=>{ ADM.notas[a.id]=nt.value; av.textContent='salvo'; setTimeout(()=>{ av.textContent=''; },2200); })
+        .catch(e=>{ av.textContent='não salvou: '+e.message; });
+    },900);
+  });
 }
 
 /* ---------- Rotas por endereço (#) ---------- */
@@ -6922,7 +7334,8 @@ function rota(){
   if(h==='progresso'){ openProgress(); return; }
   if(h==='perfil'){ openPerfil(); return; }
   if(h==='ranking'||h==='hall-da-fama'){ openRanking(h==='ranking'?'geral':'hall'); return; }
-  if(h==='admin'||h==='painel'||h==='alunos'){ openAdmin(); return; }
+  if(h==='admin'||h==='painel'||h==='mentor'){ openAdmin('geral'); return; }
+  if(h==='alunos'){ openAdmin('alunos'); return; }
   if(h==='entrar'||h==='conta'){ openEntrar(); return; }
   if(h==='esqueci'||h==='esqueci-senha'){ openEsqueci(); return; }
   if(h==='senha-nova'){ openSenhaNova(); return; }
@@ -6959,6 +7372,7 @@ document.getElementById('perfilBtn').addEventListener('click',()=>{
 rota();
 renderHeader();
 try{ verificarMedalhas(); }catch(e){}
+try{ ligarDiscord(); }catch(e){}
 if(nuvemLigada()&&sessaoValida()) sincronizar(true);
 </script>
 
