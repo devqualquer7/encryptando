@@ -3,8 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>if(window.top!==window.self){try{window.top.location=window.self.location;}catch(e){document.documentElement.style.display="none";}}</script>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src * data: blob:; media-src * data: blob:; connect-src 'self' https://jlpfykeorpzlejqbczzi.supabase.co; frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com; object-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Encryptando — aprenda a programar do zero, escrevendo código de verdade</title>
-<meta name="description" content="Curso prático de programação e marketing digital do zero ao avançado. 9 módulos, 72 aulas e provas que corrigem na hora — direto no navegador, sem instalar nada.">
+<meta name="description" content="Curso prático de programação e marketing digital do zero ao avançado. 10 módulos, 80 aulas e provas que corrigem na hora — direto no navegador, sem instalar nada.">
 <link rel="canonical" href="https://encryptando.encryptedgroup.com/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="enCrypteD — Encrypted Group LTDA">
@@ -14,7 +18,7 @@
 <meta property="og:locale" content="pt_BR">
 <meta property="og:url" content="https://encryptando.encryptedgroup.com/">
 <meta property="og:title" content="Encryptando — aprenda a programar do zero, escrevendo código de verdade">
-<meta property="og:description" content="Curso prático de programação e marketing digital do zero ao avançado. 9 módulos, 72 aulas e provas que corrigem na hora — direto no navegador, sem instalar nada.">
+<meta property="og:description" content="Curso prático de programação e marketing digital do zero ao avançado. 10 módulos, 80 aulas e provas que corrigem na hora — direto no navegador, sem instalar nada.">
 <meta property="og:image" content="https://encryptando.encryptedgroup.com/og.png">
 <meta property="og:image:secure_url" content="https://encryptando.encryptedgroup.com/og.png">
 <meta property="og:image:type" content="image/png">
@@ -24,7 +28,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Encryptando — aprenda a programar do zero, escrevendo código de verdade">
-<meta name="twitter:description" content="Curso prático de programação e marketing digital do zero ao avançado. 9 módulos, 72 aulas e provas que corrigem na hora — direto no navegador, sem instalar nada.">
+<meta name="twitter:description" content="Curso prático de programação e marketing digital do zero ao avançado. 10 módulos, 80 aulas e provas que corrigem na hora — direto no navegador, sem instalar nada.">
 <meta name="twitter:image" content="https://encryptando.encryptedgroup.com/og.png">
 <meta name="twitter:image:alt" content="Encryptando — a escola prática da enCrypteD.">
 
@@ -51,7 +55,7 @@
     {
       "@type": "Course",
       "name": "Encryptando — programação e marketing digital do zero ao avançado",
-      "description": "Curso prático de programação e marketing digital do zero ao avançado. 9 módulos, 72 aulas e provas que corrigem na hora — direto no navegador, sem instalar nada.",
+      "description": "Curso prático de programação e marketing digital do zero ao avançado. 10 módulos, 80 aulas e provas que corrigem na hora — direto no navegador, sem instalar nada.",
       "url": "https://encryptando.encryptedgroup.com/",
       "inLanguage": "pt-BR",
       "isAccessibleForFree": true,
@@ -504,6 +508,20 @@
   @media (pointer:coarse){ .btn-social{min-height:46px} }
   /* Painel do mentor */
   .aluno{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:10px;overflow:hidden}
+  .risco{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 22px}
+  .risco-col{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 14px 10px;min-height:120px}
+  .risco-col h3{margin:0 0 2px;font-size:14px;display:flex;align-items:center;gap:8px}
+  .risco-col h3 i{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .risco-col .rs{display:block;font-size:12px;color:var(--muted);margin-bottom:10px}
+  .risco-col.travado h3 i{background:#ff2a1f}.risco-col.sumido h3 i{background:#ffcf5c}.risco-col.quase h3 i{background:#39ff88}
+  .risco-item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);color:var(--text);border-radius:11px;padding:9px 11px;margin-bottom:7px;cursor:pointer;font-family:inherit;transition:border-color .2s,background .2s}
+  .risco-item:hover{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.06)}
+  .risco-item .av{width:30px;height:30px;border-radius:50%;background:#1d1d24;display:grid;place-items:center;font-size:11px;font-weight:800;flex:none}
+  .risco-item b{display:block;font-size:13px;line-height:1.2}
+  .risco-item small{display:block;font-size:11.5px;color:var(--muted);line-height:1.3}
+  .risco-vazio{font-size:12.5px;color:var(--muted);padding:6px 2px}
+  .risco-n{margin-left:auto;font-size:11px;font-weight:800;color:var(--muted);background:rgba(255,255,255,.06);border-radius:999px;padding:2px 8px}
+  @media (max-width:860px){ .risco{grid-template-columns:1fr} }
   .aluno-top{display:flex;align-items:center;gap:13px;width:100%;background:none;border:0;color:var(--text);
     padding:14px 16px;cursor:pointer;text-align:left;font:inherit}
   .aluno-top:hover{background:rgba(255,255,255,.03)}
@@ -758,6 +776,16 @@
   .mission.ok{border-color:rgba(57,255,136,.6);background:rgba(57,255,136,.08);box-shadow:0 0 22px -8px rgba(57,255,136,.7)}
   .mission.ok .mi{background:#39ff88;border-color:#39ff88;color:#04231b}
   .mission.ok .ms{color:#39ff88}
+  .mission{flex-wrap:wrap}
+  .mission .pista{flex:none;border:1px solid rgba(255,207,92,.45);background:rgba(255,207,92,.08);color:#ffcf5c;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:inherit;transition:background .2s,border-color .2s}
+  .mission .pista:hover{background:rgba(255,207,92,.16);border-color:#ffcf5c}
+  .mission.ok .pista,.mission.ok .dica{display:none}
+  .mission .dica{flex-basis:100%;margin-top:4px;padding:10px 12px;border-radius:10px;background:rgba(255,207,92,.07);border:1px dashed rgba(255,207,92,.4);font-size:13px;line-height:1.5;color:#f4f4f6;font-weight:500}
+  .mission .dica[hidden]{display:none}
+  .mission .dica .dn{display:inline-block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#ffcf5c;margin-right:6px}
+  .mission .dica code{background:rgba(0,0,0,.35);padding:1px 6px;border-radius:6px;font-family:var(--mono);font-size:12px;color:#ffe29a}
+  .mission .dica pre{margin:8px 0 0;padding:10px;border-radius:8px;background:#0a0a0b;border:1px solid rgba(255,255,255,.08);font-family:var(--mono);font-size:12px;line-height:1.5;color:#cfcfe0;white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto}
+  .mission .dica + .dica{margin-top:6px}
   .pop{animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
   @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
   .live-tag{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:#39ff88;letter-spacing:.03em}
@@ -4271,7 +4299,7 @@ function shuffled(n){
 
 
 /* ---------- Helpers ---------- */
-function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function fmt(v){
   if(typeof v==='string') return v;
   if(typeof v==='undefined') return 'undefined';
@@ -4293,7 +4321,7 @@ function renderHeader(){
   const av=$('#perfilAv');
   if(av){
     const nome=(typeof contaNome==='function'?contaNome():P.nome)||'';
-    if(P.foto){ av.classList.add('comfoto'); av.innerHTML='<img src="'+P.foto+'" alt="">'; }
+    if(P.foto&&fotoValida(P.foto)){ av.classList.add('comfoto'); av.textContent=''; const im=document.createElement('img'); im.alt=''; im.src=P.foto; av.appendChild(im); }
     else { av.classList.remove('comfoto'); av.textContent=nome?iniciais(nome):'?'; }
     const rot=$('#perfilNome');
     if(rot) rot.textContent=nome?nome.trim().split(/\s+/)[0]:'Perfil';
@@ -4414,7 +4442,7 @@ function openReview(){
 }
 
 /* ---------- Editor com cores, numeração e fechamento de tags ---------- */
-function esc2(s){ return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function esc2(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function sp(cls,txt){ return '<span class="t-'+cls+'">'+txt+'</span>'; }
 const ENT=/^&(lt|gt|amp);/;
 
@@ -5037,7 +5065,9 @@ const LEVELS=[
   {max:1,name:'Perfeita',c:'#39ff88'}
 ];
 function levelFor(r){ return LEVELS.find(l=>r<=l.max)||LEVELS[LEVELS.length-1]; }
-function fmtTime(s){ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+function num(x,max){ const n=Number(x); return Number.isFinite(n)?Math.max(0,Math.min(max==null?1e9:max,Math.trunc(n))):0; }
+function fotoValida(f){ return typeof f==='string' && f.length<400000 && /^data:image\/(jpeg|jpg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(f); }
+function fmtTime(s){ s=num(s); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
 function sparkle(el){
   if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const r=el.getBoundingClientRect();
@@ -5113,7 +5143,7 @@ function openProva(m,proj){
           <div class="meter-top"><span class="meter-title">Força da sua ${kind==='js'?'solução':(isTerm?'entrega':(isAds?'campanha':'página'))}</span><span class="meter-level" id="mLevel">Vazia</span><span class="meter-count" id="mCount">0/${total}</span></div>
           <div class="meter-bars">${'<i></i>'.repeat(total)}</div>
         </div>
-        <div class="missions">${labels.map((l,i)=>`<div class="mission" id="ms-${i}"><span class="mi">${i+1}</span><span class="ml">${esc(l)}<small class="mx" id="mx-${i}"></small></span><span class="ms">Falta</span></div>`).join('')}</div>
+        <div class="missions">${labels.map((l,i)=>`<div class="mission" id="ms-${i}"><span class="mi">${i+1}</span><span class="ml">${esc(l)}<small class="mx" id="mx-${i}"></small></span><span class="ms">Falta</span><button type="button" class="pista" id="pb-${i}" aria-controls="dk-${i}">Pista</button><div class="dica" id="dk-${i}" hidden></div></div>`).join('')}</div>
         ${isAds?adsBox(pv):isTerm?`<div id="termwrap">${termBox('prova')}</div>`:`<div class="play">
           <div class="play-h"><span class="dots"><i></i><i></i><i></i></span><span class="fn">${kind==='css'?'estilo.html':(kind==='html'?'apresentacao.html':(kind==='dom'?'pagina.html':(kind==='api'?'catalogo.html':(kind==='ia'?'alunos.html':'prova.js'))))}</span>
             ${live?'<span class="live-tag"><i></i>correção ao vivo</span>':`<button class="btn btn-run run" id="runp">${IC.play} Rodar testes</button>`}</div>
@@ -5135,8 +5165,54 @@ function openProva(m,proj){
       </aside>
     </div>`;
 
-  let termState=null, resets=0, runs=0, colagens=0;
+  let termState=null, resets=0, runs=0, colagens=0, dicasUsadas=0;
   const ed=$('#edp');
+  /* ---- Pistas progressivas: 3 camadas por missao, so enquanto ela esta em "Falta" ---- */
+  const nivelDica=labels.map(()=>0);
+  const aulaRelacionada=(label)=>{
+    const pal=String(label).toLowerCase().replace(/[^a-z0-9à-ú ]/g,' ').split(/\s+/).filter(w=>w.length>=4);
+    let melhor=null, nota=-1;
+    (mod.lessons||[]).forEach(l=>{
+      const txt=((l.title||'')+' '+(l.goal||'')).toLowerCase();
+      let n=0; pal.forEach(w=>{ if(txt.indexOf(w)>=0) n++; });
+      if(n>nota){ nota=n; melhor=l; }
+    });
+    return melhor||(mod.lessons||[])[(mod.lessons||[]).length-1]||null;
+  };
+  const gerarDica=(i,nivel)=>{
+    const autoral=pv.dicas&&pv.dicas[i]&&pv.dicas[i][nivel-1];
+    if(autoral) return '<span class="dn">Pista '+nivel+'</span>'+esc(autoral);
+    const label=labels[i];
+    if(nivel===1){
+      const det=($('#mx-'+i)||{}).textContent||'';
+      let t='<span class="dn">Pista 1</span>A prova confere exatamente isto: <b>'+esc(label)+'</b>. Leia a frase de novo, devagar, e procure no seu '+(isTerm?'terminal':(isAds?'formulário':'código'))+' o pedaço que faz isso.';
+      if(det) t+=' Agora está assim: <code>'+esc(det)+'</code>.';
+      if(!live&&pv.cases&&pv.cases[i]) t+=' A entrada é <code>'+esc(JSON.stringify(pv.cases[i].args[0]))+'</code> e a resposta esperada é <code>'+esc(String(pv.cases[i].exp))+'</code>.';
+      return t;
+    }
+    if(nivel===2){
+      const falta=[...document.querySelectorAll('.cola .tagchip:not(.ok)')].map(e=>e.textContent.trim()).filter(Boolean).slice(0,6);
+      if(falta.length) return '<span class="dn">Pista 2</span>Olhe a cola ao lado: estas peças ainda <b>não aparecem</b> no que você fez — '+falta.map(f=>'<code>'+esc(f)+'</code>').join(', ')+'. Quase sempre o que falta está aí.';
+      return '<span class="dn">Pista 2</span>Todas as peças da cola já estão no seu código. Então o problema não é o que falta, é <b>onde</b> ou <b>como</b> você usou: confira a ordem, se abriu e fechou certo, e se o nome está escrito igualzinho.';
+    }
+    const l=aulaRelacionada(label);
+    if(!l) return '<span class="dn">Pista 3</span>Volte na aula do módulo que fala sobre isso e compare com o exemplo de lá.';
+    let t='<span class="dn">Pista 3</span>Isso foi ensinado na aula <b>'+esc(l.title)+'</b>'+(l.goal?' — '+esc(String(l.goal).replace(/[.。]\s*$/,'')):'')+'.';
+    if(l.tip) t+=' '+esc(l.tip);
+    if(l.code){ const ex=String(l.code).split('\n').slice(0,14).join('\n'); t+='<pre>'+esc(ex)+(String(l.code).split('\n').length>14?'\n…':'')+'</pre>'; }
+    return t;
+  };
+  labels.forEach((_,i)=>{
+    const b=$('#pb-'+i), box=$('#dk-'+i); if(!b||!box) return;
+    b.addEventListener('click',()=>{
+      if(nivelDica[i]>=3) return;
+      nivelDica[i]++; dicasUsadas++;
+      const d=document.createElement('div'); d.className='dica'; d.innerHTML=gerarDica(i,nivelDica[i]);
+      box.hidden=false; box.appendChild(d);
+      b.textContent=nivelDica[i]>=3?'Sem mais pistas':'Mais uma pista';
+      if(nivelDica[i]>=3) b.disabled=true;
+    });
+  });
   if(ed) ed.addEventListener('paste',()=>{ colagens++; });
   if(isAds){ /* os campos do gerenciador se ligam mais abaixo */ }
   else if(isTerm){
@@ -5218,7 +5294,7 @@ function openProva(m,proj){
     const texto=entregaTexto(pv,tipo,{valores:isAds?adsValores(pv):null,
       hist:isTerm?termState.hist:null, codigo:(!isAds&&!isTerm&&ed)?ed.value:''});
     finishProva(m,$('#pstatus'),elapsed(),proj,{tipo:tipo,missoes:total,
-      recomecos:resets,rodadas:runs,colagens:colagens,entrega:texto});
+      recomecos:resets,rodadas:runs,colagens:colagens,dicas:dicasUsadas,entrega:texto});
   });
   $('#reset').addEventListener('click',()=>{
     resets++;
@@ -5275,9 +5351,9 @@ function entregasDe(dados){
         if(!r) return;
         fora.push({
           mod:j+1, modulo:mod.title, rotulo:par[1], titulo:pv.title,
-          quando:r.quando||'', segundos:r.segundos||0, tipo:r.tipo||'',
-          missoes:r.missoes||0, recomecos:r.recomecos||0, rodadas:r.rodadas||0,
-          colagens:r.colagens||0, primeira:r.primeira!==false, entrega:String(r.entrega||'')
+          quando:String(r.quando||'').slice(0,40), segundos:num(r.segundos), tipo:String(r.tipo||'').slice(0,12),
+          missoes:num(r.missoes,999), recomecos:num(r.recomecos,999), rodadas:num(r.rodadas,9999),
+          colagens:num(r.colagens,9999), dicas:num(r.dicas,999), primeira:r.primeira!==false, entrega:String(r.entrega||'').slice(0,ENTREGA_CHARS)
         });
       });
     });
@@ -5308,6 +5384,7 @@ function painelEntregas(r,i){
           <span class="${e.recomecos?'aviso':''}"><b>${e.recomecos}</b>recomeços</span>
           ${e.tipo==='js'?`<span><b>${e.rodadas}</b>rodadas de teste</span>`:''}
           <span class="${e.colagens?'aviso':''}"><b>${e.colagens}</b>colagens</span>
+          <span class="${e.dicas>=3?'aviso':''}"><b>${e.dicas}</b>pistas</span>
           <span><b>${entregaLinhas(e.entrega)}</b>linhas</span>
         </div>
         <div class="ent-cabeca">
@@ -5346,7 +5423,7 @@ function finishProva(m,status,secs,proj,info){
   if(record) P.best[bkey]=secs;
   if(info) provaRegistrar(bkey,{quando:new Date().toISOString(), segundos:secs, primeira:first,
     tipo:info.tipo||'', missoes:info.missoes||0, recomecos:info.recomecos||0,
-    rodadas:info.rodadas||0, colagens:info.colagens||0,
+    rodadas:info.rodadas||0, colagens:info.colagens||0, dicas:info.dicas||0,
     entrega:String(info.entrega||'').slice(0,ENTREGA_CHARS)});
   if(first){ if(proj) ST(m).project=true; else ST(m).prova=true; P.xp+=xp; bumpStreak(); }
   save(); renderHeader(); confetti(true);
@@ -5486,7 +5563,7 @@ function fundirProgresso(nuvem){
   if(errosLa.length){ P.errors=(P.errors||[]).concat(errosLa); mudou=true; }
   if(!P.nome&&nuvem.nome){ P.nome=nuvem.nome; mudou=true; }
   if(nuvem.criado&&(!P.criado||nuvem.criado<P.criado)){ P.criado=nuvem.criado; mudou=true; }
-  if(!P.foto&&nuvem.foto){ P.foto=nuvem.foto; mudou=true; }
+  if(!P.foto&&nuvem.foto&&fotoValida(nuvem.foto)){ P.foto=nuvem.foto; mudou=true; }
   P.provas=P.provas||{};
   Object.keys(nuvem.provas||{}).forEach(k=>{
     const minhas=P.provas[k]||[], tenho=new Set(minhas.map(r=>r&&r.quando));
@@ -5863,21 +5940,19 @@ function linkConvite(codigo){
 async function conviteLivre(codigo){
   const c=String(codigo||'').trim().toUpperCase();
   if(!c) return {ok:false, erro:'Digite o código do convite.'};
-  const linhas=await supaFetch('/rest/v1/convites?select=codigo,usado_por,para&codigo=eq.'+encodeURIComponent(c));
-  if(!linhas||!linhas.length) return {ok:false, erro:'Esse código não existe. Confira com quem te convidou.'};
-  if(linhas[0].usado_por) return {ok:false, erro:'Esse convite já foi usado.'};
-  return {ok:true, convite:linhas[0]};
+  /* RPC: a tabela convites nao e mais legivel pela API; so o codigo exato responde. */
+  const r=await supaFetch('/rest/v1/rpc/convite_livre',{method:'POST', body:JSON.stringify({p_codigo:c})});
+  const l=Array.isArray(r)?r[0]:r;
+  if(!l||!l.existe) return {ok:false, erro:'Esse código não existe. Confira com quem te convidou.'};
+  if(l.usado) return {ok:false, erro:'Esse convite já foi usado.'};
+  return {ok:true, convite:{codigo:c, para:l.para||''}};
 }
 async function carimbarConvite(){
   let c='';
   try{ c=localStorage.getItem(CONVITE_KEY)||''; }catch(e){}
   if(!c||!sessaoValida()) return;
   try{
-    await supaFetch('/rest/v1/convites?codigo=eq.'+encodeURIComponent(c)+'&usado_por=is.null',{
-      method:'PATCH',
-      headers:{'Prefer':'return=minimal'},
-      body:JSON.stringify({usado_por:SESSAO.uid, usado_em:new Date().toISOString()})
-    });
+    await supaFetch('/rest/v1/rpc/carimbar_convite',{method:'POST', body:JSON.stringify({p_codigo:c})});
     try{ localStorage.removeItem(CONVITE_KEY); }catch(e){}
   }catch(e){}
 }
@@ -5918,6 +5993,50 @@ function souMentor(){
   const e=(contaEmail()||'').toLowerCase().trim();
   return !!e && MENTOR_EMAILS.indexOf(e)>=0;
 }
+/* ---------- Quem precisa do mentor agora ---------- */
+const RISCO_RECOMECOS=3, RISCO_TENTATIVAS=3, RISCO_PISTAS=3, QUASE_PCT=80;
+function riscoDe(r){
+  const fora={travado:null, sumido:null, quase:null};
+  /* travado: muitas tentativas / recomeços / pistas na mesma prova, ou prova liberada e parada */
+  const porProva={};
+  (r.entregas||[]).forEach(e=>{
+    const k=e.mod+'|'+e.rotulo; const g=porProva[k]=porProva[k]||{n:0,rec:0,pis:0,titulo:e.titulo,rotulo:e.rotulo,mod:e.mod};
+    g.n++; g.rec=Math.max(g.rec,e.recomecos||0); g.pis=Math.max(g.pis,e.dicas||0);
+  });
+  let pior=null, peso=0;
+  Object.values(porProva).forEach(g=>{
+    const w=(g.n>=RISCO_TENTATIVAS?2:0)+(g.rec>=RISCO_RECOMECOS?2:0)+(g.pis>=RISCO_PISTAS?1:0);
+    if(w>peso){ peso=w; pior=g; }
+  });
+  if(pior){
+    const m=[]; if(pior.n>=RISCO_TENTATIVAS) m.push(pior.n+' tentativas'); if(pior.rec>=RISCO_RECOMECOS) m.push('recomeçou '+pior.rec+'x'); if(pior.pis>=RISCO_PISTAS) m.push(pior.pis+' pistas');
+    fora.travado={motivo:pior.rotulo.toLowerCase()+' do módulo '+pior.mod+' — '+m.join(', '), peso:peso};
+  } else {
+    const dias=diasSem(r.ultimaAula);
+    const lib=(r.porMod||[]).find(m=>m.feitas>=m.de&&m.de>0&&!m.prova);
+    if(lib&&dias>=3) fora.travado={motivo:'prova do módulo '+((r.porMod||[]).indexOf(lib)+1)+' liberada há dias e não feita', peso:1};
+  }
+  /* sumido: parou de estudar */
+  const d=diasSem(r.ultimaAula);
+  if(r.aulas>0&&d>=DIAS_PARADO) fora.sumido={dias:d};
+  /* quase lá: perto de terminar */
+  if(r.pct>=QUASE_PCT&&r.pct<100) fora.quase={faltam:(r.total||0)-(r.aulas||0)};
+  return fora;
+}
+function painelRisco(itens){
+  const col=(cls,titulo,sub,lista,txt)=>`<div class="risco-col ${cls}"><h3><i></i>${titulo}<span class="risco-n">${lista.length}</span></h3><span class="rs">${sub}</span>
+    ${lista.length?lista.map(x=>`<button class="risco-item" data-ir="${x.i}"><span class="av">${esc(iniciais(x.nome))}</span><span><b>${esc(x.nome)}</b><small>${esc(txt(x))}</small></span></button>`).join(''):'<div class="risco-vazio">Ninguém aqui agora. Bom sinal.</div>'}
+  </div>`;
+  const trav=itens.filter(x=>x.r.travado).sort((a,b)=>b.r.travado.peso-a.r.travado.peso);
+  const sum=itens.filter(x=>x.r.sumido&&!x.r.travado).sort((a,b)=>b.r.sumido.dias-a.r.sumido.dias);
+  const qua=itens.filter(x=>x.r.quase).sort((a,b)=>a.r.quase.faltam-b.r.quase.faltam);
+  return `<div class="sec-h"><h2>Precisam de você agora</h2><span class="muted">calculado do progresso de cada um</span></div>
+  <div class="risco">
+    ${col('travado','Travados','erram na mesma prova ou pararam nela',trav,x=>x.r.travado.motivo)}
+    ${col('sumido','Sumidos','sem abrir uma aula há '+DIAS_PARADO+'+ dias',sum,x=>'parado há '+x.r.sumido.dias+' dias · '+x.pct+'% do curso')}
+    ${col('quase','Quase lá','faltam poucas aulas para terminar',qua,x=>'faltam '+x.r.quase.faltam+' aula'+(x.r.quase.faltam===1?'':'s')+' · '+x.pct+'%')}
+  </div>`;
+}
 function resumoDe(dados){
   const d=dados||{}, mods=d.mods||{}, best=d.best||{};
   let aulas=0, provas=0, projetos=0, total=0;
@@ -5932,9 +6051,9 @@ function resumoDe(dados){
       tProjeto:(best[mod.id+'-proj']==null?null:best[mod.id+'-proj'])};
   });
   return {
-    nome:d.nome||'', xp:d.xp||0, streak:d.streak||0,
+    nome:String(d.nome||'').slice(0,120), xp:num(d.xp), streak:num(d.streak),
     aulas, total, provas, projetos,
-    nivel:Math.floor((d.xp||0)/LEVEL_STEP)+1,
+    nivel:Math.floor(num(d.xp)/LEVEL_STEP)+1,
     pct: total?Math.round(aulas/total*100):0,
     notas:Object.keys(d.notes||{}).filter(k=>(d.notes[k]||'').trim()).length,
     erros:(d.errors||[]).length,
@@ -6149,8 +6268,10 @@ async function openAdmin(){
     let notas={};
     try{ notas=await notasCarregar(); }catch(e){}
     $('#admsub').textContent=linhas.length+(linhas.length===1?' conta cadastrada.':' contas cadastradas.')+' O progresso chega da nuvem, atualizado.';
-    $('#admlista').innerHTML=linhas.map((l,i)=>{
-      const r=resumoDe(l.dados);
+    const resumos=linhas.map(l=>resumoDe(l.dados));
+    const itensRisco=linhas.map((l,i)=>({i:i, nome:(l.nome||resumos[i].nome||'(sem nome)'), pct:resumos[i].pct, r:riscoDe(resumos[i])})).filter(x=>x.r.travado||x.r.sumido||x.r.quase);
+    $('#admlista').innerHTML=painelRisco(itensRisco)+'<div class="sec-h"><h2>Todos os alunos</h2></div>'+linhas.map((l,i)=>{
+      const r=resumos[i];
       const nome=l.nome||r.nome||'(sem nome)';
       const eu=l.id===meu;
       const parado=diasSem(r.ultimaAula)>=DIAS_PARADO && r.aulas>0;
@@ -6188,6 +6309,12 @@ async function openAdmin(){
       const d=$('#ad-'+b.dataset.ab);
       d.hidden=!d.hidden;
       b.classList.toggle('aberto',!d.hidden);
+    }));
+    v.querySelectorAll('[data-ir]').forEach(b=>b.addEventListener('click',()=>{
+      const i=b.dataset.ir, top=v.querySelector('[data-ab="'+i+'"]'), d=$('#ad-'+i);
+      if(!top||!d) return;
+      if(d.hidden){ d.hidden=false; top.classList.add('aberto'); }
+      top.scrollIntoView({behavior:'smooth',block:'start'});
     }));
     ligarEntregas(v);
     v.querySelectorAll('.nota-mentor textarea').forEach((ta,i)=>{
