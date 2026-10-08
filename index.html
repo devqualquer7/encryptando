@@ -489,6 +489,100 @@
   .linkcard small{display:block;color:var(--faint);font-size:12px;margin-top:2px;line-height:1.4}
   .linkcard .lk-go{flex:none;color:var(--faint)}
   .linkcard .lk-go svg{width:15px;height:15px}
+
+  /* ===== Perfil v3: banner, patente, medalhas, abas ===== */
+  .pf{--card:var(--surface)}
+  .pf-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin:8px 0 16px}
+  .pf-banner{position:relative;height:132px;background-color:#1a0705;background-size:cover;background-position:center}
+  .pf-banner::after{content:"";position:absolute;inset:auto 0 0 0;height:56px;background:linear-gradient(180deg,transparent,rgba(10,10,12,.55))}
+  .pf-banner-btn{position:absolute;right:12px;top:12px;z-index:2;display:inline-flex;align-items:center;gap:6px;
+    background:rgba(10,10,12,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;
+    border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:7px 12px;font:700 12px/1 var(--body);cursor:pointer}
+  .pf-banner-btn svg{width:14px;height:14px}
+  .pf-corpo{padding:0 18px 18px;position:relative}
+  .pf-av-wrap{position:relative;width:92px;height:92px;margin-top:-46px;z-index:2}
+  .pf-av-wrap .avatar{width:92px;height:92px;font-size:32px;border:4px solid var(--card);
+    box-shadow:0 0 0 3px var(--rk,#ff2a1f),0 10px 28px -8px var(--rk,#ff2a1f)}
+  .pf-av-wrap .avatar:not(.comfoto){background:linear-gradient(145deg,var(--violet),#8b1109)}
+  .pf-lvl{position:absolute;right:-6px;bottom:-2px;min-width:30px;height:30px;padding:0 7px;border-radius:999px;display:grid;place-items:center;
+    background:var(--rk,#ff2a1f);color:#0a0a0c;font:800 13px/1 var(--display);border:3px solid var(--card)}
+  .pf-nome{font:800 24px/1.15 var(--display);letter-spacing:-.02em;margin:12px 0 2px;word-break:break-word}
+  .pf-sub{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+  .pf-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;font:700 12px/1 var(--body);
+    background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted)}
+  .pf-chip.rank{color:var(--rk);border-color:color-mix(in srgb,var(--rk) 45%,transparent);background:color-mix(in srgb,var(--rk) 12%,transparent)}
+  .pf-chip.tit{color:var(--gold);border-color:rgba(255,207,92,.38);background:rgba(255,207,92,.09)}
+  .pf-desde{color:var(--faint);font-size:12.5px;margin-top:10px}
+  .pf-xp{margin-top:16px}
+  .pf-xp-top{display:flex;justify-content:space-between;gap:10px;font:700 12.5px/1.2 var(--body);color:var(--muted);margin-bottom:7px}
+  .pf-xp-top b{color:var(--text)}
+  .pf-bar{height:10px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden}
+  .pf-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--rk,#ff2a1f),#ffcf5c);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+  .pf-vit-h{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 9px;font:700 12px/1 var(--mono);color:var(--faint);letter-spacing:.06em;text-transform:uppercase}
+  .pf-vit{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+  .vit-slot{min-height:108px;border-radius:14px;border:1px dashed var(--border-strong);background:rgba(255,255,255,.025);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;text-align:center;color:var(--faint);font-size:11.5px;line-height:1.25;min-width:0}
+  .vit-slot.has{border-style:solid;background:linear-gradient(180deg,color-mix(in srgb,var(--rc) 14%,transparent),rgba(255,255,255,.02));border-color:color-mix(in srgb,var(--rc) 50%,transparent);color:var(--text)}
+  .vit-slot b{font:700 12px/1.2 var(--display);overflow-wrap:anywhere}
+  .vit-slot .vi{font-size:28px;line-height:1}
+  .pf-tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:5px;margin:0 0 18px}
+  .pf-tab{flex:1;border:0;background:none;color:var(--muted);font:700 13.5px/1 var(--body);padding:11px 8px;border-radius:10px;cursor:pointer;display:flex;gap:6px;align-items:center;justify-content:center}
+  .pf-tab.on{background:linear-gradient(135deg,var(--violet),#c00d08);color:#fff;box-shadow:0 6px 18px -8px rgba(255,42,31,.9)}
+  .pf-tab small{font:700 11px/1 var(--mono);opacity:.85}
+  .pf-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:6px}
+  .pf-mini div{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center;min-width:0}
+  .pf-mini b{display:block;font:800 20px/1.1 var(--display);color:var(--gold)}
+  .pf-mini span{display:block;font-size:11.5px;color:var(--faint);margin-top:5px;line-height:1.2}
+  .pf-next{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:6px;display:flex;flex-direction:column;gap:12px}
+  .nx{display:flex;gap:12px;align-items:center}
+  .nx .mb{flex:none}
+  .nx .tx{min-width:0;flex:1}
+  .nx b{display:block;font:700 14px/1.25 var(--display)}
+  .nx small{display:block;color:var(--faint);font-size:12px;margin-top:2px}
+  .mbar{height:6px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:7px}
+  .mbar i{display:block;height:100%;border-radius:inherit;background:var(--rc,#b6a9ad)}
+  /* medalha (emblema) */
+  .mb{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:23px;line-height:1;
+    background:linear-gradient(145deg,color-mix(in srgb,var(--rc) 30%,#0a0a0c),color-mix(in srgb,var(--rc) 8%,#0a0a0c));
+    border:1.5px solid color-mix(in srgb,var(--rc) 70%,transparent);box-shadow:0 6px 18px -8px var(--rc)}
+  .mb.off{filter:grayscale(1) brightness(.55);box-shadow:none;border-color:var(--border)}
+  .mb.off span{opacity:.55}
+  .r-comum{--rc:#aab4c0}.r-rara{--rc:#4da3ff}.r-epica{--rc:#b36bff}.r-lendaria{--rc:#ffcf5c}
+  .mb.r-lendaria:not(.off){background:linear-gradient(145deg,#6b4a00,#2a1d00);animation:brilho 3.2s ease-in-out infinite}
+  @keyframes brilho{0%,100%{box-shadow:0 6px 18px -8px #ffcf5c}50%{box-shadow:0 0 22px -2px #ffcf5c}}
+  @media (prefers-reduced-motion:reduce){.mb.r-lendaria{animation:none}}
+  .mfiltros{display:flex;gap:7px;overflow-x:auto;margin:0 -2px 14px;padding:2px;scrollbar-width:none}
+  .mfiltros::-webkit-scrollbar{display:none}
+  .mf{flex:none;border:1px solid var(--border);background:var(--surface);color:var(--muted);font:700 12.5px/1 var(--body);padding:9px 13px;border-radius:999px;cursor:pointer}
+  .mf.on{color:#0a0a0c;background:var(--rc,#f6eef0);border-color:transparent}
+  .mgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:26px}
+  .mcard{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 10px 12px;min-width:0}
+  .mcard.on{border-color:color-mix(in srgb,var(--rc) 45%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--rc) 12%,transparent),var(--card) 70%)}
+  .mcard .mb{width:54px;height:54px;font-size:27px;border-radius:16px;margin-bottom:9px}
+  .mcard .tx{min-width:0;width:100%}
+  .mcard b{display:block;font:700 14px/1.25 var(--display);overflow-wrap:anywhere}
+  .mcard .rar{display:inline-block;font:700 10px/1 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--rc);margin-top:5px}
+  .mcard p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.4}
+  .mcard .mbar{margin-top:9px}
+  .macoes{display:flex;flex-direction:column;gap:6px;margin-top:10px;width:100%}
+  .pf-mini-btn{width:100%;border:1px solid var(--border-strong);background:rgba(255,255,255,.05);color:var(--text);font:700 12px/1 var(--body);padding:9px 8px;border-radius:9px;cursor:pointer}
+  .pf-mini-btn.on{border-color:rgba(255,207,92,.5);color:var(--gold);background:rgba(255,207,92,.08)}
+  .mdata{display:block;color:var(--faint);font-size:11px;margin-top:5px}
+  /* editar */
+  .pf-blk{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;margin-bottom:14px}
+  .pf-blk h3{font:700 15px/1.3 var(--display);margin:0 0 4px}
+  .pf-blk .dica{color:var(--faint);font-size:12.5px;margin:0 0 12px}
+  .bn-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:12px}
+  .bn-op{height:54px;border-radius:12px;border:2px solid transparent;cursor:pointer;background-size:cover;background-position:center;position:relative;padding:0}
+  .bn-op.on{border-color:#fff;box-shadow:0 0 0 2px var(--violet)}
+  .bn-op span{position:absolute;left:5px;bottom:4px;font:700 9.5px/1 var(--body);color:#fff;text-shadow:0 1px 3px #000}
+  .bn-acoes{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  @media (min-width:600px){
+    .mgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .pf-banner{height:168px}
+  }
+  @media (min-width:900px){ .pf-banner{height:210px} .vit-slot{min-height:120px} }
+  @media (max-width:380px){ .pf-mini b{font-size:17px} .pf-tab{font-size:12.5px;padding:10px 4px} }
   /* Foto de perfil */
   .avatar.comfoto,.hbtn .av.comfoto,.aluno-av.comfoto{padding:0;overflow:hidden;background:none}
   .avatar img,.hbtn .av img,.aluno-av img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
@@ -4251,13 +4345,13 @@ const XP_LESSON=60, XP_PROVA=240, LEVEL_STEP=300;
 let P = load();
 
 function load(){
-  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{},criado:null,foto:null,provas:{},v:ESQUEMA};
+  const base={mods:{},xp:0,streak:0,lastDay:null,best:{},errors:[],notes:{},hist:{},meta:META_PADRAO,nome:'',certs:{},criado:null,foto:null,provas:{},banner:null,titulo:null,vitrine:[],medalhas:null,v:ESQUEMA};
   MODULES.forEach(m=>{ base.mods[m.id]={done:[],prova:false,project:false}; });
   try{
     const s=localStorage.getItem(KEY);
     if(s){
       const d=JSON.parse(s);
-      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||''; base.certs=d.certs||{}; base.criado=d.criado||null; base.foto=d.foto||null; base.provas=d.provas||{};
+      base.xp=d.xp||0; base.streak=d.streak||0; base.lastDay=d.lastDay||null; base.best=d.best||{}; base.errors=d.errors||[]; base.notes=d.notes||{}; base.hist=d.hist||{}; base.meta=d.meta||META_PADRAO; base.nome=d.nome||''; base.certs=d.certs||{}; base.criado=d.criado||null; base.foto=d.foto||null; base.provas=d.provas||{}; base.banner=d.banner||null; base.titulo=d.titulo||null; base.vitrine=Array.isArray(d.vitrine)?d.vitrine.slice(0,3):[]; base.medalhas=(d.medalhas&&typeof d.medalhas==='object')?d.medalhas:null;
       base.v=d.v||0;
       MODULES.forEach(m=>{ if(d.mods&&d.mods[m.id]) base.mods[m.id]=Object.assign({done:[],prova:false,project:false},d.mods[m.id]); });
       return migrarIndices(base);
@@ -4271,7 +4365,7 @@ function load(){
   }catch(e){}
   return base;
 }
-function save(){ try{ localStorage.setItem(KEY,JSON.stringify(P)); }catch(e){} if(typeof agendarSync==='function') agendarSync(); }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(P)); }catch(e){} if(typeof agendarSync==='function') agendarSync(); try{ verificarMedalhas(); }catch(e){} }
 function ST(m){ return P.mods[MODULES[m].id]; }
 function isDone(m,i){ return ST(m).done.indexOf(i)>=0; }
 function modAvail(m){ return m===0 || ST(m-1).prova || ST(m).done.length>0; }
@@ -5564,6 +5658,16 @@ function fundirProgresso(nuvem){
   if(!P.nome&&nuvem.nome){ P.nome=nuvem.nome; mudou=true; }
   if(nuvem.criado&&(!P.criado||nuvem.criado<P.criado)){ P.criado=nuvem.criado; mudou=true; }
   if(!P.foto&&nuvem.foto&&fotoValida(nuvem.foto)){ P.foto=nuvem.foto; mudou=true; }
+  if(!P.banner&&nuvem.banner&&bannerValido(nuvem.banner)){ P.banner=nuvem.banner; mudou=true; }
+  if(!P.titulo&&nuvem.titulo){ P.titulo=nuvem.titulo; mudou=true; }
+  if((!P.vitrine||!P.vitrine.length)&&Array.isArray(nuvem.vitrine)&&nuvem.vitrine.length){ P.vitrine=nuvem.vitrine.slice(0,3); mudou=true; }
+  if(nuvem.medalhas&&typeof nuvem.medalhas==='object'){
+    P.medalhas=P.medalhas||{};
+    Object.keys(nuvem.medalhas).forEach(k=>{
+      const a=P.medalhas[k], b=nuvem.medalhas[k];
+      if(!a||(b&&String(b)<String(a))){ P.medalhas[k]=b; mudou=true; }
+    });
+  }
   P.provas=P.provas||{};
   Object.keys(nuvem.provas||{}).forEach(k=>{
     const minhas=P.provas[k]||[], tenho=new Set(minhas.map(r=>r&&r.quando));
@@ -5616,26 +5720,55 @@ function agendarSync(){
 }
 
 /* ---------- Medalhas ---------- */
+const RARIDADES={
+  comum:{n:'Comum', xp:20},
+  rara:{n:'Rara', xp:50},
+  epica:{n:'Épica', xp:100},
+  lendaria:{n:'Lendária', xp:250}
+};
+const _totalAulas=()=>MODULES.reduce((n,mod)=>n+mod.lessons.length,0);
+const _notas=()=>Object.keys(P.notes||{}).filter(k=>(P.notes[k]||'').trim()).length;
 const MEDALHAS=[
-  {id:'inicio', n:'Primeira linha', d:'Concluiu a primeira aula.', ok:()=>aulasFeitas()>=1},
-  {id:'prova1', n:'Pé na porta', d:'Passou na primeira prova prática.', ok:()=>provasFeitas()>=1},
-  {id:'html', n:'Estruturista', d:'Fechou o módulo de HTML.', ok:()=>modOk('html')},
-  {id:'css', n:'Estilista', d:'Fechou o módulo de CSS.', ok:()=>modOk('css')},
-  {id:'js', n:'Pensador', d:'Fechou o módulo de lógica.', ok:()=>modOk('js')},
-  {id:'dom', n:'Manipulador', d:'Fechou o módulo de DOM.', ok:()=>modOk('dom')},
-  {id:'vscode', n:'Ferramenteiro', d:'Fechou o módulo de VS Code.', ok:()=>modOk('vscode')},
-  {id:'git', n:'Versionador', d:'Fechou o módulo de Git.', ok:()=>modOk('git')},
-  {id:'api', n:'Conectado', d:'Fechou o módulo de APIs.', ok:()=>modOk('api')},
-  {id:'ia', n:'Piloto, não passageiro', d:'Fechou o módulo de IA e vibe coding.', ok:()=>modOk('ia')},
-  {id:'ads', n:'Anunciante', d:'Fechou o módulo de Meta Ads.', ok:()=>modOk('ads')},
-  {id:'proj', n:'Construtor', d:'Entregou um projeto de fase.', ok:()=>projetosFeitos()>=1},
-  {id:'relampago', n:'Relâmpago', d:'Passou numa prova em menos de 3 minutos.', ok:()=>melhorTempo()!==null&&melhorTempo()<180},
-  {id:'semana', n:'Semana cheia', d:'Bateu a meta de aulas da semana.', ok:()=>semanaAtual()>=(P.meta||META_PADRAO)},
-  {id:'ofensiva7', n:'Maratona', d:'Sete dias seguidos de estudo.', ok:()=>P.streak>=7},
-  {id:'caderno', n:'Caderno cheio', d:'Escreveu dez anotações nas aulas.', ok:()=>Object.keys(P.notes||{}).filter(k=>(P.notes[k]||'').trim()).length>=10},
-  {id:'nivel10', n:'Nível 10', d:'Chegou a 2700 XP.', ok:()=>P.xp>=LEVEL_STEP*9},
-  {id:'trilha', n:'Trilha completa', d:'Fechou todos os módulos, provas e projetos.', ok:()=>trilhaCompleta()}
+  {id:'inicio', n:'Primeira linha', d:'Concluiu a primeira aula.', ic:'🚀', r:'comum', ok:()=>aulasFeitas()>=1},
+  {id:'prova1', n:'Pé na porta', d:'Passou na primeira prova prática.', ic:'🚪', r:'comum', ok:()=>provasFeitas()>=1},
+  {id:'cara', n:'Cara de dev', d:'Colocou uma foto no perfil.', ic:'🧑‍💻', r:'comum', ok:()=>!!P.foto},
+  {id:'estilo', n:'Estiloso', d:'Personalizou o banner do perfil.', ic:'🎨', r:'comum', ok:()=>!!P.banner},
+  {id:'aulas10', n:'Pegando o ritmo', d:'Concluiu 10 aulas.', ic:'🎯', r:'comum', ok:()=>aulasFeitas()>=10, p:()=>[aulasFeitas(),10]},
+  {id:'ofensiva3', n:'Aquecendo', d:'Três dias seguidos de estudo.', ic:'🌡️', r:'comum', ok:()=>P.streak>=3, p:()=>[P.streak,3]},
+  {id:'semana', n:'Semana cheia', d:'Bateu a meta de aulas da semana.', ic:'📅', r:'comum', ok:()=>semanaAtual()>=(P.meta||META_PADRAO), p:()=>[semanaAtual(),(P.meta||META_PADRAO)]},
+  {id:'caderno', n:'Caderno cheio', d:'Escreveu dez anotações nas aulas.', ic:'📓', r:'comum', ok:()=>_notas()>=10, p:()=>[_notas(),10]},
+  {id:'html', n:'Estruturista', d:'Fechou o módulo de HTML.', ic:'🏗️', r:'comum', ok:()=>modOk('html')},
+  {id:'css', n:'Estilista', d:'Fechou o módulo de CSS.', ic:'💅', r:'comum', ok:()=>modOk('css')},
+  {id:'vscode', n:'Ferramenteiro', d:'Fechou o módulo de VS Code.', ic:'🛠️', r:'comum', ok:()=>modOk('vscode')},
+  {id:'js', n:'Pensador', d:'Fechou o módulo de lógica.', ic:'🧠', r:'rara', ok:()=>modOk('js')},
+  {id:'dom', n:'Manipulador', d:'Fechou o módulo de DOM.', ic:'🕹️', r:'rara', ok:()=>modOk('dom')},
+  {id:'git', n:'Versionador', d:'Fechou o módulo de Git.', ic:'🌿', r:'rara', ok:()=>modOk('git')},
+  {id:'proj', n:'Construtor', d:'Entregou um projeto de fase.', ic:'🧱', r:'rara', ok:()=>projetosFeitos()>=1},
+  {id:'ofensiva7', n:'Maratona', d:'Sete dias seguidos de estudo.', ic:'🔥', r:'rara', ok:()=>P.streak>=7, p:()=>[P.streak,7]},
+  {id:'dias10', n:'Rotina de dev', d:'Estudou em 10 dias diferentes.', ic:'🗓️', r:'rara', ok:()=>diasEstudados()>=10, p:()=>[diasEstudados(),10]},
+  {id:'metade', n:'Meio caminho', d:'Concluiu metade das aulas da trilha.', ic:'⛰️', r:'rara', ok:()=>aulasFeitas()>=Math.ceil(_totalAulas()/2), p:()=>[aulasFeitas(),Math.ceil(_totalAulas()/2)]},
+  {id:'provas5', n:'Sabatina', d:'Passou em 5 provas práticas.', ic:'🎓', r:'rara', ok:()=>provasFeitas()>=5, p:()=>[provasFeitas(),5]},
+  {id:'nivel5', n:'Nível 5', d:'Chegou a 1200 XP.', ic:'⭐', r:'rara', ok:()=>P.xp>=LEVEL_STEP*4, p:()=>[P.xp,LEVEL_STEP*4]},
+  {id:'api', n:'Conectado', d:'Fechou o módulo de APIs.', ic:'🔌', r:'epica', ok:()=>modOk('api')},
+  {id:'ia', n:'Piloto, não passageiro', d:'Fechou o módulo de IA e vibe coding.', ic:'🤖', r:'epica', ok:()=>modOk('ia')},
+  {id:'ads', n:'Anunciante', d:'Fechou o módulo de Meta Ads.', ic:'📣', r:'epica', ok:()=>modOk('ads')},
+  {id:'relampago', n:'Relâmpago', d:'Passou numa prova em menos de 3 minutos.', ic:'⚡', r:'epica', ok:()=>melhorTempo()!==null&&melhorTempo()<180},
+  {id:'nivel10', n:'Nível 10', d:'Chegou a 2700 XP.', ic:'🏅', r:'epica', ok:()=>P.xp>=LEVEL_STEP*9, p:()=>[P.xp,LEVEL_STEP*9]},
+  {id:'ofensiva30', n:'Imparável', d:'Trinta dias seguidos de estudo.', ic:'☄️', r:'lendaria', ok:()=>P.streak>=30, p:()=>[P.streak,30]},
+  {id:'trilha', n:'Trilha completa', d:'Fechou todos os módulos, provas e projetos.', ic:'👑', r:'lendaria', ok:()=>trilhaCompleta()}
 ];
+const PATENTES=[
+  {de:1, n:'Curioso', cor:'#aab4c0'},
+  {de:2, n:'Aprendiz', cor:'#74efb3'},
+  {de:4, n:'Código Limpo', cor:'#4da3ff'},
+  {de:6, n:'Dev Júnior', cor:'#b36bff'},
+  {de:8, n:'Dev Pleno', cor:'#ff6a5c'},
+  {de:10, n:'Dev Sênior', cor:'#ffcf5c'},
+  {de:14, n:'Mestre do Código', cor:'#ffcf5c'}
+];
+function patenteDe(lvl){ let p=PATENTES[0]; PATENTES.forEach(x=>{ if(lvl>=x.de) p=x; }); return p; }
+function proximaPatente(lvl){ return PATENTES.find(x=>x.de>lvl)||null; }
+function medalhaPorId(id){ return MEDALHAS.find(m=>m.id===id)||null; }
 function aulasFeitas(){ return MODULES.reduce((n,_,m)=>n+ST(m).done.length,0); }
 function provasFeitas(){ return MODULES.reduce((n,_,m)=>n+(ST(m).prova?1:0),0); }
 function projetosFeitos(){ return MODULES.reduce((n,mod,m)=>n+((mod.project&&ST(m).project)?1:0),0); }
@@ -5646,51 +5779,138 @@ function melhorTempo(){
 function tempoSomado(){ return Object.values(P.best||{}).reduce((a,b)=>a+b,0); }
 function medalhasGanhas(){ return MEDALHAS.filter(m=>{ try{ return !!m.ok(); }catch(e){ return false; } }); }
 function diasEstudados(){ return Object.keys(P.hist||{}).length; }
+function hojeISO(){ const d=new Date(), z=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate()); }
+
+/* Carimba cada medalha na primeira vez que ela é ganha e paga o prêmio em XP (uma vez só) */
+let _vmRodando=false;
+function verificarMedalhas(semRender){
+  if(_vmRodando||typeof MEDALHAS==='undefined'||!P||!P.mods) return;
+  _vmRodando=true;
+  try{
+    P.medalhas=P.medalhas||{};
+    const novas=[]; let xp=0;
+    MEDALHAS.forEach(m=>{
+      let ok=false; try{ ok=!!m.ok(); }catch(e){}
+      if(ok&&!P.medalhas[m.id]){ P.medalhas[m.id]=hojeISO(); novas.push(m); xp+=RARIDADES[m.r].xp; }
+    });
+    if(novas.length){
+      P.xp+=xp;
+      try{ localStorage.setItem(KEY,JSON.stringify(P)); }catch(e){}
+      if(typeof agendarSync==='function') agendarSync();
+      if(typeof renderHeader==='function') renderHeader();
+      const alta=novas.slice().sort((a,b)=>Object.keys(RARIDADES).indexOf(b.r)-Object.keys(RARIDADES).indexOf(a.r))[0];
+      toast((novas.length===1?'Medalha: '+alta.n:novas.length+' medalhas novas, a maior: '+alta.n)+'  +'+xp+' XP','gold');
+      try{ confetti(novas.some(m=>m.r==='epica'||m.r==='lendaria')); }catch(e){}
+      if(!semRender&&document.querySelector('.pf-card')) openPerfil();
+    }
+  } finally { _vmRodando=false; }
+}
+
+/* ---------- Banner do perfil ---------- */
+const BANNERS=[
+  {id:'ferrari', n:'Ferrari', css:'radial-gradient(120% 140% at 85% 0%,#ff6a5c 0%,#ff2a1f 28%,#5a0a06 62%,#0d0605 100%)'},
+  {id:'matrix', n:'Matrix', css:'repeating-linear-gradient(90deg,rgba(53,217,138,.16) 0 2px,transparent 2px 14px),linear-gradient(180deg,#02140c,#05301d 70%,#0a0a0c)'},
+  {id:'aurora', n:'Aurora', css:'radial-gradient(90% 120% at 15% 0%,#35d98a 0%,transparent 55%),radial-gradient(90% 130% at 90% 20%,#b36bff 0%,transparent 60%),#0c0b18'},
+  {id:'noite', n:'Noite', css:'radial-gradient(70% 90% at 80% 10%,#2b4fff 0%,transparent 60%),linear-gradient(160deg,#070a1c,#0c1030)'},
+  {id:'sunset', n:'Pôr do sol', css:'linear-gradient(160deg,#ffcf5c 0%,#ff6a5c 40%,#b0245f 75%,#2a0a30 100%)'},
+  {id:'grade', n:'Grade', css:'linear-gradient(rgba(255,42,31,.18) 1px,transparent 1px) 0 0/22px 22px,linear-gradient(90deg,rgba(255,42,31,.18) 1px,transparent 1px) 0 0/22px 22px,radial-gradient(80% 120% at 50% 120%,#ff2a1f55,transparent 70%),#0a0a0c'},
+  {id:'ouro', n:'Ouro', css:'linear-gradient(135deg,#3a2600 0%,#b27d00 35%,#ffcf5c 55%,#7a5200 80%,#1d1300 100%)'},
+  {id:'carbono', n:'Carbono', css:'repeating-linear-gradient(45deg,#15151a 0 6px,#1d1d23 6px 12px)'}
+];
+function bannerValido(b){ return typeof b==='string' && b.length<450000 && /^data:image\/(jpeg|jpg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(b); }
+function bannerEstilo(){
+  const b=P.banner;
+  if(b&&b.indexOf('p:')===0){ const p=BANNERS.find(x=>'p:'+x.id===b); if(p) return 'background:'+p.css; }
+  if(b&&bannerValido(b)) return 'background-image:url('+b+')';
+  return 'background:'+BANNERS[0].css;
+}
+function lerBanner(arquivo){
+  return new Promise((ok,erro)=>{
+    if(!arquivo){ erro(new Error('sem arquivo')); return; }
+    if(!/^image\//.test(arquivo.type)){ erro(new Error('Escolha um arquivo de imagem.')); return; }
+    if(arquivo.size>12*1024*1024){ erro(new Error('Imagem muito grande. Use uma de até 12 MB.')); return; }
+    const fr=new FileReader();
+    fr.onerror=()=>erro(new Error('Não consegui ler o arquivo.'));
+    fr.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>erro(new Error('Esse arquivo não parece uma imagem válida.'));
+      img.onload=()=>{
+        const W=720, H=240, cv=document.createElement('canvas');
+        cv.width=W; cv.height=H;
+        const x=cv.getContext('2d');
+        const k=Math.max(W/img.width,H/img.height), w=W/k, h=H/k;
+        x.drawImage(img,(img.width-w)/2,(img.height-h)/2,w,h,0,0,W,H);
+        try{ ok(cv.toDataURL('image/jpeg',0.8)); }catch(e){ erro(new Error('Não consegui converter a imagem.')); }
+      };
+      img.src=fr.result;
+    };
+    fr.readAsDataURL(arquivo);
+  });
+}
 
 /* ---------- Tela de perfil ---------- */
+let perfilAba='geral', perfilFiltro='todas';
 function plural(n,um,varios){ return n+' '+(n===1?um:varios); }
 function iniciais(nome){
   const p=(nome||'').trim().split(/\s+/).filter(Boolean);
   if(!p.length) return '?';
   return (p[0][0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase();
 }
-function openPerfil(){
-  const v=$('#view');
-  const nome=contaNome()||'Aluno';
-  const totalAulas=MODULES.reduce((n,mod)=>n+mod.lessons.length,0);
-  const feitas=aulasFeitas(), ganhas=medalhasGanhas().map(m=>m.id);
-  const lvl=Math.floor(P.xp/LEVEL_STEP)+1;
-  const mt=melhorTempo();
-  const stats=[
-    {k:'XP acumulado', v:P.xp, s:'nível '+lvl},
-    {k:'Aulas concluídas', v:feitas+'/'+totalAulas, s:Math.round(feitas/totalAulas*100)+'% da trilha'},
-    {k:'Provas passadas', v:provasFeitas()+'/'+MODULES.length, s:plural(projetosFeitos(),'projeto entregue','projetos entregues')},
-    {k:'Ofensiva', v:P.streak+(P.streak===1?' dia':' dias'), s:plural(diasEstudados(),'dia de estudo no total','dias de estudo no total')},
-    {k:'Aulas nesta semana', v:semanaAtual()+'/'+(P.meta||META_PADRAO), s:'meta da semana'},
-    {k:'Melhor tempo de prova', v:mt!==null?fmtTime(mt):'—', s:mt!==null?('somando os recordes: '+fmtTime(tempoSomado())):'nenhuma prova ainda'},
-    {k:'Medalhas', v:ganhas.length+'/'+MEDALHAS.length, s:'conquistas desbloqueadas'},
-    {k:'Anotações', v:Object.keys(P.notes||{}).filter(k=>(P.notes[k]||'').trim()).length, s:plural((P.errors||[]).length,'questão para revisar','questões para revisar')}
-  ];
-  const conta = nuvemLigada()
-    ? (sessaoValida()
-        ? `<div class="conta-box ok"><div><b>${esc(contaEmail())}</b><small>progresso salvo na nuvem${syncEstado==='erro'?' · a última sincronização falhou':''}</small></div>
-           <div class="conta-acoes"><button class="btn btn-ghost" id="csync">Sincronizar agora</button><button class="btn btn-ghost" id="csair">Sair</button></div></div>`
-        : `<div class="conta-box"><div><b>Você não entrou na sua conta</b><small>o progresso está salvo só neste navegador</small></div>
-           <div class="conta-acoes"><button class="btn btn-primary" id="centrar">Entrar ou criar conta</button></div></div>`)
-    : `<div class="conta-box"><div><b>Modo local</b><small>o progresso fica salvo neste navegador. Use o código do progresso para levar para outro aparelho.</small></div>
-       <div class="conta-acoes"><button class="btn btn-ghost" id="cprog">Código do progresso</button></div></div>`;
-  v.innerHTML=`
-    <div class="lv-top">
-      <button class="back" id="back">${IC.back} Trilha</button>
-      <span class="lv-kicker">Perfil</span>
-    </div>
-    <div class="perfil-topo">
-      ${avatarHTML('avatar',nome)}
-      <div class="perfil-id">
-        <h1 class="lv-title" style="margin:0">${esc(nome)}</h1>
-        <p class="lv-goal" style="margin:6px 0 0">Nível ${lvl} · ${P.xp} XP${P.criado?' · estudando desde '+esc(dataBonita(P.criado)):''}</p>
-      </div>
-    </div>
+function medalhaEmblema(m,on){ return `<span class="mb r-${m.r}${on?'':' off'}"><span>${m.ic}</span></span>`; }
+
+function perfilAbaGeral(ctx){
+  const {ganhas,stats}=ctx;
+  // próximas medalhas: as não ganhas com maior progresso
+  const faltam=MEDALHAS.filter(m=>ganhas.indexOf(m.id)<0).map(m=>{
+    let a=0,b=1; if(m.p){ try{ [a,b]=m.p(); }catch(e){} }
+    return {m,a:Math.min(a,b),b,f:b?Math.min(a,b)/b:0};
+  }).sort((x,y)=>y.f-x.f).slice(0,3);
+  const prx=faltam.map(x=>`<div class="nx r-${x.m.r}">${medalhaEmblema(x.m,false)}
+      <div class="tx"><b>${esc(x.m.n)}</b><small>${esc(x.m.d)}${x.m.p?' · '+x.a+'/'+x.b:''}</small>
+      ${x.m.p?`<div class="mbar"><i style="width:${Math.round(x.f*100)}%"></i></div>`:''}</div></div>`).join('');
+  return `
+    <div class="pf-mini">${stats.slice(0,4).map(s=>`<div><b>${esc(String(s.v))}</b><span>${esc(s.k)}</span></div>`).join('')}</div>
+    ${faltam.length?`<div class="sec-h"><h2>Quase lá</h2><span class="muted">próximas medalhas</span></div><div class="pf-next">${prx}</div>`:''}
+    <div class="sec-h"><h2>Números</h2><span class="muted">tudo que você já fez</span></div>
+    <div class="stats-grid">${stats.slice(4).map(s=>`<div class="statcard"><span class="sv">${esc(String(s.v))}</span><span class="sk">${esc(s.k)}</span><small>${esc(s.s)}</small></div>`).join('')}</div>`;
+}
+function perfilAbaMedalhas(ctx){
+  const {ganhas}=ctx;
+  const ordem=['comum','rara','epica','lendaria'];
+  const cont={}; ordem.forEach(r=>{ cont[r]=[MEDALHAS.filter(m=>m.r===r&&ganhas.indexOf(m.id)>=0).length, MEDALHAS.filter(m=>m.r===r).length]; });
+  const filtros=[['todas','Todas',ganhas.length+'/'+MEDALHAS.length,''],...ordem.map(r=>[r,RARIDADES[r].n,cont[r][0]+'/'+cont[r][1],'r-'+r])];
+  const lista=MEDALHAS.filter(m=>perfilFiltro==='todas'||m.r===perfilFiltro)
+    .sort((a,b)=>(ganhas.indexOf(b.id)>=0)-(ganhas.indexOf(a.id)>=0)||ordem.indexOf(b.r)-ordem.indexOf(a.r));
+  const cards=lista.map(m=>{
+    const on=ganhas.indexOf(m.id)>=0;
+    let a=0,b=1; if(m.p){ try{ [a,b]=m.p(); }catch(e){} }
+    const pin=(P.vitrine||[]).indexOf(m.id)>=0, tit=P.titulo===m.id;
+    return `<div class="mcard r-${m.r} ${on?'on':''}">${medalhaEmblema(m,on)}
+      <div class="tx"><b>${esc(m.n)}</b><span class="rar">${RARIDADES[m.r].n} · +${RARIDADES[m.r].xp} XP</span>
+      <p>${esc(m.d)}</p>
+      ${!on&&m.p?`<div class="mbar"><i style="width:${Math.round(Math.min(a,b)/b*100)}%"></i></div><span class="mdata">${Math.min(a,b)} de ${b}</span>`:''}
+      ${!on&&!m.p?`<span class="mdata">🔒 bloqueada</span>`:''}
+      ${on?`<span class="mdata">ganha em ${esc(String((P.medalhas&&P.medalhas[m.id])||hojeISO()).split('-').reverse().join('/'))}</span>
+        <div class="macoes"><button class="pf-mini-btn ${pin?'on':''}" data-pin="${m.id}">${pin?'★ Na vitrine':'☆ Fixar na vitrine'}</button>
+        <button class="pf-mini-btn ${tit?'on':''}" data-tit="${m.id}">${tit?'✓ Título ativo':'Usar como título'}</button></div>`:''}
+      </div></div>`;
+  }).join('');
+  return `<div class="mfiltros">${filtros.map(f=>`<button class="mf ${f[3]} ${perfilFiltro===f[0]?'on':''}" data-f="${f[0]}">${f[1]} ${f[2]}</button>`).join('')}</div>
+    <div class="mgrid">${cards}</div>`;
+}
+function perfilAbaEditar(ctx){
+  const {conta}=ctx;
+  const atual=P.banner||'p:ferrari';
+  const ops=BANNERS.map(b=>`<button class="bn-op ${atual==='p:'+b.id?'on':''}" data-bn="${b.id}" style="background:${b.css}" aria-label="Banner ${esc(b.n)}"><span>${esc(b.n)}</span></button>`).join('');
+  return `
+    <div class="pf-blk"><h3>Banner</h3><p class="dica">A faixa atrás da sua foto. Escolha um estilo ou envie uma imagem sua.</p>
+      <div class="bn-grid">${ops}</div>
+      <div class="bn-acoes">
+        <input type="file" id="pbanner" accept="image/*" hidden>
+        <button class="btn btn-ghost" id="pbannerb">${IC.spark} Enviar imagem</button>
+        ${bannerValido(P.banner)?'<button class="btn btn-ghost" id="pbannerx">Voltar ao padrão</button>':''}
+        <span class="fmsg2" id="pbannerm" style="font-size:12.5px;color:var(--faint)">Corte automático em 3:1.</span>
+      </div></div>
     <div class="perfil-nome">
       <label for="pnome">Nome que aparece aqui e nos certificados</label>
       <div class="certrow">
@@ -5704,23 +5924,111 @@ function openPerfil(){
         <span class="fmsg2" id="pfotom">Fica quadrada, 128 pixels, e acompanha a sua conta.</span>
       </div>
     </div>
+    ${P.titulo?'<div class="pf-blk"><h3>Título</h3><p class="dica">Aparece embaixo do seu nome. Escolha na aba Medalhas.</p><button class="btn btn-ghost" id="ptitx">Tirar título</button></div>':''}
     ${souMentor()?`<div class="conta-box ok"><div><b>Você é o mentor desta turma</b><small>veja o progresso de todos os alunos que criaram conta</small></div>
       <div class="conta-acoes"><button class="btn btn-primary" id="pmentor">${IC.trophy} Abrir painel do mentor</button></div></div>`:''}
-    ${conta}
-    <div class="sec-h"><h2>Números</h2><span class="muted">tudo que você já fez</span></div>
-    <div class="stats-grid">${stats.map(s=>`<div class="statcard"><span class="sv">${esc(String(s.v))}</span><span class="sk">${esc(s.k)}</span><small>${esc(s.s)}</small></div>`).join('')}</div>
-    <div class="sec-h"><h2>Medalhas</h2><span class="muted">${ganhas.length} de ${MEDALHAS.length}</span></div>
-    <div class="medalhas">${MEDALHAS.map(m=>{
-      const on=ganhas.indexOf(m.id)>=0;
-      return `<div class="medalha ${on?'on':''}"><span class="mic">${on?IC.trophy:IC.lock}</span>
-        <span class="mtx"><b>${esc(m.n)}</b><small>${esc(m.d)}</small></span></div>`;
-    }).join('')}</div>`;
+    ${conta}`;
+}
+
+function openPerfil(aba){
+  if(typeof aba==='string') perfilAba=aba;
+  try{ verificarMedalhas(true); }catch(e){}
+  const v=$('#view');
+  const nome=contaNome()||'Aluno';
+  const totalAulas=_totalAulas();
+  const feitas=aulasFeitas(), ganhas=medalhasGanhas().map(m=>m.id);
+  const lvl=Math.floor(P.xp/LEVEL_STEP)+1;
+  const into=P.xp%LEVEL_STEP;
+  const patente=patenteDe(lvl), prox=proximaPatente(lvl);
+  const mt=melhorTempo();
+  const stats=[
+    {k:'Ofensiva', v:P.streak+(P.streak===1?' dia':' dias'), s:plural(diasEstudados(),'dia de estudo no total','dias de estudo no total')},
+    {k:'Aulas', v:feitas+'/'+totalAulas, s:Math.round(feitas/totalAulas*100)+'% da trilha'},
+    {k:'Provas', v:provasFeitas()+'/'+MODULES.length, s:plural(projetosFeitos(),'projeto entregue','projetos entregues')},
+    {k:'Medalhas', v:ganhas.length+'/'+MEDALHAS.length, s:'conquistas desbloqueadas'},
+    {k:'XP acumulado', v:P.xp, s:'nível '+lvl},
+    {k:'Aulas nesta semana', v:semanaAtual()+'/'+(P.meta||META_PADRAO), s:'meta da semana'},
+    {k:'Melhor tempo de prova', v:mt!==null?fmtTime(mt):'—', s:mt!==null?('somando os recordes: '+fmtTime(tempoSomado())):'nenhuma prova ainda'},
+    {k:'Anotações', v:_notas(), s:plural((P.errors||[]).length,'questão para revisar','questões para revisar')}
+  ];
+  const conta = nuvemLigada()
+    ? (sessaoValida()
+        ? `<div class="conta-box ok"><div><b>${esc(contaEmail())}</b><small>progresso salvo na nuvem${syncEstado==='erro'?' · a última sincronização falhou':''}</small></div>
+           <div class="conta-acoes"><button class="btn btn-ghost" id="csync">Sincronizar agora</button><button class="btn btn-ghost" id="csair">Sair</button></div></div>`
+        : `<div class="conta-box"><div><b>Você não entrou na sua conta</b><small>o progresso está salvo só neste navegador</small></div>
+           <div class="conta-acoes"><button class="btn btn-primary" id="centrar">Entrar ou criar conta</button></div></div>`)
+    : `<div class="conta-box"><div><b>Modo local</b><small>o progresso fica salvo neste navegador. Use o código do progresso para levar para outro aparelho.</small></div>
+       <div class="conta-acoes"><button class="btn btn-ghost" id="cprog">Código do progresso</button></div></div>`;
+  const ctx={ganhas,lvl,stats,patente,prox,conta};
+  const tit=(P.titulo&&ganhas.indexOf(P.titulo)>=0)?medalhaPorId(P.titulo):null;
+  const vit=(P.vitrine||[]).map(medalhaPorId).filter(m=>m&&ganhas.indexOf(m.id)>=0);
+  const slots=[0,1,2].map(i=>{
+    const m=vit[i];
+    return m?`<div class="vit-slot has r-${m.r}"><span class="vi">${m.ic}</span><b>${esc(m.n)}</b></div>`
+            :`<div class="vit-slot" data-aba="medalhas"><span class="vi" style="opacity:.35">＋</span>fixe uma medalha</div>`;
+  }).join('');
+  const corpo = perfilAba==='medalhas'?perfilAbaMedalhas(ctx):perfilAba==='editar'?perfilAbaEditar(ctx):perfilAbaGeral(ctx);
+  v.innerHTML=`<div class="pf">
+    <div class="lv-top">
+      <button class="back" id="back">${IC.back} Trilha</button>
+      <span class="lv-kicker">Perfil</span>
+    </div>
+    <div class="pf-card" style="--rk:${patente.cor}">
+      <div class="pf-banner" style="${bannerEstilo()}"><button class="pf-banner-btn" id="pbn">${IC.spark} Personalizar</button></div>
+      <div class="pf-corpo">
+        <div class="pf-av-wrap">${avatarHTML('avatar',nome)}<span class="pf-lvl" title="Nível ${lvl}">${lvl}</span></div>
+        <h1 class="pf-nome">${esc(nome)}</h1>
+        <div class="pf-sub">
+          <span class="pf-chip rank">${patente.n}</span>
+          ${tit?`<span class="pf-chip tit">${tit.ic} ${esc(tit.n)}</span>`:''}
+        </div>
+        ${P.criado?`<div class="pf-desde">estudando desde ${esc(dataBonita(P.criado))}</div>`:''}
+        <div class="pf-xp">
+          <div class="pf-xp-top"><span><b>${P.xp} XP</b> · nível ${lvl}</span><span>${into}/${LEVEL_STEP} para o nível ${lvl+1}</span></div>
+          <div class="pf-bar"><i style="width:${Math.round(into/LEVEL_STEP*100)}%"></i></div>
+          ${prox?`<div class="pf-desde" style="margin-top:8px">próxima patente: <b style="color:var(--text)">${prox.n}</b> no nível ${prox.de}</div>`:''}
+        </div>
+        <div class="pf-vit-h"><span>Vitrine</span><span>${vit.length}/3</span></div>
+        <div class="pf-vit">${slots}</div>
+      </div>
+    </div>
+    <div class="pf-tabs" role="tablist">
+      <button class="pf-tab ${perfilAba==='geral'?'on':''}" data-aba="geral" role="tab">Visão geral</button>
+      <button class="pf-tab ${perfilAba==='medalhas'?'on':''}" data-aba="medalhas" role="tab">Medalhas <small>${ganhas.length}/${MEDALHAS.length}</small></button>
+      <button class="pf-tab ${perfilAba==='editar'?'on':''}" data-aba="editar" role="tab">Editar</button>
+    </div>
+    <div class="pf-corpo-aba">${corpo}</div></div>`;
   $('#back').addEventListener('click',renderHome);
-  $('#psalvar').addEventListener('click',()=>{
+  v.querySelectorAll('[data-aba]').forEach(b=>b.addEventListener('click',()=>{ openPerfil(b.dataset.aba); }));
+  $('#pbn').addEventListener('click',()=>openPerfil('editar'));
+  v.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>{ perfilFiltro=b.dataset.f; openPerfil(); }));
+  v.querySelectorAll('[data-pin]').forEach(b=>b.addEventListener('click',()=>{
+    const id=b.dataset.pin; let l=(P.vitrine||[]).slice();
+    if(l.indexOf(id)>=0) l=l.filter(x=>x!==id);
+    else { if(l.length>=3){ toast('A vitrine tem 3 lugares. Tire uma medalha antes.'); return; } l.push(id); }
+    P.vitrine=l; save(); openPerfil();
+  }));
+  v.querySelectorAll('[data-tit]').forEach(b=>b.addEventListener('click',()=>{
+    P.titulo=(P.titulo===b.dataset.tit)?null:b.dataset.tit; save(); openPerfil();
+  }));
+  v.querySelectorAll('[data-bn]').forEach(b=>b.addEventListener('click',()=>{
+    P.banner='p:'+b.dataset.bn; save(); toast('Banner atualizado.','mint'); openPerfil();
+  }));
+  const bb=$('#pbannerb'), bi=$('#pbanner');
+  if(bb) bb.addEventListener('click',()=>bi.click());
+  if(bi) bi.addEventListener('change',()=>{
+    const msg=$('#pbannerm'); msg.textContent='Preparando a imagem...';
+    lerBanner(bi.files&&bi.files[0]).then(d=>{ P.banner=d; save(); toast('Banner atualizado.','mint'); openPerfil(); })
+      .catch(e=>{ msg.textContent=e.message; });
+  });
+  const bbx=$('#pbannerx'); if(bbx) bbx.addEventListener('click',()=>{ P.banner=null; save(); toast('Banner padrão.'); openPerfil(); });
+  const btx=$('#ptitx'); if(btx) btx.addEventListener('click',()=>{ P.titulo=null; save(); openPerfil(); });
+  const ps=$('#psalvar');
+  if(ps) ps.addEventListener('click',()=>{
     P.nome=($('#pnome').value||'').trim(); save(); agendarSync();
     renderHeader(); toast('Nome salvo.','mint'); openPerfil();
   });
-  const bs=$('#csync'); if(bs) bs.addEventListener('click',()=>sincronizar(false).then(openPerfil));
+  const bs=$('#csync'); if(bs) bs.addEventListener('click',()=>sincronizar(false).then(()=>openPerfil()));
   const bo=$('#csair'); if(bo) bo.addEventListener('click',()=>{ contaSair(); toast('Você saiu da conta.'); openPerfil(); });
   const be=$('#centrar'); if(be) be.addEventListener('click',openEntrar);
   const bm=$('#pmentor'); if(bm) bm.addEventListener('click',openAdmin);
@@ -6419,10 +6727,11 @@ addEventListener('hashchange',rota);
 sessaoLer();
 if(!P.criado){ P.criado=new Date().toISOString().slice(0,10); save(); }
 document.getElementById('perfilBtn').addEventListener('click',()=>{
-  if(nuvemLigada()&&!sessaoValida()) openEntrar(); else openPerfil();
+  if(nuvemLigada()&&!sessaoValida()) openEntrar(); else openPerfil('geral');
 });
 rota();
 renderHeader();
+try{ verificarMedalhas(); }catch(e){}
 if(nuvemLigada()&&sessaoValida()) sincronizar(true);
 </script>
 
