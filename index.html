@@ -5058,7 +5058,8 @@ function currentModule(){
 const HERO_BANNERS=[
   {img:'banner1', alt:'Aprenda a programar do zero, de graça. Começar agora', acao:'trilha'},
   {img:'banner2', alt:'Do conceito ao código seguro: sites, apps, sistemas e segurança sob medida. Pedir orçamento', link:'https://encryptedgroup.com/#contato'},
-  {img:'banner3', alt:'Faça networking e troque conhecimento em nossa comunidade. Faça parte', link:'https://discord.gg/UXMBXBUY28'}
+  // comunidade no WhatsApp: quando o link existir, troque acao:'comunidade' por link:'https://chat.whatsapp.com/...'
+  {img:'banner3', alt:'Faça networking e troque conhecimento em nossa comunidade. Em breve', acao:'comunidade'}
 ];
 let heroCarT=null;
 function heroCarHTML(){
@@ -5109,12 +5110,16 @@ function heroCarIniciar(v,cur){
     x0=null; pausado=false;
   });
   el.addEventListener('click',e=>{ if(arrastou){ e.preventDefault(); e.stopPropagation(); arrastou=false; } },true);
-  // banner do curso: leva até o módulo atual da trilha
+  // banner do curso: abre a próxima aula do aluno (se o módulo já acabou, leva até a prova dele)
   const b1=el.querySelector('[data-hc-acao="trilha"]');
   if(b1) b1.addEventListener('click',()=>{
+    const aulas=MODULES[cur]?MODULES[cur].lessons:[];
+    for(let k=0;k<aulas.length;k++){ if(lessonAvail(cur,k)&&!isDone(cur,k)){ openLesson(cur,k); return; } }
     const alvo=document.getElementById('modulo-'+(cur+1));
     if(alvo) alvo.scrollIntoView({behavior:reduz?'auto':'smooth',block:'start'});
   });
+  const b3=el.querySelector('[data-hc-acao="comunidade"]');
+  if(b3) b3.addEventListener('click',()=>toast('A comunidade do Encryptando no WhatsApp chega em breve!'));
   ir(0); reiniciar();
 }
 
