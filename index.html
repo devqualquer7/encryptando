@@ -670,6 +670,22 @@
   .adm-atalho span{flex:1;min-width:0}
   .adm-atalho b{display:block;font:800 15px/1.2 var(--display)}
   .adm-atalho small{display:block;color:var(--muted);font-size:12.5px;margin-top:3px}
+  /* Carrossel de banners do topo da home */
+  .hc{position:relative;margin:0 0 22px;border-radius:16px;overflow:hidden;aspect-ratio:1920/695;background:#0a0a0a;border:1px solid var(--border);touch-action:pan-y}
+  .hc-trk{display:flex;height:100%;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+  .hc-sl{flex:0 0 100%;height:100%;display:block;margin:0;padding:0;border:0;background:none;cursor:pointer}
+  .hc-sl img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;user-select:none}
+  .hc-nav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:0;padding:0;
+    background:rgba(0,0,0,.55);color:#fff;cursor:pointer;display:grid;place-items:center;font:700 18px/1 var(--display);opacity:0;transition:opacity .2s}
+  .hc:hover .hc-nav,.hc:focus-within .hc-nav{opacity:.85}
+  .hc-nav:hover,.hc-nav:focus-visible{opacity:1!important;background:rgba(0,0,0,.8)}
+  @media (hover:none){.hc-nav{display:none}}
+  .hc-prev{left:8px}.hc-next{right:8px}
+  .hc-dots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:6px}
+  .hc-dots button{width:8px;height:8px;border-radius:99px;border:0;padding:0;background:rgba(255,255,255,.45);cursor:pointer;transition:width .3s,background .3s}
+  .hc-dots button.on{width:22px;background:#fff}
+  @media (max-width:560px){.hc{border-radius:12px;margin-bottom:16px}.hc-nav{width:26px;height:26px;font-size:14px}.hc-prev{left:4px}.hc-next{right:4px}.hc-dots{bottom:5px}.hc-dots button{width:6px;height:6px}.hc-dots button.on{width:16px}}
+  @media (prefers-reduced-motion:reduce){.hc-trk{transition:none}}
   .adm-atalho i{font-style:normal;color:var(--gold);font-size:22px;line-height:1}
   .adm-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 16px;color:var(--muted);font-size:13.5px}
   .adm-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:18px}
@@ -5038,6 +5054,70 @@ function currentModule(){
   const c=MODULES.findIndex((_,m)=>!ST(m).prova);
   return c<0 ? MODULES.length-1 : c;
 }
+/* ---------- Carrossel de banners do topo da home ---------- */
+const HERO_BANNERS=[
+  {img:'banner1', alt:'Aprenda a programar do zero, de graça. Começar agora', acao:'trilha'},
+  {img:'banner2', alt:'Do conceito ao código seguro: sites, apps, sistemas e segurança sob medida. Pedir orçamento', link:'https://encryptedgroup.com/#contato'},
+  {img:'banner3', alt:'Faça networking e troque conhecimento em nossa comunidade. Faça parte', link:'https://discord.gg/UXMBXBUY28'}
+];
+let heroCarT=null;
+function heroCarHTML(){
+  const sl=HERO_BANNERS.map((b,i)=>{
+    const img=`<img src="banners/${b.img}.webp" srcset="banners/${b.img}-960.webp 960w, banners/${b.img}.webp 1920w" sizes="(max-width:980px) 100vw, 940px" width="1920" height="695" alt="${b.alt}" ${i?'loading="lazy"':'fetchpriority="high"'} draggable="false">`;
+    return b.link
+      ? `<a class="hc-sl" href="${b.link}" target="_blank" rel="noopener" aria-label="${b.alt}" ${i?'tabindex="-1"':''}>${img}</a>`
+      : `<button class="hc-sl" type="button" data-hc-acao="${b.acao}" aria-label="${b.alt}" ${i?'tabindex="-1"':''}>${img}</button>`;
+  }).join('');
+  const dots=HERO_BANNERS.map((_,i)=>`<button type="button" data-hc-ir="${i}" aria-label="Banner ${i+1}"${i?'':' class="on" aria-current="true"'}></button>`).join('');
+  return `<section class="hc" id="heroCar" aria-roledescription="carrossel" aria-label="Destaques">
+    <div class="hc-trk">${sl}</div>
+    <button class="hc-nav hc-prev" type="button" aria-label="Banner anterior">‹</button>
+    <button class="hc-nav hc-next" type="button" aria-label="Próximo banner">›</button>
+    <div class="hc-dots">${dots}</div></section>`;
+}
+function heroCarIniciar(v,cur){
+  if(heroCarT){ clearInterval(heroCarT); heroCarT=null; }
+  const el=v.querySelector('#heroCar'); if(!el) return;
+  const trk=el.querySelector('.hc-trk'), sls=[...el.querySelectorAll('.hc-sl')], dots=[...el.querySelectorAll('[data-hc-ir]')];
+  const n=sls.length; let i=0, pausado=false;
+  const reduz=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ir=k=>{
+    i=(k+n)%n; trk.style.transform=`translateX(${-100*i}%)`;
+    dots.forEach((d,j)=>{ d.classList.toggle('on',j===i); if(j===i) d.setAttribute('aria-current','true'); else d.removeAttribute('aria-current'); });
+    sls.forEach((s,j)=>{ s.tabIndex=j===i?0:-1; s.setAttribute('aria-hidden',j===i?'false':'true'); });
+  };
+  const reiniciar=()=>{
+    if(heroCarT) clearInterval(heroCarT);
+    if(reduz) return;
+    heroCarT=setInterval(()=>{
+      if(!document.body.contains(el)){ clearInterval(heroCarT); heroCarT=null; return; }
+      if(!pausado && !document.hidden) ir(i+1);
+    },5000);
+  };
+  el.querySelector('.hc-prev').addEventListener('click',()=>{ ir(i-1); reiniciar(); });
+  el.querySelector('.hc-next').addEventListener('click',()=>{ ir(i+1); reiniciar(); });
+  dots.forEach(d=>d.addEventListener('click',()=>{ ir(+d.dataset.hcIr); reiniciar(); }));
+  el.addEventListener('mouseenter',()=>pausado=true);
+  el.addEventListener('mouseleave',()=>pausado=false);
+  el.addEventListener('focusin',()=>pausado=true);
+  el.addEventListener('focusout',()=>pausado=false);
+  // arrastar com o dedo no celular
+  let x0=null, arrastou=false;
+  el.addEventListener('touchstart',e=>{ x0=e.touches[0].clientX; arrastou=false; pausado=true; },{passive:true});
+  el.addEventListener('touchend',e=>{
+    if(x0!==null){ const dx=e.changedTouches[0].clientX-x0; if(Math.abs(dx)>40){ arrastou=true; ir(dx<0?i+1:i-1); reiniciar(); } }
+    x0=null; pausado=false;
+  });
+  el.addEventListener('click',e=>{ if(arrastou){ e.preventDefault(); e.stopPropagation(); arrastou=false; } },true);
+  // banner do curso: leva até o módulo atual da trilha
+  const b1=el.querySelector('[data-hc-acao="trilha"]');
+  if(b1) b1.addEventListener('click',()=>{
+    const alvo=document.getElementById('modulo-'+(cur+1));
+    if(alvo) alvo.scrollIntoView({behavior:reduz?'auto':'smooth',block:'start'});
+  });
+  ir(0); reiniciar();
+}
+
 function renderHome(){
   if(precisaConta()){ openEntrar('criar'); return; }
   const v=$('#view');
@@ -5049,6 +5129,7 @@ function renderHome(){
     {n:"Fase 3",t:"Marketing Digital",d:"Levar produto e público até o projeto.",m:[9]}
   ];
   let html=`
+    ${heroCarHTML()}
     ${(typeof souMentor==='function'&&souMentor())?`<button class="adm-atalho" id="goMentor"><span class="ic">👑</span><span><b>Central do mentor</b><small>alunos, alertas e atividade da turma</small></span><i>›</i></button>`:''}
     <p class="eyebrow">${cm.fase} — Módulo ${cur+1}</p>
     <h1 class="title">${cur===0?'Sua jornada começa pelo <span class="hl">HTML</span>':'Próxima parada: <span class="hl">'+cm.title+'</span>'}</h1>
@@ -5077,6 +5158,7 @@ function renderHome(){
   html+=`<p class="foot"><b>Encryptando</b> — protótipo de plataforma de mentoria.<br>Seu progresso fica salvo neste navegador.</p>`;
   v.innerHTML=html;
   const gm=$('#goMentor'); if(gm) gm.addEventListener('click',()=>openAdmin('geral'));
+  heroCarIniciar(v, cur);
 
   v.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>{
     const m=+b.dataset.m, i=+b.dataset.open;
