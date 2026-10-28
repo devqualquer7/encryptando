@@ -156,7 +156,8 @@
   .eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--violet-2);margin:0 0 8px}
   .lead{color:var(--muted);font-size:15.5px;max-width:62ch}
   h1.title{font-size:clamp(27px,5vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.08;margin-bottom:12px}
-  h1.title .hl{background:linear-gradient(120deg,var(--violet-2),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+  h1.title .hl{background:linear-gradient(120deg,var(--violet-2),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;
+    font:inherit;margin:0;padding:0;white-space:normal;overflow:visible;height:auto;line-height:inherit}
 
   /* Fases */
   .sec-h{display:flex;align-items:baseline;gap:12px;margin:38px 0 16px}
@@ -5160,7 +5161,7 @@ function renderHome(){
   html+=certSection();
   html+=`<div class="homefoot"><button class="btn btn-ghost" id="goProg">${IC.clock} Meu progresso</button><button class="btn btn-ghost" id="goGloss">${IC.book} Glossário</button></div>`;
   html+=`<nav class="legal-links" aria-label="Documentos legais"><a href="/termos.html" target="_blank" rel="noopener">Termos de Uso</a><a href="/privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a><span>© ${new Date().getFullYear()} Encrypted Group LTDA</span></nav>`;
-  html+=`<p class="foot"><b>Encryptando</b> — protótipo de plataforma de mentoria.<br>Seu progresso fica salvo neste navegador.</p>`;
+  html+=`<p class="foot"><b>Encryptando</b> — a escola de programação da enCrypteD.<br>Seu progresso fica salvo na sua conta.</p>`;
   v.innerHTML=html;
   const gm=$('#goMentor'); if(gm) gm.addEventListener('click',()=>openAdmin('geral'));
   heroCarIniciar(v, cur);
